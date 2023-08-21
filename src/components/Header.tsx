@@ -10,25 +10,23 @@ export function Header() {
 
   return (
     <header className="flex justify-between items-center pb-8 relative text-red-400">
-      {checkMenuOpen ? (
-        <X
-          size={34}
-          weight="bold"
-          onClick={handleChangeValue}
-          className={`${
-            widthScreen && widthScreen >= 800 ? 'hidden' : 'text-red-400'
-          }`}
-        />
-      ) : (
-        <List
-          onClick={handleChangeValue}
-          className={`${
-            widthScreen && widthScreen >= 800 ? 'hidden' : 'text-red-400'
-          }`}
-          size={34}
-          weight="bold"
-        />
-      )}
+      <div className={widthScreen && widthScreen >= 800 ? 'hidden' : ''}>
+        {checkMenuOpen ? (
+          <X
+            size={34}
+            weight="bold"
+            onClick={handleChangeValue}
+            className="text-red-400"
+          />
+        ) : (
+          <List
+            size={34}
+            weight="bold"
+            onClick={handleChangeValue}
+            className="text-red-400"
+          />
+        )}
+      </div>
 
       <nav
         className={`
@@ -38,8 +36,8 @@ export function Header() {
       >
         <ul
           className={`${
-            checkMenuOpen
-              ? 'absolute right-4 top-[8rem] flex flex-col gap-8 items-end text-2xl font-bold bg-rose-100 w-[16rem] p-8 rounded-md z-20'
+            widthScreen && widthScreen <= 800 && checkMenuOpen === true
+              ? 'absolute right-4 top-[7rem] flex flex-col gap-8 items-end text-2xl font-bold bg-rose-100 w-[15rem] p-8 rounded-md z-20'
               : 'flex gap-8 text-3xl font-semibold'
           } `}
         >
