@@ -6,12 +6,12 @@
   font-size: 62.5%;
 }
 
-body {
-  @apply text-red-400 text-4xl font-hachi tracking-wide
+body, input, button {
+  @apply text-red-400 text-2xl font-hachi tracking-wide
 }
 
 p, span {
-  @apply leading-normal text-4xl font-serif
+  @apply leading-normal font-serif
 }
 
 h1, h2, h3, h4, h5, h6 {
