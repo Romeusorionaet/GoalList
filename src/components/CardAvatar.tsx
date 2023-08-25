@@ -18,7 +18,7 @@ export function CardAvatar() {
         />
       </div>
 
-      <span className="text-right text-2xl p-4">Bodas de Algodão</span>
+      <span className="text-right p-4">Bodas de Algodão</span>
 
       <div className="absolute top-[14.5rem] left-2 h-40 w-40 rounded-full border border-slate-400 overflow-hidden">
         <Image
@@ -37,7 +37,7 @@ export function CardAvatar() {
           <h2>Asuna</h2>
         </div>
 
-        <p className="text-2xl text-center">
+        <p className="text-center">
           Nosso relacionamento é uma mistura de coragem, companheirismo e amor
           verdadeiro, forjado através de desafios virtuais e aventuras
           emocionantes.

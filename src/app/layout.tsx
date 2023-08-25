@@ -1,6 +1,7 @@
 import { Header } from '@/components/Header'
 import '../styles/globals.css'
 import type { Metadata } from 'next'
+import { AuthContextProvider } from '@/contexts/AuthContext'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,8 +17,10 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className="bg-rose-200 p-4">
         <div className="rounded-xl max-w-[150rem] mx-auto my-auto">
-          <Header />
-          {children}
+          <AuthContextProvider>
+            <Header />
+            {children}
+          </AuthContextProvider>
         </div>
       </body>
     </html>

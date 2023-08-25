@@ -18,7 +18,7 @@ export default function Home() {
         <div className=" flex justify-center items-center min-h-[32rem] w-full mt-[26rem] bg-[url('../assets/previewPerfis.png')] bg-center bg-cover bg-no-repeat md:bg-contain">
           <div className="relative md:w-[50%] h-20 flex items-center justify-center px-6 rounded-full">
             <div className="absolute inset-0 blur-sm backdrop-blur-none bg-gradient-to-r from-transparent via-rose-200 to-transparent rounded-2xl overflow-hidden" />
-            <h1 className="relative">Deixe registrado o seu carinho</h1>
+            <h1 className="relative">lorem nmifjdis spusm d wef</h1>
           </div>
         </div>
 
