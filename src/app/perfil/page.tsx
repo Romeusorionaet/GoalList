@@ -15,21 +15,21 @@ export default function Perfil() {
   const [updateProfile, updating, error] = useUpdateProfile(auth)
   const [userId, setUserId] = useState<string | null>('')
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setEmail(user.email)
-      setDisplayName(user.displayName)
-      setUserId(user.uid)
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/auth.user
-      console.log(user.email)
-      // ...
-    } else {
-      console.log('User is signed out')
-      // User is signed out
-      // ...
-    }
-  })
+  // onAuthStateChanged(auth, (user) => {
+  //   if (user) {
+  //     setEmail(user.email)
+  //     setDisplayName(user.displayName)
+  //     setUserId(user.uid)
+  //     // User is signed in, see docs for a list of available properties
+  //     // https://firebase.google.com/docs/reference/js/auth.user
+  //     console.log(user.email)
+  //     // ...
+  //   } else {
+  //     console.log('User is signed out')
+  //     // User is signed out
+  //     // ...
+  //   }
+  // })
 
   async function handleUpdatePefilForm() {
     if (error) {

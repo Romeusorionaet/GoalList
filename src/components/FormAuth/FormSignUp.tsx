@@ -12,23 +12,15 @@ export default function FormSignUp() {
   const [password, setPassword] = useState('')
   const { SignUp, signUpState } = useContext(AuthContext)
 
-  if (signUpState.errorInCreatedUser) {
-    return (
-      <div>
-        <p>Error: {signUpState.errorInCreatedUser.message}</p>
-      </div>
-    )
-  }
-  if (signUpState.loadingToCreateUser) {
-    return <p>Loading...</p>
-  }
-  if (signUpState.userCreatedResult) {
-    return (
-      <div>
-        <p>Registered User: {signUpState.userCreatedResult.user.email}</p>
-      </div>
-    )
-  }
+  // if (signUpState.errorInCreatedUser) {
+  //   console.log(signUpState.errorInCreatedUser)
+  // }
+  // if (signUpState.loadingToCreateUser) {
+  //   return <p>Loading...</p>
+  // }
+  // if (signUpState.userCreatedResult) {
+  //   console.log(signUpState.userCreatedResult)
+  // }
 
   function handleSignUpForm(event: SyntheticEvent) {
     event.preventDefault()
@@ -85,13 +77,13 @@ export default function FormSignUp() {
                 defaultValue="@peduarte"
               />
             </fieldset> */}
-
-            <Dialog.Description className="flex items-center justify-between">
-              <span>
-                Já esta cadastrado? <FormSignIn />
-              </span>
+            <div>
+              <Dialog.Description className="flex items-center justify-between">
+                Já esta cadastrado?
+              </Dialog.Description>
+              <FormSignIn />
               <Button type="submit" title="Cadastrar" />
-            </Dialog.Description>
+            </div>
           </form>
 
           <Dialog.Close asChild>
