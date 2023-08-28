@@ -10,26 +10,27 @@ import { AuthContext } from '@/contexts/AuthContext'
 export default function FormSignIn() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { SignIn, signInState } = useContext(AuthContext)
-  if (signInState.errorInLogin) {
-    return (
-      <div>
-        <p>Error: {signInState.errorInLogin.message}</p>
-      </div>
-    )
-  }
-  if (signInState.loadingLogin) {
-    return <p>Loading...</p>
-  }
-  if (signInState.dataUser) {
-    return (
-      <div>
-        <p>Registered User: {signInState.dataUser.user.email}</p>
-      </div>
-    )
-  }
+  const { SignIn, signInState, HandleGoogleSignIn } = useContext(AuthContext)
 
-  async function handleSignInForm(event: SyntheticEvent) {
+  // if (signInState.errorInLogin) {
+  //   return (
+  //     <div>
+  //       <p>Error: {signInState.errorInLogin.message}</p>
+  //     </div>
+  //   )
+  // }
+  // if (signInState.loadingLogin) {
+  //   return <p>Loading...</p>
+  // }
+  // if (signInState.dataUser) {
+  //   return (
+  //     <div>
+  //       <p>Registered User: {signInState.dataUser.user.email}</p>
+  //     </div>
+  //   )
+  // }
+
+  function handleSignInForm(event: SyntheticEvent) {
     event.preventDefault()
     SignIn({ email, password })
   }
@@ -81,7 +82,7 @@ export default function FormSignIn() {
               <Button type="submit" title="Entrar" />
             </Dialog.Description>
           </form>
-
+          <button onClick={HandleGoogleSignIn}>Google</button>
           <Dialog.Close asChild>
             <button className="absolute top-[10px] right-[10px] items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none">
               <X size={28} />

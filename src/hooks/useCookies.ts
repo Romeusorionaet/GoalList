@@ -1,9 +1,8 @@
-import { destroyCookie, setCookie } from 'nookies'
+import { destroyCookie, parseCookies, setCookie } from 'nookies'
 
 export function useCookies() {
-  //   function getCookie() {
-  //     const cookies = parseCookies()
-  //   }
+  const cookies = parseCookies()
+  const isAuthenticated = cookies['@authTokenTwoHeart-1.0']
 
   function setSecureCookie(idToken: string) {
     setCookie(null, '@authTokenTwoHeart-1.0', idToken, {
@@ -18,5 +17,5 @@ export function useCookies() {
     return destroyCookie(null, '@authTokenTwoHeart-1.0')
   }
 
-  return { setSecureCookie, removeCookie }
+  return { setSecureCookie, removeCookie, isAuthenticated }
 }

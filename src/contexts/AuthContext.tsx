@@ -6,8 +6,16 @@ import {
   useSignInWithEmailAndPassword,
   useCreateUserWithEmailAndPassword,
 } from 'react-firebase-hooks/auth'
-import { getAuth, signOut, UserCredential, AuthError } from 'firebase/auth'
+import {
+  getAuth,
+  signOut,
+  UserCredential,
+  AuthError,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from 'firebase/auth'
 import { useCookies } from '@/hooks/useCookies'
+import { useRouter } from 'next/navigation'
 
 interface AuthFormProps {
   email: string
@@ -32,6 +40,7 @@ interface AuthContextType {
   LogOutUser: () => void
   signInState: SignInStateProps
   signUpState: SignUpStateProps
+  HandleGoogleSignIn: () => void
 }
 
 interface AuthContextProps {
@@ -41,6 +50,8 @@ interface AuthContextProps {
 export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthContextProvider({ children }: AuthContextProps) {
+  const router = useRouter()
+
   const [signInState, setSignInState] = useState<SignInStateProps>({
     dataUser: undefined,
     loadingLogin: false,
@@ -81,17 +92,36 @@ export function AuthContextProvider({ children }: AuthContextProps) {
 
   async function SignIn({ email, password }: AuthFormProps) {
     try {
-      const user = await signInWithEmailAndPassword(email, password)
-      if (user) {
-        const idToken = await user.user.getIdToken()
+      const userData = await signInWithEmailAndPassword(email, password)
+
+      if (userData) {
+        const idToken = await userData.user.getIdToken()
         setSecureCookie(idToken)
+        router.refresh()
       }
     } catch (error) {
-      if (error) {
-        console.log(error)
-        alert(error)
+      console.error(error)
+
+      alert(error || 'Algo deu errado ao tentar entrar, tente novamente.')
+    }
+  }
+
+  async function HandleGoogleSignIn() {
+    const provider = new GoogleAuthProvider()
+
+    try {
+      const userData = await signInWithPopup(auth, provider)
+      const idToken = await userData.user.getIdToken()
+
+      setSecureCookie(idToken)
+      router.refresh()
+    } catch (error) {
+      console.error(error)
+
+      if ((error as AuthError)?.code === 'auth/popup-closed-by-user') {
+        alert('Janela de login fechada pelo usuário.')
       } else {
-        alert('Algo deu errado, tente novamente.')
+        alert('Ocorreu um erro ao fazer login. Tente novamente.')
       }
     }
   }
@@ -99,25 +129,27 @@ export function AuthContextProvider({ children }: AuthContextProps) {
   async function SignUp({ email, password }: AuthFormProps) {
     try {
       await createUserWithEmailAndPassword(email, password)
+      alert('Cadastro realizado com sucesso!')
     } catch (error) {
-      if (error) {
-        console.log(error)
-        alert(error)
-      } else {
-        alert('Algo deu errado, tente novamente.')
-      }
+      console.error(error)
+
+      alert(error || 'Algo deu errado ao tentar se cadastrar, tente novamente.')
     }
   }
 
   async function LogOutUser() {
     const auth = getAuth()
-    await signOut(auth)
-      .then(() => {
-        alert('Sign-out successful')
-      })
-      .catch((error) => {
-        alert(error)
-      })
+
+    try {
+      await signOut(auth)
+
+      alert('Logout bem-sucedido')
+      router.refresh()
+    } catch (error) {
+      console.error(error)
+
+      alert('Ocorreu um erro ao tentar sair, tente novamente.')
+    }
 
     setSignInState({
       dataUser: undefined,
@@ -135,6 +167,7 @@ export function AuthContextProvider({ children }: AuthContextProps) {
         LogOutUser,
         signInState,
         signUpState,
+        HandleGoogleSignIn,
       }}
     >
       {children}

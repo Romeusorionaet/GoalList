@@ -1,7 +1,16 @@
+'use client'
+
 import { Header } from '@/components/Header'
 import '../styles/globals.css'
 import type { Metadata } from 'next'
 import { AuthContextProvider } from '@/contexts/AuthContext'
+import { usePathname, useRouter } from 'next/navigation'
+import { checkIsPublicRoute } from '@/config/check-is-public-route'
+import { PrivateRoute } from '@/components/privateRoute'
+import { EmptyHomePage } from '@/components/EmptyHomePage/EmptyHomePage'
+import { useCookies } from '@/hooks/useCookies'
+import { useEffect } from 'react'
+import { APP_ROUTES } from '@/constants/app-routes'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -13,14 +22,39 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const pathName = usePathname()
+  const isPublicPage = checkIsPublicRoute(pathName)
+  const { isAuthenticated } = useCookies()
+
+  console.log(isAuthenticated)
+
+  const { push } = useRouter()
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      push(APP_ROUTES.public.EmptyHomePage)
+    }
+  }, [isAuthenticated, push])
+
+  console.log(isPublicPage, !isAuthenticated)
+
   return (
     <html lang="pt-BR">
       <body className="bg-rose-200 p-4">
         <div className="rounded-xl max-w-[150rem] mx-auto my-auto">
-          <AuthContextProvider>
-            <Header />
-            {children}
-          </AuthContextProvider>
+          {!isAuthenticated && (
+            <AuthContextProvider>
+              <Header />
+              <EmptyHomePage />
+            </AuthContextProvider>
+          )}
+
+          {isAuthenticated && (
+            <AuthContextProvider>
+              <Header />
+              {children}
+            </AuthContextProvider>
+          )}
         </div>
       </body>
     </html>
