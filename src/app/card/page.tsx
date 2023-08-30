@@ -11,24 +11,26 @@ export default function Card() {
   const [boda, setBoda] = useState('')
   const [userId, setUserId] = useState<string | null>('')
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      console.log(user.uid)
-      setUserId(user.uid)
-    } else {
-      console.log('User is signed out')
-    }
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // console.log(user.uid)
+        setUserId(user.uid)
+      } else {
+        console.log('User is signed out')
+      }
+    })
   })
 
   const handleCreateCardForm = async (event: SyntheticEvent) => {
     event.preventDefault()
     const docData = {
       userId,
-      history: 'lorenme dbwef wef wwegwe wer we wetwetrwetromeu fddddseer',
-      boda: 'undefefefe',
+      history: 'teste29/08',
+      boda: 'testehj',
       dateExample: Timestamp.fromDate(new Date('December 10, 1815')),
     }
-    await setDoc(doc(db, 'sharedCard', '3'), docData)
+    await setDoc(doc(db, 'sharedCard', '4'), docData)
   }
 
   return (

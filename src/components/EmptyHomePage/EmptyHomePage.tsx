@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import f1 from '../../assets/figura1.png'
 import Link from 'next/link'
