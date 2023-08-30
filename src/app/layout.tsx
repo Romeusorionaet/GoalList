@@ -4,9 +4,7 @@ import { Header } from '@/components/Header'
 import '../styles/globals.css'
 import type { Metadata } from 'next'
 import { AuthContextProvider } from '@/contexts/AuthContext'
-import { usePathname, useRouter } from 'next/navigation'
-import { checkIsPublicRoute } from '@/config/check-is-public-route'
-import { PrivateRoute } from '@/components/privateRoute'
+import { useRouter } from 'next/navigation'
 import { EmptyHomePage } from '@/components/EmptyHomePage/EmptyHomePage'
 import { useCookies } from '@/hooks/useCookies'
 import { useEffect } from 'react'
@@ -22,11 +20,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const pathName = usePathname()
-  const isPublicPage = checkIsPublicRoute(pathName)
   const { isAuthenticated } = useCookies()
-
-  console.log(isAuthenticated)
 
   const { push } = useRouter()
 
@@ -36,7 +30,11 @@ export default function RootLayout({
     }
   }, [isAuthenticated, push])
 
-  console.log(isPublicPage, !isAuthenticated)
+  // parei aqui, problema de hydration resolvido
+  // preciso resolver a parte que quando digito /perfil na url acima, no modo de prod ele não navega
+  // pois o seu valor de isAuthenticated sempre esta sendo false,
+  // mas se eu comentar o useEffect acima ele funciona porém o nome /perfil permanece da url, não é
+  // limpado, mas o importante é que user não autenticado não pode navegar nas rotas privadas
 
   return (
     <html lang="pt-BR">
@@ -44,14 +42,14 @@ export default function RootLayout({
         <div className="rounded-xl max-w-[150rem] mx-auto my-auto">
           {!isAuthenticated && (
             <AuthContextProvider>
-              <Header />
+              <Header isAuthenticated={isAuthenticated} />
               <EmptyHomePage />
             </AuthContextProvider>
           )}
 
           {isAuthenticated && (
             <AuthContextProvider>
-              <Header />
+              <Header isAuthenticated={isAuthenticated} />
               {children}
             </AuthContextProvider>
           )}

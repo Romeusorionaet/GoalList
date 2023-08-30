@@ -1,5 +1,3 @@
-'use client'
-
 import { useWidthScreen } from '@/hooks/useWidthScreen'
 import { List, X } from 'phosphor-react'
 import Link from 'next/link'
@@ -8,12 +6,14 @@ import FormSignUp from './FormAuth/FormSignUp'
 import { Button } from './Button'
 import { useContext } from 'react'
 import { AuthContext } from '@/contexts/AuthContext'
-import { useCookies } from '@/hooks/useCookies'
 
-export function Header() {
+interface HeaderProps {
+  isAuthenticated: boolean
+}
+
+export function Header({ isAuthenticated }: HeaderProps) {
   const { checkMenuOpen, widthScreen, handleChangeValue } = useWidthScreen()
   const { LogOutUser } = useContext(AuthContext)
-  const { isAuthenticated } = useCookies()
 
   function handleLogOut() {
     LogOutUser()
@@ -24,21 +24,13 @@ export function Header() {
       {isAuthenticated && (
         <>
           <div className={widthScreen && widthScreen >= 800 ? 'hidden' : ''}>
-            {checkMenuOpen ? (
-              <X
-                size={34}
-                weight="bold"
-                onClick={handleChangeValue}
-                className="text-red-400"
-              />
-            ) : (
-              <List
-                size={34}
-                weight="bold"
-                onClick={handleChangeValue}
-                className="text-red-400"
-              />
-            )}
+            <button onClick={handleChangeValue} className="text-red-400">
+              {checkMenuOpen ? (
+                <X size={34} weight="bold" />
+              ) : (
+                <List size={34} weight="bold" />
+              )}
+            </button>
           </div>
           <nav
             className={`
@@ -56,12 +48,7 @@ export function Header() {
               <li>
                 <Link href="/">Início</Link>
               </li>
-              {/* <li>
-            <Link href="#">Sobre</Link>
-          </li>
-          <li>
-            <Link href="#">Contato</Link>
-          </li> */}
+
               <li>
                 <Link href="/perfil">Perfil</Link>
               </li>

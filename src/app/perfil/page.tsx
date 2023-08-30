@@ -11,70 +11,74 @@ export default function Perfil() {
   const [displayName, setDisplayName] = useState<string | null>('')
   const [email, setEmail] = useState<string | null>('')
   const [password, setPassword] = useState('')
-  // const [city, setCity] = useState('')
   const [updateProfile, updating, error] = useUpdateProfile(auth)
   const [userId, setUserId] = useState<string | null>('')
 
-  // onAuthStateChanged(auth, (user) => {
-  //   if (user) {
-  //     setEmail(user.email)
-  //     setDisplayName(user.displayName)
-  //     setUserId(user.uid)
-  //     // User is signed in, see docs for a list of available properties
-  //     // https://firebase.google.com/docs/reference/js/auth.user
-  //     console.log(user.email)
-  //     // ...
-  //   } else {
-  //     console.log('User is signed out')
-  //     // User is signed out
-  //     // ...
-  //   }
-  // })
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setEmail(user.email)
+        setDisplayName(user.displayName)
+        setUserId(user.uid)
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/auth.user
+        // console.log(user.email)
+        // ...
+      } else {
+        console.log('User is signed out')
+        // User is signed out
+        // ...
+      }
+    })
+  })
 
-  async function handleUpdatePefilForm() {
-    if (error) {
-      return (
-        <div>
-          <p>Error: {error.message}</p>
-        </div>
-      )
-    }
+  if (error) {
+    return (
+      <div>
+        <p>Error: {error.message}</p>
+      </div>
+    )
+  }
 
-    if (updating) {
-      return <p>Updating...</p>
-    }
+  if (updating) {
+    return <p>Updating...</p>
+  }
 
-    const success = await updateProfile({ displayName })
-    if (success) {
-      alert('Updated profile')
-    }
-
-    console.log(displayName, email, password)
+  async function handleUpdateProfileForm() {
+    await updateProfile({ displayName })
+      .then(() => {
+        alert('Profile updated!')
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 
   //= ===== buscar por id
 
-  useEffect(() => {
-    async function teste() {
-      const userCardsQuery = query(
-        collection(db, 'sharedCard'),
-        where('userId', '==', userId),
-      )
+  // useEffect(() => {
+  //   async function teste() {
+  //     const userCardsQuery = query(
+  //       collection(db, 'sharedCard'),
+  //       where('userId', '==', userId),
+  //     )
 
-      const querySnapshot = await getDocs(userCardsQuery)
+  //     const querySnapshot = await getDocs(userCardsQuery)
 
-      const userCards: any = []
-      querySnapshot.forEach((doc) => {
-        userCards.push({ id: doc.id, ...doc.data() })
-      })
-      console.log(userCards)
-    }
-    teste()
-  }, [userId])
+  //     const userCards: any = []
+  //     querySnapshot.forEach((doc) => {
+  //       userCards.push({ id: doc.id, ...doc.data() })
+  //     })
+  //     // console.log(userCards)
+  //   }
+  //   teste()
+  // }, [userId])
+
+  // console.log(updateProfile)
 
   return (
     <div>
-      <form onSubmit={handleUpdatePefilForm}>
+      <form onSubmit={handleUpdateProfileForm}>
         <fieldset className="flex gap-4 items-center">
           <label className="w-[90px]" htmlFor="name">
             Nome
@@ -83,6 +87,7 @@ export default function Perfil() {
             type="text"
             className="h-[3rem] w-full flex-1 items-center justify-center rounded-lg px-4 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="name"
+            // defaultValue={displayName!}
             placeholder="seu nome"
             // defaultValue="PedroDuarte@gmail.com"
             onChange={(e) => setDisplayName(e.target.value)}
@@ -97,6 +102,7 @@ export default function Perfil() {
             type="email"
             className="h-[3rem] w-full flex-1 items-center justify-center rounded-lg px-4 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="email"
+            defaultValue={email!}
             placeholder="seuemail@gmail.com"
             // defaultValue="PedroDuarte@gmail.com"
             onChange={(e) => setEmail(e.target.value)}
@@ -135,7 +141,7 @@ export default function Perfil() {
       </form>
 
       <input type="text" placeholder="nejrgn" />
-      <Button title="atulizar perfil" type="submit" />
+      {/* <Button title="atulizar perfil" type="submit" /> */}
     </div>
   )
 }

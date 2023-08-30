@@ -2,7 +2,6 @@
 
 import * as Dialog from '@radix-ui/react-dialog'
 import { X } from 'phosphor-react'
-import FormSignUp from './FormSignUp'
 import { Button } from '../Button'
 import { SyntheticEvent, useContext, useState } from 'react'
 import { AuthContext } from '@/contexts/AuthContext'
@@ -10,7 +9,7 @@ import { AuthContext } from '@/contexts/AuthContext'
 export default function FormSignIn() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { SignIn, signInState, HandleGoogleSignIn } = useContext(AuthContext)
+  const { SignIn, HandleGoogleSignIn } = useContext(AuthContext)
 
   // if (signInState.errorInLogin) {
   //   return (
@@ -76,9 +75,6 @@ export default function FormSignIn() {
             </fieldset>
 
             <Dialog.Description className="flex items-center justify-between">
-              <span>
-                Não está cadastrado? <FormSignUp />
-              </span>
               <Button type="submit" title="Entrar" />
             </Dialog.Description>
           </form>

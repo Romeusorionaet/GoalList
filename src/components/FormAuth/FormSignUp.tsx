@@ -4,13 +4,12 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { X } from 'phosphor-react'
 import { Button } from '../Button'
 import { SyntheticEvent, useContext, useState } from 'react'
-import FormSignIn from './FormSigIn'
 import { AuthContext } from '@/contexts/AuthContext'
 
 export default function FormSignUp() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { SignUp, signUpState } = useContext(AuthContext)
+  const { SignUp } = useContext(AuthContext)
 
   // if (signUpState.errorInCreatedUser) {
   //   console.log(signUpState.errorInCreatedUser)
@@ -79,10 +78,8 @@ export default function FormSignUp() {
             </fieldset> */}
             <div>
               <Dialog.Description className="flex items-center justify-between">
-                Já esta cadastrado?
+                <Button type="submit" title="Cadastrar" />
               </Dialog.Description>
-              <FormSignIn />
-              <Button type="submit" title="Cadastrar" />
             </div>
           </form>
 

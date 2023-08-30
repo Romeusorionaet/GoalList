@@ -1,10 +1,9 @@
-'use client'
-
 import { auth } from '@/services/firebaseConfig'
-import { ReactNode, createContext, useEffect, useState } from 'react'
+import { ReactNode, createContext } from 'react'
 import {
   useSignInWithEmailAndPassword,
   useCreateUserWithEmailAndPassword,
+  useUpdateProfile,
 } from 'react-firebase-hooks/auth'
 import {
   getAuth,
@@ -21,25 +20,26 @@ interface AuthFormProps {
   email: string
   password: string
 }
+/* TODO O CÓDIGO COMENTADO É PARA EXIBIR STATUS DO LOGIN E SIGNUP COMO ESTADO DE LOADIN, ERROR... */
 
-interface SignInStateProps {
-  dataUser: UserCredential | undefined
-  loadingLogin: boolean
-  errorInLogin: AuthError | undefined
-}
+// interface SignInStateProps {
+//   dataUser: UserCredential | undefined
+//   loadingLogin: boolean
+//   errorInLogin: AuthError | undefined
+// }
 
-interface SignUpStateProps {
-  userCreatedResult: UserCredential | undefined
-  loadingToCreateUser: boolean
-  errorInCreatedUser: AuthError | undefined
-}
+// interface SignUpStateProps {
+//   userCreatedResult: UserCredential | undefined
+//   loadingToCreateUser: boolean
+//   errorInCreatedUser: AuthError | undefined
+// }
 
 interface AuthContextType {
   SignIn: ({ email, password }: AuthFormProps) => void
   SignUp: ({ email, password }: AuthFormProps) => void
   LogOutUser: () => void
-  signInState: SignInStateProps
-  signUpState: SignUpStateProps
+  // signInState: SignInStateProps
+  // signUpState: SignUpStateProps
   HandleGoogleSignIn: () => void
 }
 
@@ -52,16 +52,17 @@ export const AuthContext = createContext({} as AuthContextType)
 export function AuthContextProvider({ children }: AuthContextProps) {
   const router = useRouter()
 
-  const [signInState, setSignInState] = useState<SignInStateProps>({
-    dataUser: undefined,
-    loadingLogin: false,
-    errorInLogin: undefined,
-  })
-  const [signUpState, setSignUpState] = useState<SignUpStateProps>({
-    userCreatedResult: undefined,
-    loadingToCreateUser: false,
-    errorInCreatedUser: undefined,
-  })
+  // const [signInState, setSignInState] = useState<SignInStateProps>({
+  //   dataUser: undefined,
+  //   loadingLogin: false,
+  //   errorInLogin: undefined,
+  // })
+
+  // const [signUpState, setSignUpState] = useState<SignUpStateProps>({
+  //   userCreatedResult: undefined,
+  //   loadingToCreateUser: false,
+  //   errorInCreatedUser: undefined,
+  // })
   const { setSecureCookie, removeCookie } = useCookies()
 
   const [signInWithEmailAndPassword, dataUser, loadingLogin, errorInLogin] =
@@ -74,21 +75,21 @@ export function AuthContextProvider({ children }: AuthContextProps) {
     errorInCreatedUser,
   ] = useCreateUserWithEmailAndPassword(auth)
 
-  useEffect(() => {
-    setSignInState({ dataUser, loadingLogin, errorInLogin })
-    setSignUpState({
-      userCreatedResult,
-      loadingToCreateUser,
-      errorInCreatedUser,
-    })
-  }, [
-    dataUser,
-    loadingLogin,
-    errorInLogin,
-    userCreatedResult,
-    loadingToCreateUser,
-    errorInCreatedUser,
-  ])
+  // useEffect(() => {
+  //   setSignInState({ dataUser, loadingLogin, errorInLogin })
+  //   setSignUpState({
+  //     userCreatedResult,
+  //     loadingToCreateUser,
+  //     errorInCreatedUser,
+  //   })
+  // }, [
+  //   dataUser,
+  //   loadingLogin,
+  //   errorInLogin,
+  //   userCreatedResult,
+  //   loadingToCreateUser,
+  //   errorInCreatedUser,
+  // ])
 
   async function SignIn({ email, password }: AuthFormProps) {
     try {
@@ -151,11 +152,11 @@ export function AuthContextProvider({ children }: AuthContextProps) {
       alert('Ocorreu um erro ao tentar sair, tente novamente.')
     }
 
-    setSignInState({
-      dataUser: undefined,
-      loadingLogin: false,
-      errorInLogin: undefined,
-    })
+    // setSignInState({
+    //   dataUser: undefined,
+    //   loadingLogin: false,
+    //   errorInLogin: undefined,
+    // })
     removeCookie()
   }
 
@@ -165,8 +166,8 @@ export function AuthContextProvider({ children }: AuthContextProps) {
         SignIn,
         SignUp,
         LogOutUser,
-        signInState,
-        signUpState,
+        // signInState,
+        // signUpState,
         HandleGoogleSignIn,
       }}
     >
