@@ -2,7 +2,7 @@ import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import { useEffect, useState } from 'react'
 
 export function useCookies() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true) // valor correto a ser passado é false
 
   useEffect(() => {
     const cookies = parseCookies()
@@ -14,7 +14,6 @@ export function useCookies() {
     setCookie(null, '@authTokenTwoHeart-1.0', idToken, {
       maxAge: 60 * 6 * 24,
       path: '/',
-      // httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
     })
   }

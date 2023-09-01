@@ -2,8 +2,8 @@
 
 import { Button } from '@/components/Button'
 import { SyntheticEvent, useEffect, useState } from 'react'
-import { doc, setDoc, Timestamp, getDocs, collection } from 'firebase/firestore'
 import { auth, db } from '@/services/firebaseConfig'
+import { setDoc, doc } from 'firebase/firestore'
 import { onAuthStateChanged } from '@firebase/auth'
 
 export default function Card() {
@@ -11,10 +11,15 @@ export default function Card() {
   const [boda, setBoda] = useState('')
   const [userId, setUserId] = useState<string | null>('')
 
+  const docObjectItems = {
+    userId,
+    history,
+    boda,
+  }
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // console.log(user.uid)
         setUserId(user.uid)
       } else {
         console.log('User is signed out')
@@ -22,19 +27,18 @@ export default function Card() {
     })
   })
 
-  const handleCreateCardForm = async (event: SyntheticEvent) => {
+  async function HandleCreateCardForm(event: SyntheticEvent) {
     event.preventDefault()
-    const docData = {
-      userId,
-      history: 'teste29/08',
-      boda: 'testehj',
-      dateExample: Timestamp.fromDate(new Date('December 10, 1815')),
+
+    try {
+      await setDoc(doc(db, 'card', userId!), docObjectItems)
+    } catch (error) {
+      console.log(error)
     }
-    await setDoc(doc(db, 'sharedCard', '4'), docData)
   }
 
   return (
-    <form onSubmit={handleCreateCardForm}>
+    <form onSubmit={HandleCreateCardForm}>
       <fieldset className="flex gap-4 items-center">
         <label className="w-[90px]" htmlFor="history">
           História
@@ -44,7 +48,6 @@ export default function Card() {
           className="h-[3rem] w-full flex-1 items-center justify-center rounded-lg px-4 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
           id="history"
           placeholder="sua história"
-          // defaultValue="PedroDuarte@gmail.com"
           onChange={(e) => setHistory(e.target.value)}
         />
       </fieldset>
@@ -58,7 +61,6 @@ export default function Card() {
           className="h-[3rem] w-full flex-1 items-center justify-center rounded-lg px-4 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
           id="boda"
           placeholder="Boda (tempo)"
-          // defaultValue="PedroDuarte@gmail.com"
           onChange={(e) => setBoda(e.target.value)}
         />
       </fieldset>

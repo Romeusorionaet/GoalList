@@ -1,10 +1,15 @@
 export const APP_ROUTES = {
   private: {
-    perfil: '/perfil',
-    card: '/card',
+    dashboard: {
+      perfil: '/perfil',
+      card: '/card',
+      home: '/',
+    },
   },
 
   public: {
-    EmptyHomePage: '/',
+    EmptyHomePage: '/emptyHomePage',
+    signIn: '/signIn',
+    signUp: '/signUp',
   },
 }
