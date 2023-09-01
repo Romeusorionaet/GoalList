@@ -5,7 +5,7 @@ import f1 from '../../assets/figura1.png'
 import Link from 'next/link'
 import { CardAvatar } from '@/components/CardAvatar'
 
-export function EmptyHomePage() {
+export default function EmptyHomePage() {
   return (
     <div>
       <div className="flex flex-col justify-center relative bg-slate-50 rounded-md py-8">

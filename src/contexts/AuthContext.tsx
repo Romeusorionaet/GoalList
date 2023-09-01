@@ -90,15 +90,15 @@ export function AuthContextProvider({ children }: AuthContextProps) {
   //   loadingToCreateUser,
   //   errorInCreatedUser,
   // ])
-
   async function SignIn({ email, password }: AuthFormProps) {
     try {
       const userData = await signInWithEmailAndPassword(email, password)
 
       if (userData) {
         const idToken = await userData.user.getIdToken()
+
         setSecureCookie(idToken)
-        router.refresh()
+        router.push('/')
       }
     } catch (error) {
       console.error(error)
@@ -115,7 +115,6 @@ export function AuthContextProvider({ children }: AuthContextProps) {
       const idToken = await userData.user.getIdToken()
 
       setSecureCookie(idToken)
-      router.refresh()
     } catch (error) {
       console.error(error)
 
@@ -131,6 +130,7 @@ export function AuthContextProvider({ children }: AuthContextProps) {
     try {
       await createUserWithEmailAndPassword(email, password)
       alert('Cadastro realizado com sucesso!')
+      router.push('/signIn')
     } catch (error) {
       console.error(error)
 
@@ -145,7 +145,7 @@ export function AuthContextProvider({ children }: AuthContextProps) {
       await signOut(auth)
 
       alert('Logout bem-sucedido')
-      router.refresh()
+      location.reload()
     } catch (error) {
       console.error(error)
 

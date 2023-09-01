@@ -4,11 +4,10 @@ import { Header } from '@/components/Header'
 import '../styles/globals.css'
 import type { Metadata } from 'next'
 import { AuthContextProvider } from '@/contexts/AuthContext'
-import { useRouter } from 'next/navigation'
-import { EmptyHomePage } from '@/components/EmptyHomePage/EmptyHomePage'
 import { useCookies } from '@/hooks/useCookies'
-import { useEffect } from 'react'
-import { APP_ROUTES } from '@/constants/app-routes'
+import { usePathname } from 'next/navigation'
+import { checkIsPublicRoute } from '@/config/check-is-public-route'
+import PrivateRoute from '@/components/PrivateRoute/PrivateRoute'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -22,35 +21,23 @@ export default function RootLayout({
 }) {
   const { isAuthenticated } = useCookies()
 
-  const { push } = useRouter()
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      push(APP_ROUTES.public.EmptyHomePage)
-    }
-  }, [isAuthenticated, push])
-
-  // parei aqui, problema de hydration resolvido
-  // preciso resolver a parte que quando digito /perfil na url acima, no modo de prod ele não navega
-  // pois o seu valor de isAuthenticated sempre esta sendo false,
-  // mas se eu comentar o useEffect acima ele funciona porém o nome /perfil permanece da url, não é
-  // limpado, mas o importante é que user não autenticado não pode navegar nas rotas privadas
+  const pathname = usePathname()
+  const isPublicPage = checkIsPublicRoute(pathname)
 
   return (
     <html lang="pt-BR">
       <body className="bg-rose-200 p-4">
         <div className="rounded-xl max-w-[150rem] mx-auto my-auto">
-          {!isAuthenticated && (
-            <AuthContextProvider>
-              <Header isAuthenticated={isAuthenticated} />
-              <EmptyHomePage />
-            </AuthContextProvider>
-          )}
-
-          {isAuthenticated && (
+          {isPublicPage && (
             <AuthContextProvider>
               <Header isAuthenticated={isAuthenticated} />
               {children}
+            </AuthContextProvider>
+          )}
+          {!isPublicPage && (
+            <AuthContextProvider>
+              <Header isAuthenticated={isAuthenticated} />
+              <PrivateRoute>{children}</PrivateRoute>
             </AuthContextProvider>
           )}
         </div>

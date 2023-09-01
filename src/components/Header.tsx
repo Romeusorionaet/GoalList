@@ -1,8 +1,6 @@
 import { useWidthScreen } from '@/hooks/useWidthScreen'
 import { List, X } from 'phosphor-react'
 import Link from 'next/link'
-import FormSignIn from './FormAuth/FormSigIn'
-import FormSignUp from './FormAuth/FormSignUp'
 import { Button } from './Button'
 import { useContext } from 'react'
 import { AuthContext } from '@/contexts/AuthContext'
@@ -56,7 +54,7 @@ export function Header({ isAuthenticated }: HeaderProps) {
                 <Link href="/card">Criar Match</Link>
               </li>
             </ul>
-          </nav>{' '}
+          </nav>
         </>
       )}
 
@@ -65,8 +63,12 @@ export function Header({ isAuthenticated }: HeaderProps) {
           <Button onClick={handleLogOut} title="Sair" type="button" />
         ) : (
           <>
-            <FormSignIn />
-            <FormSignUp />
+            <button className="bg-red-400 p-4 rounded-xl text-white hover:bg-red-500 duration-700 focus:outline-none focus:outline-red-400 outline-1 focus:bg-red-500">
+              <Link href="/signIn">Entrar</Link>
+            </button>
+            <button className="bg-red-400 p-4 rounded-xl text-white hover:bg-red-500 duration-700 focus:outline-none focus:outline-red-400 outline-1 focus:bg-red-500">
+              <Link href="/signUp">Cadastrar</Link>
+            </button>
           </>
         )}
       </div>

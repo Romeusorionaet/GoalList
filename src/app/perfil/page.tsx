@@ -1,22 +1,35 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { onAuthStateChanged } from 'firebase/auth'
-import { useUpdateProfile } from 'react-firebase-hooks/auth'
+import { SyntheticEvent, useEffect, useState } from 'react'
+import { useUpdateEmail, useUpdateProfile } from 'react-firebase-hooks/auth'
 import { auth, db } from '@/services/firebaseConfig'
 import { Button } from '@/components/Button'
-import { query, where, getDocs, collection } from 'firebase/firestore'
+import { setDoc, doc } from 'firebase/firestore'
+import {
+  getAuth,
+  updateEmail,
+  sendPasswordResetEmail,
+  onAuthStateChanged,
+} from 'firebase/auth'
 
 export default function Perfil() {
+  const [userId, setUserId] = useState<string | null>('')
+  const [photoUrl, setPhotoURL] = useState<string | null>('')
   const [displayName, setDisplayName] = useState<string | null>('')
   const [email, setEmail] = useState<string | null>('')
   const [password, setPassword] = useState('')
+
   const [updateProfile, updating, error] = useUpdateProfile(auth)
-  const [userId, setUserId] = useState<string | null>('')
+
+  const docObjectItems = {
+    displayName,
+    photoUrl,
+  }
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        console.log(user)
         setEmail(user.email)
         setDisplayName(user.displayName)
         setUserId(user.uid)
@@ -26,32 +39,33 @@ export default function Perfil() {
         // ...
       } else {
         console.log('User is signed out')
-        // User is signed out
-        // ...
       }
     })
-  })
+  }, [])
 
-  if (error) {
-    return (
-      <div>
-        <p>Error: {error.message}</p>
-      </div>
-    )
-  }
+  // if (error) {
+  //   return (
+  //     <div>
+  //       <p>Error: {error.message}</p>
+  //     </div>
+  //   )
+  // }
 
-  if (updating) {
-    return <p>Updating...</p>
-  }
+  // if (updating) {
+  //   return <p>Updating...</p>
+  // }
 
-  async function handleUpdateProfileForm() {
-    await updateProfile({ displayName })
-      .then(() => {
-        alert('Profile updated!')
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+  async function handleUpdateProfileForm(event: SyntheticEvent) {
+    event.preventDefault()
+    try {
+      // Atualiza dados como nome e foto
+      // updateProfile(docObjectItems)
+      // Envia para o email cadastrado link para redefinir senha e retorna
+      // para o url passado. Isso deverá ficar na tela de login
+      // sendPasswordResetEmail(auth, email!, { url: 'http://localhost:3000/sgnin' })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   //= ===== buscar por id
@@ -87,9 +101,8 @@ export default function Perfil() {
             type="text"
             className="h-[3rem] w-full flex-1 items-center justify-center rounded-lg px-4 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="name"
-            // defaultValue={displayName!}
+            defaultValue={displayName!}
             placeholder="seu nome"
-            // defaultValue="PedroDuarte@gmail.com"
             onChange={(e) => setDisplayName(e.target.value)}
           />
         </fieldset>
