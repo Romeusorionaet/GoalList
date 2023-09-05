@@ -4,14 +4,12 @@ import Link from 'next/link'
 import { Button } from './Button'
 import { useContext } from 'react'
 import { AuthContext } from '@/contexts/AuthContext'
+import { useCookies } from '@/hooks/useCookies'
 
-interface HeaderProps {
-  isAuthenticated: boolean
-}
-
-export function Header({ isAuthenticated }: HeaderProps) {
+export function Header() {
   const { checkMenuOpen, widthScreen, handleChangeValue } = useWidthScreen()
   const { LogOutUser } = useContext(AuthContext)
+  const { isAuthenticated } = useCookies()
 
   function handleLogOut() {
     LogOutUser()

@@ -1,4 +1,4 @@
-// 'use client'
+'use client'
 
 import { APP_ROUTES } from '@/constants/app-routes'
 import { useCookies } from '@/hooks/useCookies'

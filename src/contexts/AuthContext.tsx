@@ -1,14 +1,11 @@
 import { auth } from '@/services/firebaseConfig'
 import { ReactNode, createContext } from 'react'
-import {
-  useSignInWithEmailAndPassword,
-  useCreateUserWithEmailAndPassword,
-  useUpdateProfile,
-} from 'react-firebase-hooks/auth'
+
 import {
   getAuth,
   signOut,
-  UserCredential,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   AuthError,
   GoogleAuthProvider,
   signInWithPopup,
@@ -20,26 +17,11 @@ interface AuthFormProps {
   email: string
   password: string
 }
-/* TODO O CÓDIGO COMENTADO É PARA EXIBIR STATUS DO LOGIN E SIGNUP COMO ESTADO DE LOADIN, ERROR... */
-
-// interface SignInStateProps {
-//   dataUser: UserCredential | undefined
-//   loadingLogin: boolean
-//   errorInLogin: AuthError | undefined
-// }
-
-// interface SignUpStateProps {
-//   userCreatedResult: UserCredential | undefined
-//   loadingToCreateUser: boolean
-//   errorInCreatedUser: AuthError | undefined
-// }
 
 interface AuthContextType {
   SignIn: ({ email, password }: AuthFormProps) => void
   SignUp: ({ email, password }: AuthFormProps) => void
   LogOutUser: () => void
-  // signInState: SignInStateProps
-  // signUpState: SignUpStateProps
   HandleGoogleSignIn: () => void
 }
 
@@ -50,49 +32,13 @@ interface AuthContextProps {
 export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthContextProvider({ children }: AuthContextProps) {
-  const router = useRouter()
-
-  // const [signInState, setSignInState] = useState<SignInStateProps>({
-  //   dataUser: undefined,
-  //   loadingLogin: false,
-  //   errorInLogin: undefined,
-  // })
-
-  // const [signUpState, setSignUpState] = useState<SignUpStateProps>({
-  //   userCreatedResult: undefined,
-  //   loadingToCreateUser: false,
-  //   errorInCreatedUser: undefined,
-  // })
   const { setSecureCookie, removeCookie } = useCookies()
 
-  const [signInWithEmailAndPassword, dataUser, loadingLogin, errorInLogin] =
-    useSignInWithEmailAndPassword(auth)
+  const router = useRouter()
 
-  const [
-    createUserWithEmailAndPassword,
-    userCreatedResult,
-    loadingToCreateUser,
-    errorInCreatedUser,
-  ] = useCreateUserWithEmailAndPassword(auth)
-
-  // useEffect(() => {
-  //   setSignInState({ dataUser, loadingLogin, errorInLogin })
-  //   setSignUpState({
-  //     userCreatedResult,
-  //     loadingToCreateUser,
-  //     errorInCreatedUser,
-  //   })
-  // }, [
-  //   dataUser,
-  //   loadingLogin,
-  //   errorInLogin,
-  //   userCreatedResult,
-  //   loadingToCreateUser,
-  //   errorInCreatedUser,
-  // ])
   async function SignIn({ email, password }: AuthFormProps) {
     try {
-      const userData = await signInWithEmailAndPassword(email, password)
+      const userData = await signInWithEmailAndPassword(auth, email, password)
 
       if (userData) {
         const idToken = await userData.user.getIdToken()
@@ -101,9 +47,11 @@ export function AuthContextProvider({ children }: AuthContextProps) {
         router.push('/')
       }
     } catch (error) {
-      console.error(error)
-
-      alert(error || 'Algo deu errado ao tentar entrar, tente novamente.')
+      if ((error as AuthError)?.code === 'auth/wrong-password') {
+        alert('Email ou Senha incorreto.')
+      } else if ((error as AuthError)?.code === 'auth/user-not-found') {
+        alert('Email ou Senha incorreto.')
+      }
     }
   }
 
@@ -116,8 +64,6 @@ export function AuthContextProvider({ children }: AuthContextProps) {
 
       setSecureCookie(idToken)
     } catch (error) {
-      console.error(error)
-
       if ((error as AuthError)?.code === 'auth/popup-closed-by-user') {
         alert('Janela de login fechada pelo usuário.')
       } else {
@@ -128,13 +74,18 @@ export function AuthContextProvider({ children }: AuthContextProps) {
 
   async function SignUp({ email, password }: AuthFormProps) {
     try {
-      await createUserWithEmailAndPassword(email, password)
+      await createUserWithEmailAndPassword(auth, email, password)
+
       alert('Cadastro realizado com sucesso!')
       router.push('/signIn')
     } catch (error) {
-      console.error(error)
-
-      alert(error || 'Algo deu errado ao tentar se cadastrar, tente novamente.')
+      if ((error as AuthError)?.code === 'auth/email-already-in-use') {
+        alert('Este email já existe.')
+      } else if ((error as AuthError)?.code === 'auth/weak-password') {
+        alert('Senhas devem ter no mínimo 6 caracteres.')
+      } else if ((error as AuthError)?.code === 'auth/invalid-email') {
+        alert('Email inválido.')
+      }
     }
   }
 
@@ -151,12 +102,6 @@ export function AuthContextProvider({ children }: AuthContextProps) {
 
       alert('Ocorreu um erro ao tentar sair, tente novamente.')
     }
-
-    // setSignInState({
-    //   dataUser: undefined,
-    //   loadingLogin: false,
-    //   errorInLogin: undefined,
-    // })
     removeCookie()
   }
 
@@ -166,8 +111,6 @@ export function AuthContextProvider({ children }: AuthContextProps) {
         SignIn,
         SignUp,
         LogOutUser,
-        // signInState,
-        // signUpState,
         HandleGoogleSignIn,
       }}
     >

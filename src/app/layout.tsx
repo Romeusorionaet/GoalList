@@ -4,7 +4,6 @@ import { Header } from '@/components/Header'
 import '../styles/globals.css'
 import type { Metadata } from 'next'
 import { AuthContextProvider } from '@/contexts/AuthContext'
-import { useCookies } from '@/hooks/useCookies'
 import { usePathname } from 'next/navigation'
 import { checkIsPublicRoute } from '@/config/check-is-public-route'
 import PrivateRoute from '@/components/PrivateRoute/PrivateRoute'
@@ -19,8 +18,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { isAuthenticated } = useCookies()
-
   const pathname = usePathname()
   const isPublicPage = checkIsPublicRoute(pathname)
 
@@ -30,13 +27,13 @@ export default function RootLayout({
         <div className="rounded-xl max-w-[150rem] mx-auto my-auto">
           {isPublicPage && (
             <AuthContextProvider>
-              <Header isAuthenticated={isAuthenticated} />
+              <Header />
               {children}
             </AuthContextProvider>
           )}
           {!isPublicPage && (
             <AuthContextProvider>
-              <Header isAuthenticated={isAuthenticated} />
+              <Header />
               <PrivateRoute>{children}</PrivateRoute>
             </AuthContextProvider>
           )}
