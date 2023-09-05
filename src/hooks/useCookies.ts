@@ -2,7 +2,7 @@ import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import { useEffect, useState } from 'react'
 
 export function useCookies() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true) // valor correto a ser passado é false
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
 
   useEffect(() => {
     const cookies = parseCookies()
