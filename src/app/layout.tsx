@@ -7,6 +7,7 @@ import { AuthContextProvider } from '@/contexts/AuthContext'
 import { usePathname } from 'next/navigation'
 import { checkIsPublicRoute } from '@/config/check-is-public-route'
 import PrivateRoute from '@/components/PrivateRoute/PrivateRoute'
+import { UpdateProfileContextProvider } from '@/contexts/UpdateProfileContext'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -27,14 +28,18 @@ export default function RootLayout({
         <div className="rounded-xl max-w-[150rem] mx-auto my-auto">
           {isPublicPage && (
             <AuthContextProvider>
-              <Header />
-              {children}
+              <UpdateProfileContextProvider>
+                <Header />
+                {children}
+              </UpdateProfileContextProvider>
             </AuthContextProvider>
           )}
           {!isPublicPage && (
             <AuthContextProvider>
-              <Header />
-              <PrivateRoute>{children}</PrivateRoute>
+              <UpdateProfileContextProvider>
+                <Header />
+                <PrivateRoute>{children}</PrivateRoute>
+              </UpdateProfileContextProvider>
             </AuthContextProvider>
           )}
         </div>

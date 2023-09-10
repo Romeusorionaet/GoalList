@@ -19,10 +19,10 @@ interface AuthFormProps {
 }
 
 interface AuthContextType {
-  SignIn: ({ email, password }: AuthFormProps) => void
-  SignUp: ({ email, password }: AuthFormProps) => void
-  LogOutUser: () => void
-  HandleGoogleSignIn: () => void
+  SignIn: ({ email, password }: AuthFormProps) => Promise<void>
+  SignUp: ({ email, password }: AuthFormProps) => Promise<void>
+  LogOutUser: () => Promise<void>
+  HandleGoogleSignIn: () => Promise<void>
 }
 
 interface AuthContextProps {

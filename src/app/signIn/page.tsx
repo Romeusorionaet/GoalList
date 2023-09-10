@@ -2,33 +2,23 @@
 
 import { SyntheticEvent, useContext, useState } from 'react'
 import { AuthContext } from '@/contexts/AuthContext'
+import { UpdateProfileContext } from '@/contexts/UpdateProfileContext'
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { SignIn, HandleGoogleSignIn } = useContext(AuthContext)
+  const [isForgotPassword, setIsForgotPassword] = useState(false)
 
-  // if (signInState.errorInLogin) {
-  //   return (
-  //     <div>
-  //       <p>Error: {signInState.errorInLogin.message}</p>
-  //     </div>
-  //   )
-  // }
-  // if (signInState.loadingLogin) {
-  //   return <p>Loading...</p>
-  // }
-  // if (signInState.dataUser) {
-  //   return (
-  //     <div>
-  //       <p>Registered User: {signInState.dataUser.user.email}</p>
-  //     </div>
-  //   )
-  // }
+  const { SignIn, HandleGoogleSignIn } = useContext(AuthContext)
+  const { PasswordReset } = useContext(UpdateProfileContext)
 
   function handleSignInForm(event: SyntheticEvent) {
     event.preventDefault()
     SignIn({ email, password })
+  }
+
+  function HandResetPassword() {
+    PasswordReset(email)
   }
 
   return (
@@ -49,7 +39,11 @@ export default function Login() {
           />
         </fieldset>
 
-        <fieldset className="flex items-center gap-4">
+        <fieldset
+          className={`flex items-center gap-4 ${
+            isForgotPassword ? 'hidden' : ''
+          }`}
+        >
           <label className="w-[90px]" htmlFor="username">
             Senha
           </label>
@@ -63,7 +57,23 @@ export default function Login() {
         </fieldset>
         <button type="submit">Entrar</button>
       </form>
-      <button onClick={HandleGoogleSignIn}>Google</button>
+      <div className="flex justify-between">
+        <button
+          className={` ${isForgotPassword ? 'hidden' : ''}`}
+          onClick={HandleGoogleSignIn}
+        >
+          Google
+        </button>
+        {isForgotPassword ? (
+          <button onClick={HandResetPassword}>
+            Enviar email para recuperação.
+          </button>
+        ) : (
+          <button onClick={() => setIsForgotPassword(true)}>
+            esqueceu a sua senha?
+          </button>
+        )}
+      </div>
     </div>
   )
 }
