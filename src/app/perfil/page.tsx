@@ -1,51 +1,32 @@
 'use client'
 
-import { FormEvent, useEffect, useState } from 'react'
-import { doc, setDoc } from 'firebase/firestore'
-import {
-  onAuthStateChanged,
-  updatePassword,
-  User,
-  EmailAuthProvider,
-  reauthenticateWithCredential,
-  AuthError,
-  updateEmail,
-  sendEmailVerification,
-} from 'firebase/auth'
+import { FormEvent, useContext, useEffect, useState } from 'react'
+import { onAuthStateChanged } from 'firebase/auth'
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
-import { auth, db, storage } from '@/services/firebaseConfig'
+import { auth, storage } from '@/services/firebaseConfig'
 import { Button } from '@/components/Button'
-import { useUpdateEmail, useUpdateProfile } from 'react-firebase-hooks/auth'
-import { useRouter } from 'next/navigation'
-import { useCookies } from '@/hooks/useCookies'
+import { UpdateProfileContext } from '@/contexts/UpdateProfileContext'
 
 export default function Perfil() {
-  const [file, setFile] = useState<File>()
   const [dataImage, setDataImage] = useState({ image: '' })
+  const [photoURL, setPhotoURL] = useState('')
+  const [file, setFile] = useState<File>()
 
-  const [newEmail, setNewEmail] = useState('')
-  const [oldEmail, setOldEmail] = useState<string | null>()
   const [newPassword, setNewPassword] = useState('')
   const [oldPassword, setOldPassword] = useState('')
+  const [displayName, setDisplayName] = useState('')
+  const [newEmail, setNewEmail] = useState('')
+  const [oldEmail, setOldEmail] = useState('')
 
-  const [displayName, setDisplayName] = useState<string | null>()
-  const [userId, setUserId] = useState('')
-  const [user, setUser] = useState<User>()
-  const [photoURL, setPhotoURL] = useState('')
+  const [changePassword, setChangePassword] = useState(false)
 
-  const [updateProfile] = useUpdateProfile(auth)
-  const router = useRouter()
-
-  const { removeCookie } = useCookies()
+  const { ChangePassword, UpdateProfileForm } = useContext(UpdateProfileContext)
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user)
-        setUser(user)
-        setUserId(user.uid)
-        setOldEmail(user.email)
-        setDisplayName(user.displayName)
+        setOldEmail(String(user.email))
+        setDisplayName(String(user.displayName))
         setPhotoURL(String(user.photoURL))
       } else {
         console.log('User is signed out')
@@ -55,9 +36,6 @@ export default function Perfil() {
 
   useEffect(() => {
     const uploadFile = () => {
-      const name = new Date().getTime() + file!.name
-
-      console.log(name)
       const storageRef = ref(storage, file!.name)
       const uploadTask = uploadBytesResumable(storageRef, file!)
 
@@ -91,79 +69,24 @@ export default function Perfil() {
     file && uploadFile()
   }, [file])
 
-  async function handleUpdateProfileForm(event: FormEvent) {
+  function handleUpdateProfileForm(event: FormEvent) {
     event.preventDefault()
-    try {
-      console.log(dataImage)
-      if (displayName) {
-        updateProfile({
-          displayName,
-        })
-      }
-      if (dataImage.image) {
-        updateProfile({
-          photoURL: dataImage.image,
-        })
-      }
-      // await setDoc(doc(db, 'users', userId), {
-      //   displayName,
-      //   email: newEmail,
-      //   imgURL: dataImage,
-      // })
-
-      // Isso deverá ficar na tela de login, recuperação de senha
-      // sendPasswordResetEmail(auth, newEmail!, {
-      //   url: 'http://localhost:3000/signIn',
-      // })
-    } catch (err) {
-      console.log(err)
-    }
+    UpdateProfileForm({
+      newEmail,
+      oldEmail,
+      oldPassword,
+      displayName,
+      dataImage,
+    })
   }
 
-  async function handleUpdateEmail(newEmail: string) {
-    try {
-      const user = auth.currentUser
-
-      const credentials = EmailAuthProvider.credential(
-        String(user!.email),
-        oldPassword,
-      )
-      await reauthenticateWithCredential(user!, credentials)
-
-      await updateEmail(user!, newEmail)
-
-      setNewEmail(newEmail)
-    } catch (err) {
-      console.log(err)
-    }
+  function handleChangePassword() {
+    setNewEmail(newEmail)
+    ChangePassword({ oldEmail, newPassword, oldPassword })
   }
 
-  async function handleChangePassword() {
-    const user = auth.currentUser
-    if (user) {
-      if (newEmail !== oldEmail) {
-        await handleUpdateEmail(newEmail)
-      }
-
-      const credential = EmailAuthProvider.credential(oldEmail!, oldPassword!)
-
-      reauthenticateWithCredential(user!, credential)
-        .then(() => {
-          return updatePassword(user!, newPassword)
-        })
-        .then(() => {
-          alert('Senha alterado')
-          router.push('/signIn')
-          removeCookie()
-        })
-        .catch((error) => {
-          if ((error as AuthError)?.code === 'auth/wrong-password') {
-            alert('Senha antiga não confere.')
-          }
-        })
-    } else {
-      console.error('O usuário não está autenticado')
-    }
+  function handleButtonChangePassword() {
+    changePassword ? setChangePassword(false) : setChangePassword(true)
   }
 
   return (
@@ -217,47 +140,65 @@ export default function Perfil() {
             id="email"
             defaultValue={oldEmail!}
             placeholder="seuemail@gmail.com"
-            // defaultValue="PedroDuarte@gmail.com"
             onChange={(e) => setNewEmail(e.target.value)}
+          />
+        </fieldset>
+
+        <fieldset className="flex gap-4 items-center">
+          <label className="w-[90px]" htmlFor="oldPassword">
+            Senha
+          </label>
+          <input
+            type="password"
+            className="h-[3rem] w-full flex-1 items-center justify-center rounded-lg px-4 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            id="oldPassword"
+            placeholder="******"
+            onChange={(e) => setOldPassword(e.target.value)}
           />
         </fieldset>
 
         <Button title="atulizar perfil" type="submit" />
       </form>
-      {/* outro form */}
-      <fieldset className="flex gap-4 items-center">
-        <label className="w-[90px]" htmlFor="oldPassword">
-          Senha Antiga
-        </label>
-        <input
-          type="password"
-          className="h-[3rem] w-full flex-1 items-center justify-center rounded-lg px-4 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-          id="oldPassword"
-          placeholder="******"
-          // defaultValue="PedroDuarte@gmail.com"
-          onChange={(e) => setOldPassword(e.target.value)}
+      {/* Form for change password */}
+      <div>
+        <Button
+          onClick={handleButtonChangePassword}
+          title="mudar senha?"
+          type="button"
         />
-      </fieldset>
+        <form
+          className={`${changePassword ? '' : 'hidden'}`}
+          onSubmit={handleChangePassword}
+        >
+          <fieldset className="flex gap-4 items-center">
+            <label className="w-[90px]" htmlFor="oldPassword">
+              Senha Antiga
+            </label>
+            <input
+              type="password"
+              className="h-[3rem] w-full flex-1 items-center justify-center rounded-lg px-4 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+              id="oldPassword"
+              placeholder="******"
+              onChange={(e) => setOldPassword(e.target.value)}
+            />
+          </fieldset>
 
-      <fieldset className="flex gap-4 items-center">
-        <label className="w-[90px]" htmlFor="password">
-          Senha
-        </label>
-        <input
-          type="password"
-          className="h-[3rem] w-full flex-1 items-center justify-center rounded-lg px-4 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-          id="password"
-          placeholder="******"
-          // defaultValue="PedroDuarte@gmail.com"
-          onChange={(e) => setNewPassword(e.target.value)}
-        />
-      </fieldset>
+          <fieldset className="flex gap-4 items-center">
+            <label className="w-[90px]" htmlFor="password">
+              Senha nova
+            </label>
+            <input
+              type="password"
+              className="h-[3rem] w-full flex-1 items-center justify-center rounded-lg px-4 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+              id="password"
+              placeholder="******"
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+          </fieldset>
 
-      <Button
-        onClick={handleChangePassword}
-        title="Atualizar senha"
-        type="button"
-      />
+          <Button title="Atualizar senha" type="submit" />
+        </form>
+      </div>
     </div>
   )
 }
