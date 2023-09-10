@@ -5,6 +5,7 @@ import { SyntheticEvent, useEffect, useState } from 'react'
 import { auth, db } from '@/services/firebaseConfig'
 import { setDoc, doc } from 'firebase/firestore'
 import { onAuthStateChanged } from '@firebase/auth'
+import { InputControl, InputRoot } from '@/components/Input'
 
 export default function Card() {
   const [history, setHistory] = useState('')
@@ -39,30 +40,32 @@ export default function Card() {
 
   return (
     <form onSubmit={HandleCreateCardForm}>
-      <fieldset className="flex gap-4 items-center">
+      <fieldset className="flex items-center gap-4">
         <label className="w-[90px]" htmlFor="history">
           História
         </label>
-        <input
-          type="text"
-          className="h-[3rem] w-full flex-1 items-center justify-center rounded-lg px-4 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-          id="history"
-          placeholder="sua história"
-          onChange={(e) => setHistory(e.target.value)}
-        />
+        <InputRoot>
+          <InputControl
+            type="text"
+            id="history"
+            placeholder="sua história"
+            onChange={(e) => setHistory(e.target.value)}
+          />
+        </InputRoot>
       </fieldset>
 
-      <fieldset className="flex gap-4 items-center">
+      <fieldset className="flex items-center gap-4">
         <label className="w-[90px]" htmlFor="boda">
           Boda
         </label>
-        <input
-          type="text"
-          className="h-[3rem] w-full flex-1 items-center justify-center rounded-lg px-4 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-          id="boda"
-          placeholder="Boda (tempo)"
-          onChange={(e) => setBoda(e.target.value)}
-        />
+        <InputRoot>
+          <InputControl
+            type="text"
+            id="boda"
+            placeholder="Boda (tempo)"
+            onChange={(e) => setBoda(e.target.value)}
+          />
+        </InputRoot>
       </fieldset>
 
       <Button title="Criar card" type="submit" />

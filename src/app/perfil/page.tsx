@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import { FormEvent, useContext, useEffect, useState } from 'react'
@@ -6,6 +7,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { auth, storage } from '@/services/firebaseConfig'
 import { Button } from '@/components/Button'
 import { UpdateProfileContext } from '@/contexts/UpdateProfileContext'
+import { InputControl, InputRoot } from '@/components/Input'
 
 export default function Perfil() {
   const [dataImage, setDataImage] = useState({ image: '' })
@@ -92,7 +94,7 @@ export default function Perfil() {
   return (
     <div>
       <form onSubmit={handleUpdateProfileForm}>
-        <fieldset className="flex gap-4 items-center">
+        <fieldset className="flex items-center gap-4">
           <label className="w-[90px]" htmlFor="photo">
             Imagem
           </label>
@@ -104,96 +106,97 @@ export default function Perfil() {
           {file ? (
             <div className="w-25 h-25">
               <img
-                className="object-fill rounded-full"
+                className="rounded-full object-fill"
                 src={URL.createObjectURL(file)}
                 alt=""
               />
             </div>
           ) : (
             <div className="w-25 h-25">
-              <img className="object-fill rounded-full" src={photoURL} alt="" />
+              <img className="rounded-full object-fill" src={photoURL} alt="" />
             </div>
           )}
         </fieldset>
 
-        <fieldset className="flex gap-4 items-center">
+        <fieldset className="flex items-center gap-4">
           <label className="w-[90px]" htmlFor="name">
             Nome
           </label>
-          <input
-            type="text"
-            className="h-[3rem] w-full flex-1 items-center justify-center rounded-lg px-4 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-            id="name"
-            defaultValue={displayName!}
-            placeholder="seu nome"
-            onChange={(e) => setDisplayName(e.target.value)}
-          />
+
+          <InputRoot>
+            <InputControl
+              id="name"
+              onChange={(e) => setDisplayName(e.target.value)}
+              defaultValue={displayName!}
+              placeholder="seu nome"
+            />
+          </InputRoot>
         </fieldset>
 
-        <fieldset className="flex gap-4 items-center">
+        <fieldset className="flex items-center gap-4">
           <label className="w-[90px]" htmlFor="email">
             Email
           </label>
-          <input
-            type="email"
-            className="h-[3rem] w-full flex-1 items-center justify-center rounded-lg px-4 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-            id="email"
-            defaultValue={oldEmail!}
-            placeholder="seuemail@gmail.com"
-            onChange={(e) => setNewEmail(e.target.value)}
-          />
+          <InputRoot>
+            <InputControl
+              type="email"
+              id="email"
+              onChange={(e) => setNewEmail(e.target.value)}
+              placeholder="seuemail@gmail.com"
+              defaultValue={oldEmail!}
+            />
+          </InputRoot>
         </fieldset>
 
-        <fieldset className="flex gap-4 items-center">
-          <label className="w-[90px]" htmlFor="oldPassword">
+        <fieldset className="flex items-center gap-4">
+          <label className="w-[90px]" htmlFor="password">
             Senha
           </label>
-          <input
-            type="password"
-            className="h-[3rem] w-full flex-1 items-center justify-center rounded-lg px-4 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-            id="oldPassword"
-            placeholder="******"
-            onChange={(e) => setOldPassword(e.target.value)}
-          />
+          <InputRoot>
+            <InputControl
+              type="password"
+              id="password"
+              placeholder="******"
+              onChange={(e) => setOldPassword(e.target.value)}
+            />
+          </InputRoot>
         </fieldset>
 
         <Button title="atulizar perfil" type="submit" />
       </form>
       {/* Form for change password */}
       <div>
-        <Button
-          onClick={handleButtonChangePassword}
-          title="mudar senha?"
-          type="button"
-        />
+        <Button onClick={handleButtonChangePassword} title="mudar senha?" />
         <form
           className={`${changePassword ? '' : 'hidden'}`}
           onSubmit={handleChangePassword}
         >
-          <fieldset className="flex gap-4 items-center">
+          <fieldset className="flex items-center gap-4">
             <label className="w-[90px]" htmlFor="oldPassword">
               Senha Antiga
             </label>
-            <input
-              type="password"
-              className="h-[3rem] w-full flex-1 items-center justify-center rounded-lg px-4 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-              id="oldPassword"
-              placeholder="******"
-              onChange={(e) => setOldPassword(e.target.value)}
-            />
+            <InputRoot>
+              <InputControl
+                type="password"
+                id="oldPassword"
+                placeholder="******"
+                onChange={(e) => setOldPassword(e.target.value)}
+              />
+            </InputRoot>
           </fieldset>
 
-          <fieldset className="flex gap-4 items-center">
-            <label className="w-[90px]" htmlFor="password">
+          <fieldset className="flex items-center gap-4">
+            <label className="w-[90px]" htmlFor="NewPassword">
               Senha nova
             </label>
-            <input
-              type="password"
-              className="h-[3rem] w-full flex-1 items-center justify-center rounded-lg px-4 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-              id="password"
-              placeholder="******"
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
+            <InputRoot>
+              <InputControl
+                type="password"
+                id="newPassword"
+                placeholder="******"
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+            </InputRoot>
           </fieldset>
 
           <Button title="Atualizar senha" type="submit" />
