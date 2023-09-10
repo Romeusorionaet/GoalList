@@ -60,6 +60,7 @@ export function AuthContextProvider({ children }: AuthContextProps) {
 
     try {
       const userData = await signInWithPopup(auth, provider)
+      console.log(userData)
       const idToken = await userData.user.getIdToken()
 
       setSecureCookie(idToken)
@@ -74,7 +75,12 @@ export function AuthContextProvider({ children }: AuthContextProps) {
 
   async function SignUp({ email, password }: AuthFormProps) {
     try {
-      await createUserWithEmailAndPassword(auth, email, password)
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      )
+      console.log(userCredential)
 
       alert('Cadastro realizado com sucesso!')
       router.push('/signIn')
