@@ -16,7 +16,7 @@ export function Header() {
   }
 
   return (
-    <header className="flex justify-between items-center pb-8 relative text-red-400">
+    <header className="relative flex items-center justify-between pb-8 text-red-400">
       {isAuthenticated && (
         <>
           <div className={widthScreen && widthScreen >= 800 ? 'hidden' : ''}>
@@ -37,8 +37,8 @@ export function Header() {
             <ul
               className={` ${
                 widthScreen && widthScreen <= 800 && checkMenuOpen === true
-                  ? 'absolute right-4 top-[7rem] flex flex-col gap-8 items-end font-bold bg-rose-100 w-[15rem] p-8 rounded-md z-20'
-                  : 'flex gap-16 text-3xl font-semibold w-[40rem]'
+                  ? 'absolute right-4 top-[7rem] z-20 flex w-[15rem] flex-col items-end gap-8 rounded-md bg-rose-100 p-8 font-bold'
+                  : 'flex w-[40rem] gap-16 text-3xl font-semibold'
               } `}
             >
               <li>
@@ -58,15 +58,16 @@ export function Header() {
 
       <div className="flex w-full justify-end gap-2 md:gap-4">
         {isAuthenticated ? (
-          <Button onClick={handleLogOut} title="Sair" type="button" />
+          <Button onClick={handleLogOut} title="Sair" />
         ) : (
           <>
-            <button className="bg-red-400 p-4 rounded-xl text-white hover:bg-red-500 duration-700 focus:outline-none focus:outline-red-400 outline-1 focus:bg-red-500">
-              <Link href="/signIn">Entrar</Link>
-            </button>
-            <button className="bg-red-400 p-4 rounded-xl text-white hover:bg-red-500 duration-700 focus:outline-none focus:outline-red-400 outline-1 focus:bg-red-500">
-              <Link href="/signUp">Cadastrar</Link>
-            </button>
+            <Link href="/signIn">
+              <Button title="Entrar" />
+            </Link>
+
+            <Link href="/signUp">
+              <Button title="Casdastrar" />
+            </Link>
           </>
         )}
       </div>
