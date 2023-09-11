@@ -74,6 +74,7 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
         await reauthenticateWithCredential(user, credentials)
 
         await updateEmail(user, newEmail)
+        alert('Perfil atualizado.')
       }
     } catch (error) {
       console.log(error)
@@ -99,14 +100,17 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
       }
 
       if (displayName) {
+        console.log(displayName)
         updateProfile({
           displayName,
         })
+        alert('Perfil atualizado.')
       }
       if (dataImage.image) {
         updateProfile({
           photoURL: dataImage.image,
         })
+        alert('Perfil atualizado.')
       }
     } catch (error) {
       console.log(error)

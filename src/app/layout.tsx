@@ -24,8 +24,8 @@ export default function RootLayout({
 
   return (
     <html lang="pt-BR">
-      <body className="bg-rose-200 p-4">
-        <div className="rounded-xl max-w-[150rem] mx-auto my-auto">
+      <body className="bg-rose-50 p-4">
+        <div className="mx-auto my-auto max-w-[150rem] rounded-xl">
           {isPublicPage && (
             <AuthContextProvider>
               <UpdateProfileContextProvider>

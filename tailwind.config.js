@@ -21,7 +21,6 @@ module.exports = {
         tablet: '800px',
         MineMobile: '300px',
       },
-
     },
   },
   plugins: [],

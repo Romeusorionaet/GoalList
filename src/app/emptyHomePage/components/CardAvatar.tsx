@@ -1,14 +1,14 @@
 'use client'
 
 import Image from 'next/image'
-import capa from '../assets/swordcapa.png'
-import perfil from '../assets/swordperfil.png'
+import capa from '../../../assets/swordcapa.png'
+import perfil from '../../../assets/swordperfil.png'
 import { Heart } from 'phosphor-react'
 
 export function CardAvatar() {
   return (
-    <div className="relative flex flex-col min-h-[32rem] max-w-[60rem]">
-      <div className="w-full h-[20rem]">
+    <div className="relative flex min-h-[32rem] max-w-[60rem] flex-col">
+      <div className="h-[20rem] w-full">
         <Image
           className="h-full w-full object-cover"
           width={200}
@@ -18,11 +18,11 @@ export function CardAvatar() {
         />
       </div>
 
-      <span className="text-right p-4">Bodas de Algodão</span>
+      <span className="p-4 text-right">Bodas de Algodão</span>
 
-      <div className="absolute top-[14.5rem] left-2 h-40 w-40 rounded-full border border-slate-400 overflow-hidden">
+      <div className="absolute left-2 top-[14.5rem] h-40 w-40 overflow-hidden rounded-full border border-slate-400">
         <Image
-          className="w-full h-full object-cover"
+          className="h-full w-full object-cover"
           width={200}
           height={200}
           src={perfil}

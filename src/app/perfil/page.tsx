@@ -3,205 +3,84 @@
 
 import { FormEvent, useContext, useEffect, useState } from 'react'
 import { onAuthStateChanged } from 'firebase/auth'
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
-import { auth, storage } from '@/services/firebaseConfig'
+import { auth } from '@/services/firebaseConfig'
 import { Button } from '@/components/Button'
 import { UpdateProfileContext } from '@/contexts/UpdateProfileContext'
 import { InputControl, InputRoot } from '@/components/Input'
+import { FormProfile } from './components/FormProfile'
 
 export default function Perfil() {
-  const [dataImage, setDataImage] = useState({ image: '' })
-  const [photoURL, setPhotoURL] = useState('')
-  const [file, setFile] = useState<File>()
-
   const [newPassword, setNewPassword] = useState('')
   const [oldPassword, setOldPassword] = useState('')
-  const [displayName, setDisplayName] = useState('')
-  const [newEmail, setNewEmail] = useState('')
   const [oldEmail, setOldEmail] = useState('')
 
-  const [changePassword, setChangePassword] = useState(false)
+  const [isPasswordFormHidden, setIsPasswordFormHidden] = useState(false)
 
-  const { ChangePassword, UpdateProfileForm } = useContext(UpdateProfileContext)
+  const { ChangePassword } = useContext(UpdateProfileContext)
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setOldEmail(String(user.email))
-        setDisplayName(String(user.displayName))
-        setPhotoURL(String(user.photoURL))
       } else {
         console.log('User is signed out')
       }
     })
   }, [])
 
-  useEffect(() => {
-    const uploadFile = () => {
-      const storageRef = ref(storage, file!.name)
-      const uploadTask = uploadBytesResumable(storageRef, file!)
-
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          console.log('Upload is ' + progress + '% done')
-          switch (snapshot.state) {
-            case 'paused':
-              console.log('Upload is paused')
-              break
-            case 'running':
-              console.log('Upload is running')
-              break
-            default:
-              break
-          }
-        },
-        (error) => {
-          console.log(error)
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setDataImage((prev) => ({ ...prev, image: downloadURL }))
-          })
-        },
-      )
-    }
-    file && uploadFile()
-  }, [file])
-
-  function handleUpdateProfileForm(event: FormEvent) {
+  function handleChangePassword(event: FormEvent) {
     event.preventDefault()
-    UpdateProfileForm({
-      newEmail,
-      oldEmail,
-      oldPassword,
-      displayName,
-      dataImage,
-    })
-  }
-
-  function handleChangePassword() {
-    setNewEmail(newEmail)
     ChangePassword({ oldEmail, newPassword, oldPassword })
   }
 
-  function handleButtonChangePassword() {
-    changePassword ? setChangePassword(false) : setChangePassword(true)
+  function toggleFormVisibility() {
+    isPasswordFormHidden
+      ? setIsPasswordFormHidden(false)
+      : setIsPasswordFormHidden(true)
   }
 
   return (
-    <div>
-      <form onSubmit={handleUpdateProfileForm}>
-        <fieldset className="flex items-center gap-4">
-          <label className="w-[90px]" htmlFor="photo">
-            Imagem
-          </label>
-          <input
-            id="photo"
-            type="file"
-            onChange={(e) => setFile(e.target.files![0])}
-          />
-          {file ? (
-            <div className="w-25 h-25">
-              <img
-                className="rounded-full object-fill"
-                src={URL.createObjectURL(file)}
-                alt=""
-              />
-            </div>
-          ) : (
-            <div className="w-25 h-25">
-              <img className="rounded-full object-fill" src={photoURL} alt="" />
-            </div>
-          )}
-        </fieldset>
+    <div className="fixed left-[50%] top-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] space-y-8 rounded-xl bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+      {isPasswordFormHidden ? <></> : <FormProfile />}
 
-        <fieldset className="flex items-center gap-4">
-          <label className="w-[90px]" htmlFor="name">
-            Nome
-          </label>
+      <Button variant="outline" type="button" onClick={toggleFormVisibility}>
+        Mudar senha?
+      </Button>
 
-          <InputRoot>
-            <InputControl
-              id="name"
-              onChange={(e) => setDisplayName(e.target.value)}
-              defaultValue={displayName!}
-              placeholder="seu nome"
-            />
-          </InputRoot>
-        </fieldset>
-
-        <fieldset className="flex items-center gap-4">
-          <label className="w-[90px]" htmlFor="email">
-            Email
-          </label>
-          <InputRoot>
-            <InputControl
-              type="email"
-              id="email"
-              onChange={(e) => setNewEmail(e.target.value)}
-              placeholder="seuemail@gmail.com"
-              defaultValue={oldEmail!}
-            />
-          </InputRoot>
-        </fieldset>
-
-        <fieldset className="flex items-center gap-4">
-          <label className="w-[90px]" htmlFor="password">
-            Senha
+      <form
+        className={`${isPasswordFormHidden ? '' : 'hidden'}`}
+        onSubmit={handleChangePassword}
+      >
+        <fieldset className="mb-4 flex flex-col gap-1">
+          <label className="mb-2" htmlFor="oldPassword">
+            Senha Antiga
           </label>
           <InputRoot>
             <InputControl
               type="password"
-              id="password"
+              id="oldPassword"
               placeholder="******"
               onChange={(e) => setOldPassword(e.target.value)}
             />
           </InputRoot>
         </fieldset>
 
-        <Button title="atulizar perfil" type="submit" />
+        <fieldset className="mb-8 flex flex-col gap-1">
+          <label className="mb-2" htmlFor="NewPassword">
+            Senha nova
+          </label>
+          <InputRoot>
+            <InputControl
+              type="password"
+              id="newPassword"
+              placeholder="******"
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+          </InputRoot>
+        </fieldset>
+
+        <Button type="submit">Atualizar senha</Button>
       </form>
-      {/* Form for change password */}
-      <div>
-        <Button onClick={handleButtonChangePassword} title="mudar senha?" />
-        <form
-          className={`${changePassword ? '' : 'hidden'}`}
-          onSubmit={handleChangePassword}
-        >
-          <fieldset className="flex items-center gap-4">
-            <label className="w-[90px]" htmlFor="oldPassword">
-              Senha Antiga
-            </label>
-            <InputRoot>
-              <InputControl
-                type="password"
-                id="oldPassword"
-                placeholder="******"
-                onChange={(e) => setOldPassword(e.target.value)}
-              />
-            </InputRoot>
-          </fieldset>
-
-          <fieldset className="flex items-center gap-4">
-            <label className="w-[90px]" htmlFor="NewPassword">
-              Senha nova
-            </label>
-            <InputRoot>
-              <InputControl
-                type="password"
-                id="newPassword"
-                placeholder="******"
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
-            </InputRoot>
-          </fieldset>
-
-          <Button title="Atualizar senha" type="submit" />
-        </form>
-      </div>
     </div>
   )
 }
