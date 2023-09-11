@@ -68,7 +68,7 @@ export default function Card() {
         </InputRoot>
       </fieldset>
 
-      <Button title="Criar card" type="submit" />
+      <Button type="submit">Criar card</Button>
     </form>
   )
 }

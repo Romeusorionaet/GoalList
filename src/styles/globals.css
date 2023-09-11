@@ -2,12 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  font-size: 62.5%;
-}
-
 body, input, button {
-  @apply text-red-400 text-2xl font-hachi tracking-wide
+  @apply text-red-400 text-base font-hachi tracking-wide
 }
 
 p, span {
@@ -15,7 +11,7 @@ p, span {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  @apply font-bold text-4xl
+  @apply font-bold text-xl
 }
 
 /* .input_auth-user {

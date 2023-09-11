@@ -20,7 +20,7 @@ export function Header() {
       {isAuthenticated && (
         <>
           <div className={widthScreen && widthScreen >= 800 ? 'hidden' : ''}>
-            <button onClick={handleChangeValue} className="text-red-400">
+            <button onClick={handleChangeValue} className="text-rose-400">
               {checkMenuOpen ? (
                 <X size={34} weight="bold" />
               ) : (
@@ -37,7 +37,7 @@ export function Header() {
             <ul
               className={` ${
                 widthScreen && widthScreen <= 800 && checkMenuOpen === true
-                  ? 'absolute right-4 top-[7rem] z-20 flex w-[15rem] flex-col items-end gap-8 rounded-md bg-rose-100 p-8 font-bold'
+                  ? 'absolute left-0 top-16 z-20 flex w-full flex-col items-end gap-8 rounded-md bg-rose-100 p-8 font-bold'
                   : 'flex w-[40rem] gap-16 text-3xl font-semibold'
               } `}
             >
@@ -56,18 +56,30 @@ export function Header() {
         </>
       )}
 
-      <div className="flex w-full justify-end gap-2 md:gap-4">
+      <div className="flex w-full justify-end gap-4 md:gap-4">
         {isAuthenticated ? (
-          <Button onClick={handleLogOut} title="Sair" />
+          <Button className="w-16" onClick={handleLogOut}>
+            Sair
+          </Button>
         ) : (
           <>
-            <Link href="/signIn">
-              <Button title="Entrar" />
-            </Link>
+            <Button>
+              <Link
+                className="outline-none focus-within:outline-none"
+                href="/signIn"
+              >
+                Entrar
+              </Link>
+            </Button>
 
-            <Link href="/signUp">
-              <Button title="Casdastrar" />
-            </Link>
+            <Button>
+              <Link
+                className="outline-none focus-within:outline-none"
+                href="/signUp"
+              >
+                Cadastrar
+              </Link>
+            </Button>
           </>
         )}
       </div>
