@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import capa from '../../../assets/swordcapa.png'
-import perfil from '../../../assets/swordperfil.png'
+import avatar from '../../../assets/swordperfil.png'
 import { Heart } from 'phosphor-react'
 
 export function CardAvatar() {
@@ -25,7 +25,7 @@ export function CardAvatar() {
           className="h-full w-full object-cover"
           width={200}
           height={200}
-          src={perfil}
+          src={avatar}
           alt=""
         />
       </div>

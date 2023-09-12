@@ -1,13 +1,14 @@
 'use client'
 
-import { Header } from '@/components/Header'
+import { Header } from '@/components/Header/Header'
 import '../styles/globals.css'
 import type { Metadata } from 'next'
 import { AuthContextProvider } from '@/contexts/AuthContext'
 import { usePathname } from 'next/navigation'
 import { checkIsPublicRoute } from '@/config/check-is-public-route'
-import PrivateRoute from '@/components/PrivateRoute/PrivateRoute'
+import PrivateRoute from '@/components/RoutesPage/PrivateRoute'
 import { UpdateProfileContextProvider } from '@/contexts/UpdateProfileContext'
+import PublicRoute from '@/components/RoutesPage/PublicRoute'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -30,7 +31,7 @@ export default function RootLayout({
             <AuthContextProvider>
               <UpdateProfileContextProvider>
                 <Header />
-                {children}
+                <PublicRoute>{children}</PublicRoute>
               </UpdateProfileContextProvider>
             </AuthContextProvider>
           )}
