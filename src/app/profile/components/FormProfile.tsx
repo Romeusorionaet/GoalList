@@ -81,81 +81,83 @@ export function FormProfile() {
 
   return (
     <form onSubmit={handleUpdateProfileForm}>
-      <fieldset className="flex items-center justify-center gap-4">
-        <label>
-          <div
-            className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full bg-white`}
-          >
-            {file ? (
-              <img
-                className="absolute inset-0 h-full w-full rounded-full object-cover"
-                src={URL.createObjectURL(file)}
-                alt="User Profile"
-              />
-            ) : photoURL ? (
-              <img
-                className="absolute inset-0 h-full w-full rounded-full object-cover"
-                src={photoURL}
-                alt="User Profile"
-              />
-            ) : (
-              <User className="h-20 w-20" />
-            )}
-          </div>
-          <input
-            className="hidden"
-            type="file"
-            accept="image/*"
-            onChange={(e) => setFile(e.target.files![0])}
-          />
-        </label>
-      </fieldset>
+      <div className="space-y-4">
+        <fieldset className="flex items-center justify-center gap-4">
+          <label>
+            <div
+              className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full bg-white`}
+            >
+              {file ? (
+                <img
+                  className="absolute inset-0 h-full w-full rounded-full object-cover"
+                  src={URL.createObjectURL(file)}
+                  alt="User Profile"
+                />
+              ) : photoURL ? (
+                <img
+                  className="absolute inset-0 h-full w-full rounded-full object-cover"
+                  src={photoURL}
+                  alt="User Profile"
+                />
+              ) : (
+                <User className="h-20 w-20" />
+              )}
+            </div>
+            <input
+              className="sr-only"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setFile(e.target.files![0])}
+            />
+          </label>
+        </fieldset>
 
-      <fieldset className="mb-4 flex flex-col gap-1">
-        <label className="mb-2" htmlFor="name">
-          Nome
-        </label>
+        <fieldset className="flex flex-col gap-1">
+          <label className="mb-2" htmlFor="name">
+            Nome
+          </label>
 
-        <InputRoot>
-          <InputControl
-            id="name"
-            onChange={(e) => setDisplayName(e.target.value)}
-            defaultValue={displayName}
-            // placeholder="seu nome"
-          />
-        </InputRoot>
-      </fieldset>
+          <InputRoot>
+            <InputControl
+              id="name"
+              onChange={(e) => setDisplayName(e.target.value)}
+              defaultValue={displayName}
+              // placeholder="seu nome"
+            />
+          </InputRoot>
+        </fieldset>
 
-      <fieldset className="mb-4 flex flex-col gap-1">
-        <label className="mb-2" htmlFor="email">
-          Email
-        </label>
-        <InputRoot>
-          <InputControl
-            type="email"
-            id="email"
-            onChange={(e) => setNewEmail(e.target.value)}
-            placeholder="seuemail@gmail.com"
-            defaultValue={oldEmail}
-          />
-        </InputRoot>
-      </fieldset>
+        <fieldset className="flex flex-col gap-1">
+          <label className="mb-2" htmlFor="email">
+            Email
+          </label>
+          <InputRoot>
+            <InputControl
+              type="email"
+              id="email"
+              onChange={(e) => setNewEmail(e.target.value)}
+              placeholder="seuemail@gmail.com"
+              defaultValue={oldEmail}
+            />
+          </InputRoot>
+        </fieldset>
 
-      <fieldset className="mb-8 flex flex-col gap-1">
-        <label className="mb-2" htmlFor="password">
-          Senha
-        </label>
-        <InputRoot>
-          <InputControl
-            type="password"
-            id="password"
-            placeholder="******"
-            onChange={(e) => setOldPassword(e.target.value)}
-          />
-        </InputRoot>
-      </fieldset>
+        <fieldset className="flex flex-col gap-1">
+          <label className="mb-2" htmlFor="password">
+            Senha
+          </label>
+          <InputRoot>
+            <InputControl
+              type="password"
+              id="password"
+              placeholder="******"
+              onChange={(e) => setOldPassword(e.target.value)}
+            />
+          </InputRoot>
+        </fieldset>
+      </div>
 
-      <div className="text-end">
+      <div className="mt-8 text-end">
         <Button type="submit">Atulizar perfil</Button>
       </div>
     </form>

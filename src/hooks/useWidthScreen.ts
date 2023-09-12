@@ -21,11 +21,8 @@ export function useWidthScreen() {
   }, [widthScreen])
 
   const handleChangeValue = () => {
-    if (checkMenuOpen === true) {
-      setCheckMenuOpen(false)
-    } else {
-      setCheckMenuOpen(true)
-    }
+    checkMenuOpen ? setCheckMenuOpen(false) : setCheckMenuOpen(true)
   }
-  return { handleChangeValue, widthScreen, checkMenuOpen }
+
+  return { handleChangeValue, widthScreen, checkMenuOpen, setCheckMenuOpen }
 }
