@@ -8,30 +8,18 @@ import { UpdateProfileContext } from '@/contexts/UpdateProfileContext'
 import { InputControl, InputRoot } from '@/components/Input'
 import { User } from 'phosphor-react'
 import { Button } from '@/components/Button'
+import { useOnAuthenticated } from '@/hooks/useonAuthStateChanged'
 
 export function FormProfile() {
   const [dataImage, setDataImage] = useState({ image: '' })
-  const [photoURL, setPhotoURL] = useState('')
+  const { photoURL, oldEmail } = useOnAuthenticated()
   const [file, setFile] = useState<File>()
 
   const [oldPassword, setOldPassword] = useState('')
   const [displayName, setDisplayName] = useState('')
   const [newEmail, setNewEmail] = useState('')
-  const [oldEmail, setOldEmail] = useState('')
 
   const { UpdateProfileForm } = useContext(UpdateProfileContext)
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setOldEmail(String(user.email))
-        setDisplayName(String(user.displayName))
-        setPhotoURL(String(user.photoURL))
-      } else {
-        console.log('User is signed out')
-      }
-    })
-  }, [])
 
   useEffect(() => {
     const uploadFile = () => {

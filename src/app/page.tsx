@@ -45,14 +45,17 @@ export default function Home() {
       <div>
         {Object.keys(userCards).map((userId) => {
           const cards = userCards[userId]
+          const lastIndex = cards.length - 1
+          const lastCard = cards[lastIndex]
+
           return (
             <div key={userId}>
               <CardGoal
-                displayName={cards[0].displayName}
-                photoURL={cards[0].photoURL}
-                goal={cards[0].goal}
-                startDate={cards[0].startDate}
-                finalDate={cards[0].finalDate}
+                displayName={lastCard.displayName}
+                photoURL={lastCard.photoURL}
+                goal={lastCard.goal}
+                startDate={lastCard.startDate}
+                finalDate={lastCard.finalDate}
               />
               <p>Todas as missões: {cards.length}</p>
             </div>

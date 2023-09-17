@@ -1,18 +1,18 @@
 'use client'
 
 import { CardGoal, CardGoalProps } from '@/components/CardGoal'
-import { auth, db } from '@/services/firebaseConfig'
+import { db } from '@/services/firebaseConfig'
 import { collection, getDocs, query, where } from 'firebase/firestore'
-import { onAuthStateChanged } from '@firebase/auth'
 import { useEffect, useState } from 'react'
 
 import * as Checkbox from '@radix-ui/react-checkbox'
 import { Check } from 'phosphor-react'
+import { useOnAuthenticated } from '@/hooks/useonAuthStateChanged'
 
 export default function MyCardsGoal() {
   const [cardGoal, setCardGoal] = useState<CardGoalProps[]>([])
   const [checkboxState, setCheckboxState] = useState(false)
-  const [userId, setUserId] = useState<string | null>('')
+  const { userId } = useOnAuthenticated()
 
   useEffect(() => {
     const getGoal = async () => {
@@ -32,32 +32,21 @@ export default function MyCardsGoal() {
     getGoal()
   }, [userId])
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserId(user.uid)
-      } else {
-        console.log('User is signed out')
-      }
-    })
-  })
-
   function handleCheckBoxState() {
     checkboxState ? setCheckboxState(false) : setCheckboxState(true)
   }
 
   return (
-    <div>
+    <div className="flex flex-wrap items-center justify-center gap-2">
       {cardGoal &&
         cardGoal.map((card) => {
           return (
-            <div className="relative" key={card.userId}>
+            <div className="relative" key={card.cardId}>
               <CardGoal
-                displayName={card.displayName}
-                photoURL={card.photoURL}
-                goal={card.goal}
                 startDate={card.startDate}
                 finalDate={card.finalDate}
+                photoURL={card.photoURL}
+                goal={card.goal}
               />
 
               <Checkbox.Root

@@ -1,4 +1,1 @@
-1- trocar nome de variável isAuthenticated por isUserAuthenticated
-3- Button components adiciona tipagem do button nativo
-6- Não deixar usuário logado navegar para rota publica
 

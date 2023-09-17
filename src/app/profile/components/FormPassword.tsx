@@ -1,27 +1,16 @@
-import { useState, FormEvent, useContext, useEffect } from 'react'
+import { useState, FormEvent, useContext } from 'react'
 
-import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from '@/services/firebaseConfig'
 import { Button } from '@/components/Button'
 import { UpdateProfileContext } from '@/contexts/UpdateProfileContext'
 import { InputControl, InputRoot } from '@/components/Input'
+import { useOnAuthenticated } from '@/hooks/useonAuthStateChanged'
 
 export function FormPassword() {
   const [newPassword, setNewPassword] = useState('')
   const [oldPassword, setOldPassword] = useState('')
-  const [oldEmail, setOldEmail] = useState('')
+  const { oldEmail } = useOnAuthenticated()
 
   const { ChangePassword } = useContext(UpdateProfileContext)
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setOldEmail(String(user.email))
-      } else {
-        console.log('User is signed out')
-      }
-    })
-  }, [])
 
   function handleChangePassword(event: FormEvent) {
     event.preventDefault()
