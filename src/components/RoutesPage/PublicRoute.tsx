@@ -20,8 +20,6 @@ export default function PublicRoute({
     }
   })
 
-  // por 1 segundo ainda está podendo ver a tela de login quando o user esta dentro
-
   return (
     <>
       {isAuthenticated && isPublicPage && null}

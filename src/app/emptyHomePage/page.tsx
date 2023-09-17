@@ -1,65 +1,58 @@
 'use client'
 
-import Image from 'next/image'
-import f1 from '../../assets/figura1.png'
-import Link from 'next/link'
-import { CardAvatar } from './components/CardAvatar'
+import { useKeenSlider } from 'keen-slider/react'
+import 'keen-slider/keen-slider.min.css'
+import { ArrowDown } from 'phosphor-react'
 
 export default function EmptyHomePage() {
+  const [ref] = useKeenSlider<HTMLDivElement>({
+    loop: false,
+    slides: {
+      origin: 'auto',
+      perView: 1,
+      spacing: 0,
+    },
+    vertical: true,
+  })
+
   return (
-    <div>
-      <div className="relative flex flex-col justify-center rounded-md bg-slate-50 py-8">
-        {/* logo aq <Image
-          className="absolute left-0 top-0"
-          width={200}
-          height={200}
-          src={f2}
-          alt=""
-        /> */}
-
-        <div className=" mt-[26rem] flex min-h-[32rem] w-full items-center justify-center bg-[url('../assets/previewPerfis.png')] bg-cover bg-center bg-no-repeat md:bg-contain">
-          <div className="relative flex h-20 items-center justify-center rounded-full px-6 md:w-[50%]">
-            <div className="absolute inset-0 overflow-hidden rounded-2xl bg-gradient-to-r from-transparent via-rose-200 to-transparent blur-sm backdrop-blur-none" />
-            <h1 className="relative">lorem nmifjdis spusm d wef</h1>
-          </div>
-        </div>
-
-        <div className="mt-20 space-y-8 p-4">
-          <h1 className="text-center">
-            Celebramos Bodas do seu relacionamento
-          </h1>
-
-          <p>
-            As bodas são celebrações que marcam diferentes anos de casamento, e
-            cada uma delas é associada a um material ou pedra preciosa que
-            simboliza o estágio do relacionamento e a durabilidade do amor
-            compartilhado pelo casal. <strong>Saber mais sobre bodas.</strong>
-          </p>
-        </div>
+    <div className="fixed left-[50%] top-[50%] flex max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] flex-col justify-center space-y-8 rounded-xl bg-zinc-200 p-4 py-8 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+      <div className="absolute bottom-4 right-4 animate-bounce">
+        <ArrowDown />
       </div>
 
-      <Image
-        className="mx-auto my-10"
-        width={200}
-        height={200}
-        src={f1}
-        alt=""
-      />
+      <div className="keen-slider w-full" ref={ref} style={{ height: 200 }}>
+        <div className="keen-slider__slide flex items-center justify-center">
+          <p>Seja bem vindo viajante ao Todo Or Death</p>
+        </div>
 
-      <div className="flex flex-col items-center gap-8 rounded-md bg-slate-50 py-8">
-        <h1 className="text-center">
-          Como ficará seu perfil de relacionamento
-        </h1>
+        <div className="keen-slider__slide flex items-center justify-center">
+          <p>
+            O Todo Or Death é uma forma de você compartilhar pontos de sua
+            jornada. Vou explicar melhor...
+          </p>
+        </div>
 
-        <div className="flex flex-col items-center justify-center gap-28 md:flex-row md:items-start">
-          <div className="px-4">
-            <p>
-              Com poucos passos você consegue deixar registrado o seu perfil
-              compartilhado com o seu parceiro(a). A criação é bastante simples
-              e intuitivo. <strong>Guia para criar o perfil.</strong>
-            </p>
-          </div>
-          <CardAvatar />
+        <div className="keen-slider__slide flex items-center justify-center">
+          <p>
+            Aqui não é um simples TodoList onde você faz anotação de sua missão
+            e esquece que ele existe não se importando se a missão foi cumprida
+            ou não. As coisas funcionam diferente por aqui...
+          </p>
+        </div>
+
+        <div className="keen-slider__slide flex items-center justify-center">
+          <p>
+            Você não será obrigado a contar detalhes delicados e pessoais de sua
+            missão, apenas registre aqui e descreva com poucas e sábias palavras
+            que essa missão existe e que uma vez registrado aqui, você terá
+            total comprometimento em cumprilas, assim você terá um
+            comprometimento maior com seu objetivo...
+          </p>
+        </div>
+
+        <div className="keen-slider__slide flex items-center justify-center gap-4">
+          <p>Aceita o desafio? Crie sua conta.</p>
         </div>
       </div>
     </div>

@@ -35,6 +35,4 @@ yarn-error.log*
 next-env.d.ts
 
 todo.txt
-testeProfile.txt
-testeREGISTER.txt
-/services/firebaseConfig.ts
+/src/services/firebaseConfig.ts

@@ -7,10 +7,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        hachi: ['Hachi Maru Pop', 'cursive'],
-      },
-
       colors: {
         white: '#ffffff',
 
