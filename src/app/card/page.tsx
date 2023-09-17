@@ -1,24 +1,21 @@
 'use client'
 
 import { Button } from '@/components/Button'
-import { SyntheticEvent, useEffect, useState } from 'react'
-import { auth, db } from '@/services/firebaseConfig'
+import { SyntheticEvent, useState } from 'react'
+import { db } from '@/services/firebaseConfig'
 import { setDoc, doc } from 'firebase/firestore'
-import { onAuthStateChanged } from '@firebase/auth'
-import { uuid as v4 } from 'uuidv4'
+import { v4 as uuidv4 } from 'uuid'
 
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import { useOnAuthenticated } from '@/hooks/useonAuthStateChanged'
 
 export default function Card() {
-  const [userId, setUserId] = useState<string | null>('')
+  const { photoURL, displayName, userId } = useOnAuthenticated()
   const [goal, setgoal] = useState('')
 
   const [finalDate, setFinalDate] = useState<Date | null>(new Date())
   const [startDate] = useState<Date | null>(new Date())
-
-  const [displayName, setDisplayName] = useState('')
-  const [photoURL, setPhotoURL] = useState('')
 
   const docObjectItems = {
     completedGoal: false,
@@ -27,26 +24,15 @@ export default function Card() {
     startDate,
     photoURL,
     userId,
+    cardId: uuidv4(),
     goal,
   }
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setDisplayName(String(user.displayName))
-        setPhotoURL(String(user.photoURL))
-        setUserId(user.uid)
-      } else {
-        console.log('User is signed out')
-      }
-    })
-  })
 
   async function HandleCreateCardForm(event: SyntheticEvent) {
     event.preventDefault()
 
     try {
-      await setDoc(doc(db, 'cardGoal', v4()), docObjectItems)
+      await setDoc(doc(db, 'cardGoal', uuidv4()), docObjectItems)
     } catch (error) {
       console.log(error)
     }

@@ -4,9 +4,10 @@ import { format } from 'date-fns'
 export interface CardGoalProps {
   finalDate: Timestamp
   startDate: Timestamp
-  displayName: string
+  displayName?: string
   photoURL: string
   userId?: string
+  cardId?: string
   goal: string
 }
 
