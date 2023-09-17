@@ -1,14 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 
-import { FormEvent, useContext, useEffect, useState } from 'react'
-import { onAuthStateChanged } from 'firebase/auth'
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
-import { auth, storage } from '@/services/firebaseConfig'
 import { UpdateProfileContext } from '@/contexts/UpdateProfileContext'
-import { InputControl, InputRoot } from '@/components/Input'
-import { User } from 'phosphor-react'
-import { Button } from '@/components/Button'
+import { FormEvent, useContext, useEffect, useState } from 'react'
 import { useOnAuthenticated } from '@/hooks/useonAuthStateChanged'
+import { InputControl, InputRoot } from '@/components/Input'
+import { storage } from '@/services/firebaseConfig'
+import { Button } from '@/components/Button'
+import { User } from 'phosphor-react'
 
 export function FormProfile() {
   const [dataImage, setDataImage] = useState({ image: '' })
