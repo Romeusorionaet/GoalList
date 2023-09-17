@@ -62,7 +62,7 @@ export default function Login() {
           <div className="text-center">
             <Link
               href=""
-              className="outline-none hover:text-red-500 focus:rounded-lg focus:p-2 focus:outline-rose-500"
+              className="outline-none focus:rounded-lg focus:p-2 focus:outline-rose-500"
               onClick={handleButtonState}
             >
               Voltar a tela de login
@@ -98,7 +98,7 @@ export default function Login() {
           ) : (
             <Link
               href=""
-              className="p-2 outline-none hover:text-red-500 focus:rounded-lg focus:p-2 focus:outline-rose-500"
+              className="p-2 outline-none focus:rounded-lg focus:p-2 focus:outline-rose-500"
               onClick={handleButtonState}
             >
               Esqueceu a sua senha?

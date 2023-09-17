@@ -4,6 +4,7 @@ import { NavPageAuth } from './NavPageAuth'
 import { FramerLogo } from 'phosphor-react'
 import { useRouter } from 'next/navigation'
 import { APP_ROUTES } from '@/constants/app-routes'
+import { useAcceptInputFromPageEmpty } from '@/hooks/useAcceptInputFromPageEmpty'
 
 export function Header() {
   const { isAuthenticated } = useCookies()

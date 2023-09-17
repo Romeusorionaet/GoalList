@@ -1,6 +1,0 @@
-1- trocar nome de variável isAuthenticated por isUserAuthenticated
-2- trocar nome da rota perfil para profile
-3- Button components adiciona tipagem do button nativo
-5- Redefinição de senha e recuperação[v]
-6- Não deixar usuário logado navegar para rota publica
-

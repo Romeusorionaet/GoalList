@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-body, input, button {
-  @apply text-red-400 text-base font-hachi tracking-wide
+body, input, button, li {
+  @apply text-zinc-900 text-base tracking-wide
 }
 
 p, span {
@@ -13,7 +13,3 @@ p, span {
 h1, h2, h3, h4, h5, h6 {
   @apply font-bold text-xl
 }
-
-/* .input_auth-user {
-  @apply h-20 w-[50rem] rounded-xl p-4 m-2 font-thin
-} */
