@@ -1,6 +1,5 @@
 'use client'
 
-import { db } from '@/services/firebaseConfig'
 import {
   updateDoc,
   doc,
@@ -11,6 +10,7 @@ import {
   Timestamp,
 } from 'firebase/firestore'
 import { CardGoal } from '@/components/CardGoal'
+import { db } from '@/services/firebaseConfig'
 
 import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
 import * as Checkbox from '@radix-ui/react-checkbox'
@@ -67,7 +67,7 @@ export default function Profile() {
           alt="User Profile"
         />
       </div>
-      <h1>Perfil de {displayName}</h1>
+      <h1>{displayName}</h1>
       <h2>
         Aqui fica o perfil do user mostrando vários dados dele sobre seu
         desempenho, e como será público para outros ver, tem que ter sua foto.
@@ -83,7 +83,7 @@ export default function Profile() {
               />
 
               {card.completedGoal ? (
-                <CheckCircle className="absolute right-2 top-2" />
+                <CheckCircle className="absolute right-2 top-2 h-6 w-6 rounded-full bg-green-500" />
               ) : (
                 <Checkbox.Root
                   onClick={() =>
