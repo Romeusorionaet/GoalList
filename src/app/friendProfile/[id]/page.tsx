@@ -12,28 +12,30 @@ import {
 } from 'firebase/firestore'
 import { CardGoal } from '@/components/CardGoal'
 
-import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
-import * as Checkbox from '@radix-ui/react-checkbox'
-import { Check, CheckCircle } from 'phosphor-react'
 import { useEffect, useState } from 'react'
 
 interface CardGoalProfileProps {
   finalDate: Timestamp
   startDate: Timestamp
   completedGoal: boolean
+  displayName: string
+  photoURL: string
   userId: string
   cardId: string
   goal: string
 }
 
-export default function Profile() {
+export default function FriendProfile({ params }: { params: { id: string } }) {
   const [cardGoal, setCardGoal] = useState<CardGoalProfileProps[]>([])
-  const { userId, displayName, photoURL } = useOnAuthenticated()
+  const [displayName, setDisplayname] = useState('')
+  const [photoURL, setPhotoURL] = useState('')
+
+  const userIdFriend = params.id
 
   useEffect(() => {
     const getGoal = async () => {
       const querySnapshot = await getDocs(
-        query(collection(db, 'cardGoal'), where('userId', '==', userId)),
+        query(collection(db, 'cardGoal'), where('userId', '==', userIdFriend)),
       )
 
       const goals: CardGoalProfileProps[] = []
@@ -46,15 +48,14 @@ export default function Profile() {
       setCardGoal(goals)
     }
     getGoal()
-  }, [userId, cardGoal])
+  }, [userIdFriend, cardGoal])
 
-  function handleSetValueTrueForCompletedGoal(cardId: string) {
-    const cardRef = doc(db, 'cardGoal', cardId)
-
-    updateDoc(cardRef, {
-      completedGoal: true,
-    })
-  }
+  useEffect(() => {
+    if (cardGoal.length > 0) {
+      setDisplayname(cardGoal[0].displayName)
+      setPhotoURL(cardGoal[0].photoURL)
+    }
+  }, [cardGoal])
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-2">
@@ -81,21 +82,6 @@ export default function Profile() {
                 finalDate={card.finalDate}
                 goal={card.goal}
               />
-
-              {card.completedGoal ? (
-                <CheckCircle className="absolute right-2 top-2" />
-              ) : (
-                <Checkbox.Root
-                  onClick={() =>
-                    handleSetValueTrueForCompletedGoal(card.cardId)
-                  }
-                  className="shadow-blackA7 hover:bg-violet3 absolute right-2 top-2 flex h-5 w-5 appearance-none items-center justify-center rounded-md bg-white shadow-[0_2px_10px] outline-none focus:shadow-[0_0_0_2px_black]"
-                >
-                  <Checkbox.Indicator>
-                    <Check />
-                  </Checkbox.Indicator>
-                </Checkbox.Root>
-              )}
             </div>
           )
         })}
