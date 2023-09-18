@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 export default function Home() {
-  const [userCards, setUserCards] = useState<{
+  const [userCardsGoal, setUserCardsGoal] = useState<{
     [userId: string]: CardGoalProps[]
   }>({})
 
@@ -34,23 +34,32 @@ export default function Home() {
         {} as { [userId: string]: CardGoalProps[] },
       )
 
-      setUserCards(groupedCards)
+      setUserCardsGoal(groupedCards)
     }
     getGoals()
   }, [])
 
   return (
     <div>
-      <h1>Hello World</h1>
-
       <div>
-        {Object.keys(userCards).map((userId) => {
-          const cards = userCards[userId]
+        {Object.keys(userCardsGoal).map((userId) => {
+          const cards = userCardsGoal[userId]
           const lastIndex = cards.length - 1
           const lastCard = cards[lastIndex]
 
+          const NumberOfObjectivesToComplete = cards.filter(
+            (card) => !card.completedGoal,
+          ).length
+
+          const conditionalStyle =
+            NumberOfObjectivesToComplete === 0 ? 'hidden' : ''
+
           return (
-            <div key={userId}>
+            <div className={`${conditionalStyle}`} key={userId}>
+              <p>
+                Quantidade de missões para este viajante cocluir:{' '}
+                <strong>{NumberOfObjectivesToComplete}</strong>
+              </p>
               <Link href={`/friendProfile/${userId}`}>
                 <CardGoal
                   displayName={lastCard.displayName}
@@ -59,7 +68,6 @@ export default function Home() {
                   startDate={lastCard.startDate}
                   finalDate={lastCard.finalDate}
                 />
-                <p>Todas as missões: {cards.length}</p>
               </Link>
             </div>
           )
