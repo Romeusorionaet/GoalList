@@ -3,7 +3,7 @@ import { useState, FormEvent, useContext } from 'react'
 import { Button } from '@/components/Button'
 import { UpdateProfileContext } from '@/contexts/UpdateProfileContext'
 import { InputControl, InputRoot } from '@/components/Input'
-import { useOnAuthenticated } from '@/hooks/useonAuthStateChanged'
+import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
 
 export function FormPassword() {
   const [newPassword, setNewPassword] = useState('')

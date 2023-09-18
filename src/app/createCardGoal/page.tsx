@@ -8,9 +8,9 @@ import { v4 as uuidv4 } from 'uuid'
 
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { useOnAuthenticated } from '@/hooks/useonAuthStateChanged'
+import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
 
-export default function Card() {
+export default function CreateCardGoal() {
   const { photoURL, displayName, userId } = useOnAuthenticated()
   const [goal, setgoal] = useState('')
 

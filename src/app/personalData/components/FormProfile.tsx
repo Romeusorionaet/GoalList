@@ -3,7 +3,7 @@
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { UpdateProfileContext } from '@/contexts/UpdateProfileContext'
 import { FormEvent, useContext, useEffect, useState } from 'react'
-import { useOnAuthenticated } from '@/hooks/useonAuthStateChanged'
+import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
 import { InputControl, InputRoot } from '@/components/Input'
 import { storage } from '@/services/firebaseConfig'
 import { Button } from '@/components/Button'
