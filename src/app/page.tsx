@@ -3,6 +3,7 @@
 import { CardGoal, CardGoalProps } from '@/components/CardGoal'
 import { db } from '@/services/firebaseConfig'
 import { collection, getDocs } from 'firebase/firestore'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 export default function Home() {
@@ -50,14 +51,16 @@ export default function Home() {
 
           return (
             <div key={userId}>
-              <CardGoal
-                displayName={lastCard.displayName}
-                photoURL={lastCard.photoURL}
-                goal={lastCard.goal}
-                startDate={lastCard.startDate}
-                finalDate={lastCard.finalDate}
-              />
-              <p>Todas as missões: {cards.length}</p>
+              <Link href={`/friendProfile/${userId}`}>
+                <CardGoal
+                  displayName={lastCard.displayName}
+                  photoURL={lastCard.photoURL}
+                  goal={lastCard.goal}
+                  startDate={lastCard.startDate}
+                  finalDate={lastCard.finalDate}
+                />
+                <p>Todas as missões: {cards.length}</p>
+              </Link>
             </div>
           )
         })}

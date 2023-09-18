@@ -32,7 +32,7 @@ export default function CreateCardGoal() {
     event.preventDefault()
 
     try {
-      await setDoc(doc(db, 'cardGoal', uuidv4()), docObjectItems)
+      await setDoc(doc(db, 'cardGoal', docObjectItems.cardId), docObjectItems)
     } catch (error) {
       console.log(error)
     }
