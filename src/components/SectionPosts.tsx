@@ -57,11 +57,16 @@ export function SectionPosts() {
     getGoals()
   }, [])
 
+  const sortedUserLastCards = Object.values(userLastCard).sort(
+    (a, b) => Number(b.startDate) - Number(a.startDate),
+  )
+
   return (
     <div className="flex flex-wrap items-center justify-center gap-4 ">
-      {Object.keys(userLastCard).map((userId) => {
-        const lastCard = userLastCard[userId]
-        const incompleteCount = incompleteGoalsCount[userId] || 0
+      {sortedUserLastCards.map((lastCard) => {
+        const userId = lastCard.userId
+
+        const incompleteCount = incompleteGoalsCount[userId!] || 0
         const conditionalStyle = incompleteCount === 0 ? 'hidden' : ''
 
         return (

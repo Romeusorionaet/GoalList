@@ -8,15 +8,14 @@ import { InputControl, InputRoot } from '@/components/Input'
 import { storage } from '@/services/firebaseConfig'
 import { Button } from '@/components/Button'
 import { User } from 'phosphor-react'
-import Image from 'next/image'
 
 export function FormProfile() {
   const [dataImage, setDataImage] = useState({ image: '' })
-  const { photoURL, oldEmail } = useOnAuthenticated()
+  const { photoURL, oldEmail, displayName: nickName } = useOnAuthenticated()
   const [file, setFile] = useState<File>()
 
   const [oldPassword, setOldPassword] = useState('')
-  const [displayName, setDisplayName] = useState('')
+  const [displayNewName, setDisplayNewName] = useState('')
   const [newEmail, setNewEmail] = useState('')
 
   const { UpdateProfileForm } = useContext(UpdateProfileContext)
@@ -62,7 +61,7 @@ export function FormProfile() {
       newEmail,
       oldEmail,
       oldPassword,
-      displayName,
+      displayName: displayNewName,
       dataImage,
     })
   }
@@ -76,25 +75,19 @@ export function FormProfile() {
               className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full bg-white`}
             >
               {file ? (
-                <Image
-                  height={200}
-                  width={200}
-                  quality={100}
+                <img
                   className="absolute inset-0 h-full w-full rounded-full object-cover"
                   src={URL.createObjectURL(file)}
                   alt="User Profile"
                 />
-              ) : photoURL ? (
-                <Image
-                  height={200}
-                  width={200}
-                  quality={100}
+              ) : photoURL === 'null' ? (
+                <User className="h-20 w-20" />
+              ) : (
+                <img
                   className="absolute inset-0 h-full w-full rounded-full object-cover"
                   src={photoURL}
                   alt="User Profile"
                 />
-              ) : (
-                <User className="h-20 w-20" />
               )}
             </div>
             <input
@@ -107,16 +100,16 @@ export function FormProfile() {
         </fieldset>
 
         <fieldset className="flex flex-col gap-1">
-          <label className="mb-2" htmlFor="name">
-            Nome
+          <label className="mb-2" htmlFor="nick">
+            Nick name
           </label>
 
           <InputRoot>
             <InputControl
-              id="name"
-              onChange={(e) => setDisplayName(e.target.value)}
-              defaultValue={displayName}
-              // placeholder="seu nome"
+              id="nick"
+              onChange={(e) => setDisplayNewName(e.target.value)}
+              defaultValue={nickName === 'null' ? 'Nick name' : nickName}
+              placeholder="nick nome"
             />
           </InputRoot>
         </fieldset>
