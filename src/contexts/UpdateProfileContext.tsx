@@ -100,7 +100,6 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
       }
 
       if (displayName) {
-        console.log(displayName)
         updateProfile({
           displayName,
         })

@@ -2,8 +2,10 @@ export const APP_ROUTES = {
   private: {
     dashboard: {
       profile: '/profile',
-      card: '/card',
+      createCardGoal: '/createCardGoal',
       home: '/',
+      friendProfile: '/friendProfile',
+      personalData: '/personalData',
     },
   },
 

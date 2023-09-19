@@ -12,7 +12,7 @@ import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
 
 export default function CreateCardGoal() {
   const { photoURL, displayName, userId } = useOnAuthenticated()
-  const [goal, setgoal] = useState('')
+  const [goal, setGoal] = useState('')
 
   const [finalDate, setFinalDate] = useState<Date | null>(new Date())
   const [startDate] = useState<Date | null>(new Date())
@@ -28,11 +28,30 @@ export default function CreateCardGoal() {
     goal,
   }
 
+  function verifyIFUserCompletedProfile() {
+    if (displayName === 'null' || photoURL === 'null') {
+      alert(
+        'Complete o seu perfil para podermos personalizar melhor a sua experiência.',
+      )
+      return true
+    }
+    return false
+  }
+
   async function HandleCreateCardForm(event: SyntheticEvent) {
     event.preventDefault()
 
+    if (verifyIFUserCompletedProfile()) {
+      return
+    }
+
     try {
       await setDoc(doc(db, 'cardGoal', docObjectItems.cardId), docObjectItems)
+      alert('Objetivo adicionado com sucesso.')
+
+      setGoal('')
+
+      setFinalDate(new Date())
     } catch (error) {
       console.log(error)
     }
@@ -48,7 +67,8 @@ export default function CreateCardGoal() {
           Objetivo
         </label>
         <textarea
-          onChange={(e) => setgoal(e.target.value)}
+          value={goal}
+          onChange={(e) => setGoal(e.target.value)}
           className="h-40 w-full resize-none bg-zinc-100 p-2"
           placeholder="Seu objetivo"
         />

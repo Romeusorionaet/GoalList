@@ -13,7 +13,6 @@ import {
 import { CardGoal } from '@/components/CardGoal'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 
 interface CardGoalProfileProps {
   finalDate: Timestamp
@@ -64,10 +63,7 @@ export default function FriendProfile({ params }: { params: { id: string } }) {
         <div
           className={`relative flex h-14 w-14 items-center justify-center rounded-full bg-white`}
         >
-          <Image
-            height={200}
-            width={200}
-            quality={100}
+          <img
             className="absolute inset-0 h-full w-full rounded-full object-cover"
             src={photoURL}
             alt="User Profile"
