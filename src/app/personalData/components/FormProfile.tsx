@@ -8,6 +8,7 @@ import { InputControl, InputRoot } from '@/components/Input'
 import { storage } from '@/services/firebaseConfig'
 import { Button } from '@/components/Button'
 import { User } from 'phosphor-react'
+import Image from 'next/image'
 
 export function FormProfile() {
   const [dataImage, setDataImage] = useState({ image: '' })
@@ -75,13 +76,19 @@ export function FormProfile() {
               className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full bg-white`}
             >
               {file ? (
-                <img
+                <Image
+                  height={200}
+                  width={200}
+                  quality={100}
                   className="absolute inset-0 h-full w-full rounded-full object-cover"
                   src={URL.createObjectURL(file)}
                   alt="User Profile"
                 />
               ) : photoURL ? (
-                <img
+                <Image
+                  height={200}
+                  width={200}
+                  quality={100}
                   className="absolute inset-0 h-full w-full rounded-full object-cover"
                   src={photoURL}
                   alt="User Profile"
