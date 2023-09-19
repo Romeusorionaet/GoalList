@@ -10,6 +10,7 @@ export function CardAvatar() {
     <div className="relative flex min-h-[32rem] max-w-[60rem] flex-col">
       <div className="h-[20rem] w-full">
         <Image
+          quality={100}
           className="h-full w-full object-cover"
           width={200}
           height={200}
@@ -22,6 +23,7 @@ export function CardAvatar() {
 
       <div className="absolute left-2 top-[14.5rem] h-40 w-40 overflow-hidden rounded-full border border-slate-400">
         <Image
+          quality={100}
           className="h-full w-full object-cover"
           width={200}
           height={200}

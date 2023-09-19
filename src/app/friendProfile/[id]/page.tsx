@@ -13,6 +13,7 @@ import {
 import { CardGoal } from '@/components/CardGoal'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 interface CardGoalProfileProps {
   finalDate: Timestamp
@@ -59,15 +60,20 @@ export default function FriendProfile({ params }: { params: { id: string } }) {
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-2">
-      <div
-        className={`relative flex h-14 w-14 items-center justify-center rounded-full bg-white`}
-      >
-        <img
-          className="absolute inset-0 h-full w-full rounded-full object-cover"
-          src={photoURL}
-          alt="User Profile"
-        />
-      </div>
+      {photoURL && (
+        <div
+          className={`relative flex h-14 w-14 items-center justify-center rounded-full bg-white`}
+        >
+          <Image
+            height={200}
+            width={200}
+            quality={100}
+            className="absolute inset-0 h-full w-full rounded-full object-cover"
+            src={photoURL}
+            alt="User Profile"
+          />
+        </div>
+      )}
       <h1>Perfil de {displayName}</h1>
       <h2>
         Aqui fica o perfil do user mostrando vários dados dele sobre seu

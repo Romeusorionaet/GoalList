@@ -39,8 +39,8 @@ export function CardGoal({
       )}
       <div className="flex h-16 w-full flex-col gap-6 whitespace-nowrap rounded-md bg-zinc-600 p-1 text-sm text-white">
         <div className="flex justify-between gap-8">
-          <span>{format(formattedFinalDate, 'dd/MM/yyyy')}</span>
           <span>{format(formattedStartDate, 'dd/MM/yyyy')}</span>
+          <span>{format(formattedFinalDate, 'dd/MM/yyyy')}</span>
         </div>
 
         <div className="flex justify-center ">
