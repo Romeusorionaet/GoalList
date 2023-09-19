@@ -70,13 +70,13 @@ export function SectionPosts() {
         const conditionalStyle = incompleteCount === 0 ? 'hidden' : ''
 
         return (
-          <div className={`${conditionalStyle}  `} key={userId}>
+          <div className={`${conditionalStyle} space-y-1`} key={userId}>
             <div className="flex justify-between">
               <p>
                 Missões: <strong>{incompleteCount}</strong>
               </p>
               <Link
-                className="rounded-md bg-green-500 p-1 text-sm text-white hover:bg-green-600"
+                className="rounded-md bg-zinc-500 px-2 py-1 text-sm text-white hover:bg-zinc-600"
                 href={`/friendProfile/${userId}`}
               >
                 <span>Espiar Viajante</span>
@@ -89,6 +89,8 @@ export function SectionPosts() {
               startDate={lastCard.startDate}
               finalDate={lastCard.finalDate}
             />
+
+            <div className="mt-8 rounded-lg border border-zinc-200 sm:hidden" />
           </div>
         )
       })}
