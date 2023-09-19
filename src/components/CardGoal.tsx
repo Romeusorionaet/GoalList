@@ -24,7 +24,7 @@ export function CardGoal({
   const formattedHR = startDate.toDate()
 
   return (
-    <div className="p-y-1 flex w-[20rem] flex-col items-center justify-center rounded-lg bg-blue-400">
+    <div className="p-y-1 flex w-[20rem] flex-col items-center justify-center rounded-lg bg-blue-200">
       <h2 className="font-bold">{displayName}</h2>
       {photoURL && (
         <div
@@ -37,7 +37,7 @@ export function CardGoal({
           />
         </div>
       )}
-      <div className="flex h-16 w-full flex-col gap-6 whitespace-nowrap rounded-md bg-zinc-600 p-1 text-sm text-white">
+      <div className="flex h-16 w-full flex-col gap-6 whitespace-nowrap rounded-md bg-zinc-500 p-1 text-sm text-white">
         <div className="flex justify-between gap-8">
           <span>{format(formattedStartDate, 'dd/MM/yyyy')}</span>
           <span>{format(formattedFinalDate, 'dd/MM/yyyy')}</span>
@@ -50,8 +50,8 @@ export function CardGoal({
         </div>
       </div>
 
-      <div className="mt-8 h-36 overflow-auto p-1">
-        <p className="text-white">{goal}</p>
+      <div className="my-8 h-36 overflow-auto p-1">
+        <p className="md:text-xl">{goal}</p>
       </div>
     </div>
   )
