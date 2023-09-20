@@ -5,6 +5,7 @@ import { SyntheticEvent, useState } from 'react'
 import { db } from '@/services/firebaseConfig'
 import { setDoc, doc } from 'firebase/firestore'
 import { v4 as uuidv4 } from 'uuid'
+import { format } from 'date-fns'
 
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -14,14 +15,17 @@ export default function CreateCardGoal() {
   const { photoURL, displayName, userId } = useOnAuthenticated()
   const [goal, setGoal] = useState('')
 
-  const [finalDate, setFinalDate] = useState<Date | null>(new Date())
-  const [startDate] = useState<Date | null>(new Date())
+  const [finalDate, setFinalDate] = useState<Date>(new Date())
+  const [startDate] = useState<Date>(new Date())
+
+  const formattedStartDate = format(startDate, 'dd/MM/yyyy')
+  const formattedFinalDate = format(finalDate, 'dd/MM/yyyy')
 
   const docObjectItems = {
     completedGoal: false,
     displayName,
-    finalDate,
-    startDate,
+    startDate: formattedStartDate,
+    finalDate: formattedFinalDate,
     photoURL,
     userId,
     cardId: uuidv4(),
@@ -97,7 +101,7 @@ export default function CreateCardGoal() {
           className="w-24 text-end"
           id="finalDate"
           selected={finalDate}
-          onChange={(date) => setFinalDate(date)}
+          onChange={(date) => setFinalDate(date!)}
         />
       </fieldset>
 

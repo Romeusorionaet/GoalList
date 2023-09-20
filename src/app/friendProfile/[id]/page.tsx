@@ -2,8 +2,6 @@
 
 import { db } from '@/services/firebaseConfig'
 import {
-  updateDoc,
-  doc,
   collection,
   getDocs,
   query,
