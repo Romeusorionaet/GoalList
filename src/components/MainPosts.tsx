@@ -1,12 +1,24 @@
 'use client'
 
+import { Timestamp } from 'firebase/firestore'
 import { CardGoal, CardGoalProps } from '@/components/CardGoal'
-import { db } from '@/services/firebaseConfig'
-import { collection, getDocs } from 'firebase/firestore'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-export function SectionPosts() {
+export interface MainPostsProps {
+  goals: {
+    finalDate: Timestamp
+    startDate: Timestamp
+    completedGoal: boolean
+    displayName: string
+    photoURL: string
+    userId: string
+    cardId: string
+    goal: string
+  }[]
+}
+
+export function MainPosts({ goals }: MainPostsProps) {
   const [userLastCard, setUserLastCard] = useState<{
     [userId: string]: CardGoalProps
   }>({})
@@ -17,14 +29,6 @@ export function SectionPosts() {
 
   useEffect(() => {
     const getGoals = async () => {
-      const querySnapshot = await getDocs(collection(db, 'cardGoal'))
-      const goals: CardGoalProps[] = []
-
-      querySnapshot.forEach((doc) => {
-        const data = doc.data() as CardGoalProps
-        goals.push(data)
-      })
-
       const lastCards: { [userId: string]: CardGoalProps } = {}
 
       goals.forEach((card) => {
@@ -55,7 +59,7 @@ export function SectionPosts() {
       setIncompleteGoalsCount(incompleteCounts)
     }
     getGoals()
-  }, [])
+  }, [goals])
 
   const sortedUserLastCards = Object.values(userLastCard).sort(
     (a, b) => Number(b.startDate) - Number(a.startDate),

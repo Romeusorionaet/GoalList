@@ -1,5 +1,4 @@
 import { Timestamp } from 'firebase/firestore'
-import { format } from 'date-fns'
 
 export interface CardGoalProps {
   finalDate: Timestamp
@@ -19,10 +18,6 @@ export function CardGoal({
   displayName,
   photoURL,
 }: CardGoalProps) {
-  const formattedFinalDate = finalDate.toDate()
-  const formattedStartDate = startDate.toDate()
-  const formattedHR = startDate.toDate()
-
   return (
     <div className="p-y-1 flex w-[20rem] flex-col items-center justify-center rounded-lg bg-blue-200">
       <h2 className="font-bold">{displayName}</h2>
@@ -39,14 +34,12 @@ export function CardGoal({
       )}
       <div className="flex h-16 w-full flex-col gap-6 whitespace-nowrap rounded-md bg-zinc-500 p-1 text-sm text-white">
         <div className="flex justify-between gap-8">
-          <span>{format(formattedStartDate, 'dd/MM/yyyy')}</span>
-          <span>{format(formattedFinalDate, 'dd/MM/yyyy')}</span>
+          <span>{String(startDate)}</span>
+          <span>{String(finalDate)}</span>
         </div>
 
         <div className="flex justify-center ">
-          <span className="rounded-lg bg-zinc-950 p-1">
-            {format(formattedHR, 'HH:mm:ss')}
-          </span>
+          <span className="rounded-lg bg-zinc-950 p-1">00:00:00</span>
         </div>
       </div>
 
