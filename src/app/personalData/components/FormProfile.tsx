@@ -80,8 +80,12 @@ export function FormProfile() {
                   src={URL.createObjectURL(file)}
                   alt="User Profile"
                 />
-              ) : photoURL === 'null' ? (
-                <User className="h-20 w-20" />
+              ) : photoURL === null ? (
+                <div
+                  className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full border border-zinc-400 bg-white`}
+                >
+                  <User className="h-20 w-20" />
+                </div>
               ) : (
                 <img
                   className="absolute inset-0 h-full w-full rounded-full object-cover"
@@ -108,7 +112,7 @@ export function FormProfile() {
             <InputControl
               id="nick"
               onChange={(e) => setDisplayNewName(e.target.value)}
-              defaultValue={nickName === 'null' ? 'Nick name' : nickName}
+              defaultValue={nickName === null ? '' : nickName}
               placeholder="nick nome"
             />
           </InputRoot>
