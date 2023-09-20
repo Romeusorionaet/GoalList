@@ -6,6 +6,10 @@ export function NavPageAuthenticated() {
   const { checkMenuOpen, setCheckMenuOpen, widthScreen, handleChangeValue } =
     useWidthScreen()
 
+  function setValueFalseForStateCheckMenuOpen() {
+    setCheckMenuOpen(false)
+  }
+
   return (
     <div>
       <div className={widthScreen && widthScreen >= 800 ? 'hidden' : ''}>
@@ -31,24 +35,30 @@ export function NavPageAuthenticated() {
           } `}
         >
           <li>
-            <Link onClick={() => setCheckMenuOpen(false)} href="/">
+            <Link onClick={setValueFalseForStateCheckMenuOpen} href="/">
               Início
             </Link>
           </li>
 
           <li>
-            <Link onClick={() => setCheckMenuOpen(false)} href="/profile">
-              Perfil
+            <Link
+              onClick={setValueFalseForStateCheckMenuOpen}
+              href="/personalData"
+            >
+              Dados pessoais
             </Link>
           </li>
           <li>
-            <Link onClick={() => setCheckMenuOpen(false)} href="/card">
+            <Link
+              onClick={setValueFalseForStateCheckMenuOpen}
+              href="/createCardGoal"
+            >
               Adicionar objetivo
             </Link>
           </li>
           <li>
-            <Link onClick={() => setCheckMenuOpen(false)} href="/myCardsGoal">
-              Ver meus objetivos
+            <Link onClick={setValueFalseForStateCheckMenuOpen} href="/profile">
+              Perfil
             </Link>
           </li>
         </ul>

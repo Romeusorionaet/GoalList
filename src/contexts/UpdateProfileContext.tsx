@@ -100,7 +100,6 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
       }
 
       if (displayName) {
-        console.log(displayName)
         updateProfile({
           displayName,
         })
@@ -143,33 +142,6 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
       }
     }
   }
-
-  //   async function ChangePassword({
-  //     oldEmail,
-  //     newPassword,
-  //     oldPassword,
-  //   }: EmailAndPasswordProps) {
-  //     if (user) {
-  //       const credential = EmailAuthProvider.credential(oldEmail, oldPassword)
-
-  //       reauthenticateWithCredential(user, credential)
-  //         .then(() => {
-  //           return updatePassword(user, newPassword)
-  //         })
-  //         .then(() => {
-  //           alert('Senha alterado')
-  //           router.push('/signIn')
-  //           removeCookie()
-  //         })
-  //         .catch((error) => {
-  //           if ((error as AuthError)?.code === 'auth/wrong-password') {
-  //             alert('Senha antiga não confere.')
-  //           }
-  //         })
-  //     } else {
-  //       console.error('O usuário não está autenticado')
-  //     }
-  //   }
 
   return (
     <UpdateProfileContext.Provider

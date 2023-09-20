@@ -1,40 +1,112 @@
 'use client'
 
-import React, { useState } from 'react'
-import { motion, useAnimation } from 'framer-motion'
-import { FormProfile } from './components/FormProfile'
-import { FormPassword } from './components/FormPassword'
-import { Key } from 'phosphor-react'
+import {
+  updateDoc,
+  doc,
+  collection,
+  getDocs,
+  query,
+  where,
+  Timestamp,
+} from 'firebase/firestore'
+import { CardGoal } from '@/components/CardGoal'
+import { db } from '@/services/firebaseConfig'
+
+import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
+import * as Checkbox from '@radix-ui/react-checkbox'
+import { Check, CheckCircle, User } from 'phosphor-react'
+import { useEffect, useState } from 'react'
+
+interface CardGoalProfileProps {
+  finalDate: Timestamp
+  startDate: Timestamp
+  completedGoal: boolean
+  userId: string
+  cardId: string
+  goal: string
+}
 
 export default function Profile() {
-  const [isPasswordFormHidden, setIsPasswordFormHidden] = useState(true)
-  const controls = useAnimation()
-  const rotationClass = isPasswordFormHidden
-    ? 'rotate-180 duration-700'
-    : 'duration-700'
+  const [cardGoal, setCardGoal] = useState<CardGoalProfileProps[]>([])
+  const { userId, displayName, photoURL } = useOnAuthenticated()
 
-  const toggleFormVisibility = () => {
-    controls.start({ opacity: 0, scale: 1 })
-    setTimeout(() => {
-      setIsPasswordFormHidden((prev) => !prev)
-      controls.start({ opacity: 1, scale: 1 })
-    }, 300)
+  useEffect(() => {
+    const getGoal = async () => {
+      const querySnapshot = await getDocs(
+        query(collection(db, 'cardGoal'), where('userId', '==', userId)),
+      )
+
+      const goals: CardGoalProfileProps[] = []
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data() as CardGoalProfileProps
+        goals.push(data)
+      })
+
+      setCardGoal(goals)
+    }
+    getGoal()
+  }, [userId, cardGoal])
+
+  function handleSetValueTrueForCompletedGoal(cardId: string) {
+    const cardRef = doc(db, 'cardGoal', cardId)
+
+    updateDoc(cardRef, {
+      completedGoal: true,
+    })
   }
 
   return (
-    <div className="fixed left-[50%] top-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] space-y-8 rounded-xl bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-      <button className="absolute right-6 top-6" onClick={toggleFormVisibility}>
-        <Key className={`h-6 w-6 ${rotationClass}`} />
-      </button>
+    <div className="flex flex-wrap items-center justify-center gap-2">
+      {photoURL === null ? (
+        <div
+          className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full border border-zinc-400 bg-white`}
+        >
+          <User className="h-20 w-20" />
+        </div>
+      ) : (
+        <div
+          className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full bg-white`}
+        >
+          <img
+            className="absolute inset-0 h-full w-full rounded-full object-cover"
+            src={photoURL}
+            alt="User Profile"
+          />
+        </div>
+      )}
+      <h1>{displayName === 'null' ? 'Nick name' : displayName}</h1>
+      <h2>
+        Aqui fica o perfil do user mostrando vários dados dele sobre seu
+        desempenho, e como será público para outros ver, tem que ter sua foto.
+      </h2>
+      {cardGoal &&
+        cardGoal.map((card) => {
+          return (
+            <div className="relative p-4" key={card.cardId}>
+              <CardGoal
+                startDate={card.startDate}
+                finalDate={card.finalDate}
+                goal={card.goal}
+              />
 
-      <motion.div
-        initial={{ opacity: 1, scale: 1, height: 'auto' }}
-        animate={controls}
-        transition={{ duration: 0.6 }}
-        style={{ overflow: 'hidden' }}
-      >
-        {isPasswordFormHidden ? <FormProfile /> : <FormPassword />}
-      </motion.div>
+              {card.completedGoal ? (
+                <CheckCircle className="absolute right-2 top-2 h-6 w-6 rounded-full bg-green-500" />
+              ) : (
+                <Checkbox.Root
+                  onClick={() =>
+                    handleSetValueTrueForCompletedGoal(card.cardId)
+                  }
+                  className="shadow-blackA7 hover:bg-violet3 absolute right-2 top-2 flex h-5 w-5 appearance-none items-center justify-center rounded-md bg-white shadow-[0_2px_10px] outline-none focus:shadow-[0_0_0_2px_black]"
+                >
+                  <Checkbox.Indicator>
+                    <Check />
+                  </Checkbox.Indicator>
+                </Checkbox.Root>
+              )}
+            </div>
+          )
+        })}
     </div>
   )
 }

@@ -1,37 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
 
-import { FormEvent, useContext, useEffect, useState } from 'react'
-import { onAuthStateChanged } from 'firebase/auth'
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
-import { auth, storage } from '@/services/firebaseConfig'
 import { UpdateProfileContext } from '@/contexts/UpdateProfileContext'
+import { FormEvent, useContext, useEffect, useState } from 'react'
+import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
 import { InputControl, InputRoot } from '@/components/Input'
-import { User } from 'phosphor-react'
+import { storage } from '@/services/firebaseConfig'
 import { Button } from '@/components/Button'
+import { User } from 'phosphor-react'
 
 export function FormProfile() {
   const [dataImage, setDataImage] = useState({ image: '' })
-  const [photoURL, setPhotoURL] = useState('')
+  const { photoURL, oldEmail, displayName: nickName } = useOnAuthenticated()
   const [file, setFile] = useState<File>()
 
   const [oldPassword, setOldPassword] = useState('')
-  const [displayName, setDisplayName] = useState('')
+  const [displayNewName, setDisplayNewName] = useState('')
   const [newEmail, setNewEmail] = useState('')
-  const [oldEmail, setOldEmail] = useState('')
 
   const { UpdateProfileForm } = useContext(UpdateProfileContext)
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setOldEmail(String(user.email))
-        setDisplayName(String(user.displayName))
-        setPhotoURL(String(user.photoURL))
-      } else {
-        console.log('User is signed out')
-      }
-    })
-  }, [])
 
   useEffect(() => {
     const uploadFile = () => {
@@ -74,7 +61,7 @@ export function FormProfile() {
       newEmail,
       oldEmail,
       oldPassword,
-      displayName,
+      displayName: displayNewName,
       dataImage,
     })
   }
@@ -93,14 +80,18 @@ export function FormProfile() {
                   src={URL.createObjectURL(file)}
                   alt="User Profile"
                 />
-              ) : photoURL ? (
+              ) : photoURL === null ? (
+                <div
+                  className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full border border-zinc-400 bg-white`}
+                >
+                  <User className="h-20 w-20" />
+                </div>
+              ) : (
                 <img
                   className="absolute inset-0 h-full w-full rounded-full object-cover"
                   src={photoURL}
                   alt="User Profile"
                 />
-              ) : (
-                <User className="h-20 w-20" />
               )}
             </div>
             <input
@@ -113,16 +104,16 @@ export function FormProfile() {
         </fieldset>
 
         <fieldset className="flex flex-col gap-1">
-          <label className="mb-2" htmlFor="name">
-            Nome
+          <label className="mb-2" htmlFor="nick">
+            Nick name
           </label>
 
           <InputRoot>
             <InputControl
-              id="name"
-              onChange={(e) => setDisplayName(e.target.value)}
-              defaultValue={displayName}
-              // placeholder="seu nome"
+              id="nick"
+              onChange={(e) => setDisplayNewName(e.target.value)}
+              defaultValue={nickName === null ? '' : nickName}
+              placeholder="nick nome"
             />
           </InputRoot>
         </fieldset>
