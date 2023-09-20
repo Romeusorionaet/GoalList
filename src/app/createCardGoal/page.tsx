@@ -29,7 +29,7 @@ export default function CreateCardGoal() {
   }
 
   function verifyIFUserCompletedProfile() {
-    if (displayName === 'null' || photoURL === 'null') {
+    if (displayName === null || photoURL === null) {
       alert(
         'Complete o seu perfil para podermos personalizar melhor a sua experiência.',
       )

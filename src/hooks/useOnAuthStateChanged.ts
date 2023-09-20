@@ -4,22 +4,22 @@ import { useEffect, useState } from 'react'
 
 export function useOnAuthenticated() {
   const [userId, setUserId] = useState<string | null>('')
-  const [displayName, setDisplayName] = useState('')
-  const [photoURL, setPhotoURL] = useState('')
+  const [displayName, setDisplayName] = useState<string | null>('')
+  const [photoURL, setPhotoURL] = useState<string | null>('')
   const [oldEmail, setOldEmail] = useState('')
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        setDisplayName(String(user.displayName))
-        setPhotoURL(String(user.photoURL))
+        setDisplayName(user.displayName)
+        setPhotoURL(user.photoURL)
         setOldEmail(String(user.email))
         setUserId(user.uid)
       } else {
-        console.log('User is signed out')
+        alert('User is signed out')
       }
     })
-  })
+  }, [displayName, photoURL])
 
   return { userId, displayName, photoURL, oldEmail }
 }

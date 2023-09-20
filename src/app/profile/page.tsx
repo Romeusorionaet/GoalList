@@ -58,7 +58,7 @@ export default function Profile() {
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-2">
-      {photoURL === 'null' ? (
+      {photoURL === null ? (
         <div
           className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full border border-zinc-400 bg-white`}
         >
