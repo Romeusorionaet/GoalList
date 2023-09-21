@@ -1,7 +1,6 @@
 import { collection, getDocs, Timestamp } from 'firebase/firestore'
 import { db } from '@/services/firebaseConfig'
 import { MainPosts } from '@/components/MainPosts'
-import { GetStaticProps } from 'next'
 
 interface CardGoalProps {
   finalDate: Timestamp
