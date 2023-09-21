@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { UpdateProfileContext } from '@/contexts/UpdateProfileContext'
 import { FormEvent, useContext, useEffect, useState } from 'react'
