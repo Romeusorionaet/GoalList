@@ -19,14 +19,15 @@ export function MainPosts({ goals }: MainPostsProps) {
   }>({})
 
   useEffect(() => {
-    const getGoals = async () => {
+    const getSortedUserLastCards = () => {
       const lastCards: { [userId: string]: CardGoalProps } = {}
 
       goals.forEach((card) => {
         if (card.userId) {
           if (
             !lastCards[card.userId] ||
-            card.startDate > lastCards[card.userId].startDate
+            card.dateTime.formattedStartDate >
+              lastCards[card.userId].dateTime.formattedStartDate
           ) {
             lastCards[card.userId] = card
           }
@@ -49,11 +50,13 @@ export function MainPosts({ goals }: MainPostsProps) {
 
       setIncompleteGoalsCount(incompleteCounts)
     }
-    getGoals()
+    getSortedUserLastCards()
   }, [goals])
 
   const sortedUserLastCards = Object.values(userLastCard).sort(
-    (a, b) => Number(b.startDate) - Number(a.startDate),
+    (a, b) =>
+      Number(b.dateTime.formattedStartDate) -
+      Number(a.dateTime.formattedStartDate),
   )
 
   return (
@@ -81,8 +84,7 @@ export function MainPosts({ goals }: MainPostsProps) {
               displayName={lastCard.displayName}
               photoURL={lastCard.photoURL}
               goal={lastCard.goal}
-              startDate={lastCard.startDate}
-              finalDate={lastCard.finalDate}
+              dateTime={lastCard.dateTime}
             />
 
             <div className="mt-8 rounded-lg border border-zinc-200 sm:hidden" />

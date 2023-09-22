@@ -1,15 +1,14 @@
 'use client'
 
-import { Button } from '@/components/Button'
+import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
+import 'react-datepicker/dist/react-datepicker.css'
+import { setDoc, doc } from 'firebase/firestore'
 import { SyntheticEvent, useState } from 'react'
 import { db } from '@/services/firebaseConfig'
-import { setDoc, doc } from 'firebase/firestore'
-import uuid from 'react-uuid'
-import { format } from 'date-fns'
-
+import { Button } from '@/components/Button'
 import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
-import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
+import { format } from 'date-fns'
+import uuid from 'react-uuid'
 
 export default function CreateCardGoal() {
   const { photoURL, displayName, userId } = useOnAuthenticated()
@@ -20,12 +19,13 @@ export default function CreateCardGoal() {
 
   const formattedStartDate = format(startDate, 'dd/MM/yyyy')
   const formattedFinalDate = format(finalDate, 'dd/MM/yyyy')
+  const formattedHour = format(finalDate, 'HH:mm')
 
   const docObjectItems = {
     completedGoal: false,
+    failedGoal: false,
     displayName,
-    startDate: formattedStartDate,
-    finalDate: formattedFinalDate,
+    dateTime: { formattedStartDate, formattedFinalDate, formattedHour },
     photoURL,
     userId,
     cardId: uuid(),

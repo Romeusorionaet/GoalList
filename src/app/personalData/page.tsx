@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useState } from 'react'
-import { motion, useAnimation } from 'framer-motion'
-import { FormProfile } from './components/FormProfile'
 import { FormPassword } from './components/FormPassword'
+import { FormProfile } from './components/FormProfile'
+import { motion, useAnimation } from 'framer-motion'
+import React, { useState } from 'react'
 import { Key } from 'phosphor-react'
 
 export default function PersonalData() {

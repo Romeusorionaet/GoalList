@@ -2,26 +2,26 @@
 
 import {
   updateDoc,
-  doc,
   collection,
   getDocs,
   query,
   where,
-  Timestamp,
+  doc,
 } from 'firebase/firestore'
-import useSWR, { mutate } from 'swr'
-
+import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
+import { Check, CheckCircle, User } from 'phosphor-react'
+import * as Checkbox from '@radix-ui/react-checkbox'
+import { DateTimeGoalProps } from '@/config/getData'
 import { CardGoal } from '@/components/CardGoal'
 import { db } from '@/services/firebaseConfig'
-
-import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
-import * as Checkbox from '@radix-ui/react-checkbox'
-import { Check, CheckCircle, User } from 'phosphor-react'
+import useSWR, { mutate } from 'swr'
+import { format } from 'date-fns'
+import { useEffect } from 'react'
 
 interface CardGoalProfileProps {
-  finalDate: Timestamp
-  startDate: Timestamp
+  dateTime: DateTimeGoalProps
   completedGoal: boolean
+  failedGoal: boolean
   userId: string
   cardId: string
   goal: string
@@ -32,7 +32,12 @@ export default function Profile() {
 
   const { data: cardGoal, error } = useSWR(`profile-${userId}`, async () => {
     const querySnapshot = await getDocs(
-      query(collection(db, 'cardGoal'), where('userId', '==', userId)),
+      query(
+        collection(db, 'cardGoal'),
+        where('userId', '==', userId),
+        where('failedGoal', '==', false),
+        where('completedGoal', '==', false),
+      ),
     )
 
     const goals: CardGoalProfileProps[] = []
@@ -46,15 +51,45 @@ export default function Profile() {
   })
 
   if (error) {
-    console.log(error)
+    console.log('error no cache', error)
   }
 
-  function handleSetValueTrueForCompletedGoal(cardId: string) {
+  function setValueTrueForCompletedGoal(cardId: string) {
     const cardRef = doc(db, 'cardGoal', cardId)
 
     updateDoc(cardRef, {
       completedGoal: true,
     })
+  }
+
+  function setValueTrueForFailedGoal(goalListId: string) {
+    const cardRef = doc(db, 'cardGoal', goalListId)
+
+    updateDoc(cardRef, {
+      DelayedGoal: true,
+    })
+  }
+
+  useEffect(() => {
+    const date = new Date()
+    const dateNow = format(date, 'dd/MM/yyyy')
+    const hourNow = format(date, 'HH:mm')
+
+    if (cardGoal) {
+      cardGoal.forEach((goalList) => {
+        const isSameDate =
+          `${dateNow} ${hourNow}` ===
+          `${goalList.dateTime.formattedFinalDate} ${goalList.dateTime.formattedHour}`
+
+        if (isSameDate) {
+          setValueTrueForFailedGoal(goalList.cardId)
+        }
+      })
+    }
+  }, [cardGoal])
+
+  function handleUpdateCardGoal(cardId: string) {
+    setValueTrueForCompletedGoal(cardId)
 
     mutate(`profile-${userId}`)
   }
@@ -87,19 +122,13 @@ export default function Profile() {
         cardGoal.map((card) => {
           return (
             <div className="relative p-4" key={card.cardId}>
-              <CardGoal
-                startDate={card.startDate}
-                finalDate={card.finalDate}
-                goal={card.goal}
-              />
+              <CardGoal dateTime={card.dateTime} goal={card.goal} />
 
               {card.completedGoal ? (
                 <CheckCircle className="absolute right-2 top-2 h-6 w-6 rounded-full bg-green-500" />
               ) : (
                 <Checkbox.Root
-                  onClick={() =>
-                    handleSetValueTrueForCompletedGoal(card.cardId)
-                  }
+                  onClick={() => handleUpdateCardGoal(card.cardId)}
                   className="shadow-blackA7 hover:bg-violet3 absolute right-2 top-2 flex h-5 w-5 appearance-none items-center justify-center rounded-md bg-white shadow-[0_2px_10px] outline-none focus:shadow-[0_0_0_2px_black]"
                 >
                   <Checkbox.Indicator>

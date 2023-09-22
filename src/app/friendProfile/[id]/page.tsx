@@ -1,12 +1,11 @@
 'use client'
 
 import { collection, getDocs, query, where } from 'firebase/firestore'
+import { CardGoalDataProps } from '@/config/getData'
 import { CardGoal } from '@/components/CardGoal'
 import { db } from '@/services/firebaseConfig'
-
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
-import { CardGoalDataProps } from '@/config/getData'
 
 export default function FriendProfile({ params }: { params: { id: string } }) {
   const [displayName, setDisplayname] = useState('')
@@ -14,11 +13,18 @@ export default function FriendProfile({ params }: { params: { id: string } }) {
 
   const userIdFriend = params.id
 
+  // no momento esta pegando os cards mas pretendo que exiba apenas info sobre
+  // media de tarefas concluidas e quatidade de objetivos falhado
   const { data: cardGoal, error } = useSWR(
     `profile-${userIdFriend}`,
     async () => {
       const querySnapshot = await getDocs(
-        query(collection(db, 'cardGoal'), where('userId', '==', userIdFriend)),
+        query(
+          collection(db, 'cardGoal'),
+          where('userId', '==', userIdFriend),
+          where('failedGoal', '==', false),
+          where('completedGoal', '==', false),
+        ),
       )
 
       const goals: CardGoalDataProps[] = []
@@ -65,11 +71,7 @@ export default function FriendProfile({ params }: { params: { id: string } }) {
         cardGoal.map((card) => {
           return (
             <div className="relative p-4" key={card.cardId}>
-              <CardGoal
-                startDate={card.startDate}
-                finalDate={card.finalDate}
-                goal={card.goal}
-              />
+              <CardGoal dateTime={card.dateTime} goal={card.goal} />
             </div>
           )
         })}

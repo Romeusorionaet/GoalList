@@ -1,9 +1,14 @@
-import { collection, getDocs, Timestamp } from 'firebase/firestore'
+import { collection, getDocs } from 'firebase/firestore'
 import { db } from '@/services/firebaseConfig'
 
+export interface DateTimeGoalProps {
+  formattedStartDate: string
+  formattedFinalDate: string
+  formattedHour: string
+}
+
 export interface CardGoalDataProps {
-  finalDate: Timestamp
-  startDate: Timestamp
+  dateTime: DateTimeGoalProps
   completedGoal: boolean
   displayName: string
   photoURL: string
@@ -13,22 +18,20 @@ export interface CardGoalDataProps {
 }
 
 export const getData = async (): Promise<CardGoalDataProps[]> => {
-  const querySnapshot = await getDocs(collection(db, 'cardGoal')).catch(
-    (error) => {
-      console.log(error)
-    },
-  )
+  try {
+    const querySnapshot = await getDocs(collection(db, 'cardGoal'))
 
-  if (!querySnapshot) {
+    const goals: CardGoalDataProps[] = []
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data() as CardGoalDataProps
+
+      goals.push(data)
+    })
+
+    return goals
+  } catch (error) {
+    console.error(error)
     return []
   }
-
-  const goals: CardGoalDataProps[] = []
-
-  querySnapshot.forEach((doc) => {
-    const data = doc.data() as CardGoalDataProps
-    goals.push(data)
-  })
-
-  return goals
 }
