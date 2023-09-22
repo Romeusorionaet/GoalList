@@ -1,20 +1,13 @@
-import { collection, getDocs, Timestamp } from 'firebase/firestore'
-import { db } from '@/services/firebaseConfig'
 import { MainPosts } from '@/components/MainPosts'
-
-interface CardGoalProps {
-  finalDate: Timestamp
-  startDate: Timestamp
-  completedGoal: boolean
-  displayName: string
-  photoURL: string
-  userId: string
-  cardId: string
-  goal: string
-}
+import { getData } from '@/config/getData'
 
 export default async function Home() {
   const goals = await getData()
+
+  if (!goals) {
+    console.log('sem goals')
+    return
+  }
 
   return (
     <div className="flex flex-col space-y-20 ">
@@ -22,17 +15,4 @@ export default async function Home() {
       <MainPosts goals={goals} />
     </div>
   )
-}
-
-export const getData = async (): Promise<CardGoalProps[]> => {
-  const querySnapshot = await getDocs(collection(db, 'cardGoal'))
-
-  const goals: CardGoalProps[] = []
-
-  querySnapshot.forEach((doc) => {
-    const data = doc.data() as CardGoalProps
-    goals.push(data)
-  })
-
-  return goals
 }

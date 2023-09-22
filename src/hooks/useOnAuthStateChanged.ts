@@ -3,13 +3,13 @@ import { auth } from '@/services/firebaseConfig'
 import { useEffect, useState } from 'react'
 
 export function useOnAuthenticated() {
-  const [userId, setUserId] = useState<string | null>('')
   const [displayName, setDisplayName] = useState<string | null>('')
   const [photoURL, setPhotoURL] = useState<string | null>('')
+  const [userId, setUserId] = useState<string | null>('')
   const [oldEmail, setOldEmail] = useState('')
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const onAuth = onAuthStateChanged(auth, (user) => {
       if (user) {
         setDisplayName(user.displayName)
         setPhotoURL(user.photoURL)
@@ -19,7 +19,11 @@ export function useOnAuthenticated() {
         console.log('User is signed out')
       }
     })
-  }, [displayName, photoURL])
+
+    return () => {
+      onAuth()
+    }
+  }, [])
 
   return { userId, displayName, photoURL, oldEmail }
 }

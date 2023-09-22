@@ -4,7 +4,7 @@ import { Button } from '@/components/Button'
 import { SyntheticEvent, useState } from 'react'
 import { db } from '@/services/firebaseConfig'
 import { setDoc, doc } from 'firebase/firestore'
-import { v4 as uuidv4 } from 'uuid'
+import uuid from 'react-uuid'
 import { format } from 'date-fns'
 
 import DatePicker from 'react-datepicker'
@@ -28,7 +28,7 @@ export default function CreateCardGoal() {
     finalDate: formattedFinalDate,
     photoURL,
     userId,
-    cardId: uuidv4(),
+    cardId: uuid(),
     goal,
   }
 

@@ -1,21 +1,12 @@
 'use client'
 
-import { Timestamp } from 'firebase/firestore'
 import { CardGoal, CardGoalProps } from '@/components/CardGoal'
-import Link from 'next/link'
+import { CardGoalDataProps } from '@/config/getData'
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 export interface MainPostsProps {
-  goals: {
-    finalDate: Timestamp
-    startDate: Timestamp
-    completedGoal: boolean
-    displayName: string
-    photoURL: string
-    userId: string
-    cardId: string
-    goal: string
-  }[]
+  goals: CardGoalDataProps[]
 }
 
 export function MainPosts({ goals }: MainPostsProps) {

@@ -9,13 +9,14 @@ import {
   where,
   Timestamp,
 } from 'firebase/firestore'
+import useSWR, { mutate } from 'swr'
+
 import { CardGoal } from '@/components/CardGoal'
 import { db } from '@/services/firebaseConfig'
 
 import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
 import * as Checkbox from '@radix-ui/react-checkbox'
 import { Check, CheckCircle, User } from 'phosphor-react'
-import { useEffect, useState } from 'react'
 
 interface CardGoalProfileProps {
   finalDate: Timestamp
@@ -27,26 +28,26 @@ interface CardGoalProfileProps {
 }
 
 export default function Profile() {
-  const [cardGoal, setCardGoal] = useState<CardGoalProfileProps[]>([])
   const { userId, displayName, photoURL } = useOnAuthenticated()
 
-  useEffect(() => {
-    const getGoal = async () => {
-      const querySnapshot = await getDocs(
-        query(collection(db, 'cardGoal'), where('userId', '==', userId)),
-      )
+  const { data: cardGoal, error } = useSWR(`profile-${userId}`, async () => {
+    const querySnapshot = await getDocs(
+      query(collection(db, 'cardGoal'), where('userId', '==', userId)),
+    )
 
-      const goals: CardGoalProfileProps[] = []
+    const goals: CardGoalProfileProps[] = []
 
-      querySnapshot.forEach((doc) => {
-        const data = doc.data() as CardGoalProfileProps
-        goals.push(data)
-      })
+    querySnapshot.forEach((doc) => {
+      const data = doc.data() as CardGoalProfileProps
+      goals.push(data)
+    })
 
-      setCardGoal(goals)
-    }
-    getGoal()
-  }, [userId, cardGoal])
+    return goals
+  })
+
+  if (error) {
+    console.log(error)
+  }
 
   function handleSetValueTrueForCompletedGoal(cardId: string) {
     const cardRef = doc(db, 'cardGoal', cardId)
@@ -54,6 +55,8 @@ export default function Profile() {
     updateDoc(cardRef, {
       completedGoal: true,
     })
+
+    mutate(`profile-${userId}`)
   }
 
   return (
@@ -80,7 +83,7 @@ export default function Profile() {
         Aqui fica o perfil do user mostrando vários dados dele sobre seu
         desempenho, e como será público para outros ver, tem que ter sua foto.
       </h2>
-      {cardGoal &&
+      {cardGoal ? (
         cardGoal.map((card) => {
           return (
             <div className="relative p-4" key={card.cardId}>
@@ -106,7 +109,10 @@ export default function Profile() {
               )}
             </div>
           )
-        })}
+        })
+      ) : (
+        <p>erg</p>
+      )}
     </div>
   )
 }
