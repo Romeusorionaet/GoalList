@@ -9,14 +9,14 @@ import {
   doc,
 } from 'firebase/firestore'
 import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
+import { CardGoalRoot } from '@/components/CardGoal/CardGoalRoot'
+import { CardGoalBody } from '@/components/CardGoal/CardGoalBody'
 import { Check, CheckCircle, User } from 'phosphor-react'
 import * as Checkbox from '@radix-ui/react-checkbox'
 import { DateTimeGoalProps } from '@/config/getData'
-import { CardGoal } from '@/components/CardGoal'
 import { db } from '@/services/firebaseConfig'
 import useSWR, { mutate } from 'swr'
 import { useEffect } from 'react'
-import dayjs from 'dayjs'
 
 interface CardGoalProfileProps {
   dateTime: DateTimeGoalProps
@@ -133,7 +133,9 @@ export default function Profile() {
         cardGoal.map((card) => {
           return (
             <div className="relative p-4" key={card.cardId}>
-              <CardGoal dateTime={card.dateTime} goal={card.goal} />
+              <CardGoalRoot>
+                <CardGoalBody dateTime={card.dateTime} goal={card.goal} />
+              </CardGoalRoot>
 
               {card.completedGoal ? (
                 <CheckCircle className="absolute right-2 top-2 h-6 w-6 rounded-full bg-green-500" />

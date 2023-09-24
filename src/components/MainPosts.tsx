@@ -1,7 +1,9 @@
 'use client'
 
-import { CardGoal, CardGoalProps } from '@/components/CardGoal'
+import { CardGoalRoot } from './CardGoal/CardGoalRoot'
+import { CardGoalBody } from './CardGoal/CardGoalBody'
 import { CardGoalDataProps } from '@/config/getData'
+import { HeaderGoal } from './CardGoal/HeaderGoal'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
@@ -11,7 +13,7 @@ export interface MainPostsProps {
 
 export function MainPosts({ goals }: MainPostsProps) {
   const [userLastCard, setUserLastCard] = useState<{
-    [userId: string]: CardGoalProps
+    [userId: string]: CardGoalDataProps
   }>({})
 
   const [incompleteGoalsCount, setIncompleteGoalsCount] = useState<{
@@ -20,7 +22,7 @@ export function MainPosts({ goals }: MainPostsProps) {
 
   useEffect(() => {
     const getSortedUserLastCards = () => {
-      const lastCards: { [userId: string]: CardGoalProps } = {}
+      const lastCards: { [userId: string]: CardGoalDataProps } = {}
 
       goals.forEach((card) => {
         if (card.userId) {
@@ -42,7 +44,7 @@ export function MainPosts({ goals }: MainPostsProps) {
           if (!incompleteCounts[card.userId]) {
             incompleteCounts[card.userId] = 0
           }
-          if (!card.completedGoal) {
+          if (!card.completedGoal && !card.failedGoal) {
             incompleteCounts[card.userId]++
           }
         }
@@ -80,12 +82,13 @@ export function MainPosts({ goals }: MainPostsProps) {
                 <span>Espiar Viajante</span>
               </Link>
             </div>
-            <CardGoal
-              displayName={lastCard.displayName}
-              photoURL={lastCard.photoURL}
-              goal={lastCard.goal}
-              dateTime={lastCard.dateTime}
-            />
+            <CardGoalRoot>
+              <HeaderGoal
+                displayName={lastCard.displayName}
+                photoURL={lastCard.photoURL}
+              />
+              <CardGoalBody dateTime={lastCard.dateTime} goal={lastCard.goal} />
+            </CardGoalRoot>
 
             <div className="mt-8 rounded-lg border border-zinc-200 sm:hidden" />
           </div>

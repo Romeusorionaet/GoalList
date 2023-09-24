@@ -10,6 +10,7 @@ export interface DateTimeGoalProps {
 export interface CardGoalDataProps {
   dateTime: DateTimeGoalProps
   completedGoal: boolean
+  failedGoal: boolean
   displayName: string
   photoURL: string
   userId: string
