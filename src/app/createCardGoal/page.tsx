@@ -20,6 +20,7 @@ export default function CreateCardGoal() {
 
   const formattedStartDate = format(startDate, 'dd/MM/yyyy')
   const formattedFinalDate = format(finalDate, 'dd/MM/yyyy')
+  const currentTime = format(startDate, 'HH:mm')
 
   const docObjectItems = {
     completedGoal: false,
@@ -43,22 +44,34 @@ export default function CreateCardGoal() {
   }
 
   const verifyDateAndHour = () => {
-    const timeDifference = finalDate.getTime() - startDate.getTime()
+    const currentTimeArray = currentTime.split(':').map(Number)
+    const formattedHourArray = formattedHour.split(':').map(Number)
 
-    const hoursDifference = timeDifference / (1000 * 60 * 60)
+    // Calculates the difference in minutes
+    const currentTimeMinutes = currentTimeArray[0] * 60 + currentTimeArray[1]
+    const formattedHourMinutes =
+      formattedHourArray[0] * 60 + formattedHourArray[1]
 
-    if (hoursDifference < 1) {
-      alert('O prazo mínimo para criar um objetivo é de 1 hora.')
-      return true
+    // Calculates the difference in minutes between hours
+    const timeDifference = formattedHourMinutes - currentTimeMinutes
+
+    if (timeDifference >= 60) {
+      return false
     }
 
-    return false
+    alert('O objetivo deve ter pelo menos 1 hora de duração.')
+    return true
   }
 
   async function HandleCreateCardForm(event: SyntheticEvent) {
     event.preventDefault()
 
     if (verifyIFUserCompletedProfile()) {
+      return
+    }
+
+    if (!formattedHour) {
+      alert('Selecione o horário.')
       return
     }
 
