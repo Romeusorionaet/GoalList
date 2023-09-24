@@ -28,7 +28,7 @@ export default function RootLayout({
 
   return (
     <html lang="pt-BR" className={roboto.className}>
-      <body className="bg-slate-50 p-4">
+      <body className="bg-slate-50">
         <div className="mx-auto my-auto max-w-[150rem] rounded-xl">
           {isPublicPage && (
             <AuthContextProvider>

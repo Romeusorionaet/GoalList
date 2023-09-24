@@ -3,13 +3,9 @@
 @tailwind utilities;
 
 body, input, button, li {
-  @apply text-zinc-900 text-base tracking-wide
-}
-
-p, span {
-  @apply font-serif leading-relaxed
+  @apply text-zinc-900 text-base tracking-wide leading-relaxed font-bold
 }
 
 h1, h2, h3, h4, h5, h6 {
-  @apply font-bold text-xl
+  @apply  text-xl 
 }

@@ -2,10 +2,11 @@
 
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { CardGoalDataProps } from '@/config/getData'
-import { CardGoal } from '@/components/CardGoal'
 import { db } from '@/services/firebaseConfig'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
+import { CardGoalRoot } from '@/components/CardGoal/CardGoalRoot'
+import { CardGoalBody } from '@/components/CardGoal/CardGoalBody'
 
 export default function FriendProfile({ params }: { params: { id: string } }) {
   const [displayName, setDisplayname] = useState('')
@@ -71,7 +72,9 @@ export default function FriendProfile({ params }: { params: { id: string } }) {
         cardGoal.map((card) => {
           return (
             <div className="relative p-4" key={card.cardId}>
-              <CardGoal dateTime={card.dateTime} goal={card.goal} />
+              <CardGoalRoot>
+                <CardGoalBody dateTime={card.dateTime} goal={card.goal} />
+              </CardGoalRoot>
             </div>
           )
         })}
