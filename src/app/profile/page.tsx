@@ -15,8 +15,8 @@ import { DateTimeGoalProps } from '@/config/getData'
 import { CardGoal } from '@/components/CardGoal'
 import { db } from '@/services/firebaseConfig'
 import useSWR, { mutate } from 'swr'
-import { format } from 'date-fns'
 import { useEffect } from 'react'
+import dayjs from 'dayjs'
 
 interface CardGoalProfileProps {
   dateTime: DateTimeGoalProps
@@ -66,22 +66,33 @@ export default function Profile() {
     const cardRef = doc(db, 'cardGoal', goalListId)
 
     updateDoc(cardRef, {
-      DelayedGoal: true,
+      failedGoal: true,
     })
   }
 
   useEffect(() => {
-    const date = new Date()
-    const dateNow = format(date, 'dd/MM/yyyy')
-    const hourNow = format(date, 'HH:mm')
+    const currentDate = new Date()
 
     if (cardGoal) {
       cardGoal.forEach((goalList) => {
-        const isSameDate =
-          `${dateNow} ${hourNow}` ===
-          `${goalList.dateTime.formattedFinalDate} ${goalList.dateTime.formattedHour}`
+        const formattedFinalDate = goalList.dateTime.formattedFinalDate
+        const formattedHour = goalList.dateTime.formattedHour
 
-        if (isSameDate) {
+        const [day, monthStr, yearStr] = formattedFinalDate.split('/')
+        const [hour, minute] = formattedHour.split(':')
+
+        const year = parseInt(yearStr, 10)
+        const month = parseInt(monthStr, 10) - 1
+
+        const finalDate = new Date(
+          year,
+          month,
+          parseInt(day, 10),
+          parseInt(hour, 10),
+          parseInt(minute, 10),
+        )
+
+        if (finalDate < currentDate) {
           setValueTrueForFailedGoal(goalList.cardId)
         }
       })

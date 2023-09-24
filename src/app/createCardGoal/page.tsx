@@ -14,12 +14,12 @@ export default function CreateCardGoal() {
   const { photoURL, displayName, userId } = useOnAuthenticated()
   const [goal, setGoal] = useState('')
 
-  const [finalDate, setFinalDate] = useState<Date>(new Date())
   const [startDate] = useState<Date>(new Date())
+  const [finalDate, setFinalDate] = useState<Date>(new Date())
+  const [formattedHour, setFormattedHour] = useState('')
 
   const formattedStartDate = format(startDate, 'dd/MM/yyyy')
   const formattedFinalDate = format(finalDate, 'dd/MM/yyyy')
-  const formattedHour = format(finalDate, 'HH:mm')
 
   const docObjectItems = {
     completedGoal: false,
@@ -32,7 +32,7 @@ export default function CreateCardGoal() {
     goal,
   }
 
-  function verifyIFUserCompletedProfile() {
+  const verifyIFUserCompletedProfile = () => {
     if (displayName === null || photoURL === null) {
       alert(
         'Complete o seu perfil para podermos personalizar melhor a sua experiência.',
@@ -42,10 +42,27 @@ export default function CreateCardGoal() {
     return false
   }
 
+  const verifyDateAndHour = () => {
+    const timeDifference = finalDate.getTime() - startDate.getTime()
+
+    const hoursDifference = timeDifference / (1000 * 60 * 60)
+
+    if (hoursDifference < 1) {
+      alert('O prazo mínimo para criar um objetivo é de 1 hora.')
+      return true
+    }
+
+    return false
+  }
+
   async function HandleCreateCardForm(event: SyntheticEvent) {
     event.preventDefault()
 
     if (verifyIFUserCompletedProfile()) {
+      return
+    }
+
+    if (verifyDateAndHour()) {
       return
     }
 
@@ -94,7 +111,7 @@ export default function CreateCardGoal() {
 
       <fieldset className="flex justify-between">
         <label className=" whitespace-nowrap" htmlFor="finalDate">
-          Data de entrega
+          Data final
         </label>
 
         <DatePicker
@@ -102,6 +119,18 @@ export default function CreateCardGoal() {
           id="finalDate"
           selected={finalDate}
           onChange={(date) => setFinalDate(date!)}
+        />
+      </fieldset>
+
+      <fieldset className="flex justify-between">
+        <label className=" whitespace-nowrap" htmlFor="finalDate">
+          Hora
+        </label>
+
+        <input
+          type="time"
+          value={formattedHour}
+          onChange={(e) => setFormattedHour(e.target.value)}
         />
       </fieldset>
 
