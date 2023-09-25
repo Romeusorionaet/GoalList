@@ -28,8 +28,8 @@ export function MainPosts({ goals }: MainPostsProps) {
         if (card.userId) {
           if (
             !lastCards[card.userId] ||
-            card.dateTime.formattedStartDate >
-              lastCards[card.userId].dateTime.formattedStartDate
+            new Date(card.createdAt) >
+              new Date(lastCards[card.userId].createdAt)
           ) {
             lastCards[card.userId] = card
           }
@@ -56,9 +56,7 @@ export function MainPosts({ goals }: MainPostsProps) {
   }, [goals])
 
   const sortedUserLastCards = Object.values(userLastCard).sort(
-    (a, b) =>
-      Number(b.dateTime.formattedStartDate) -
-      Number(a.dateTime.formattedStartDate),
+    (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
   )
 
   return (

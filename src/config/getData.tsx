@@ -8,6 +8,7 @@ export interface DateTimeGoalProps {
 }
 
 export interface CardGoalDataProps {
+  createdAt: Date
   dateTime: DateTimeGoalProps
   completedGoal: boolean
   failedGoal: boolean

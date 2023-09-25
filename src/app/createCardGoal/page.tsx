@@ -23,6 +23,7 @@ export default function CreateCardGoal() {
   const currentTime = format(startDate, 'HH:mm')
 
   const docObjectItems = {
+    createdAt: new Date().toJSON(),
     completedGoal: false,
     failedGoal: false,
     displayName,
@@ -84,6 +85,7 @@ export default function CreateCardGoal() {
       alert('Objetivo adicionado com sucesso.')
 
       setGoal('')
+      setFormattedHour('')
 
       setFinalDate(new Date())
     } catch (error) {

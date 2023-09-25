@@ -18,6 +18,7 @@ import { useEffect } from 'react'
 import useSWR from 'swr'
 
 interface CardGoalProfileProps {
+  createdAt: Date
   dateTime: DateTimeGoalProps
   completedGoal: boolean
   failedGoal: boolean
@@ -38,7 +39,12 @@ export default function Profile() {
 
     querySnapshot.forEach((doc) => {
       const data = doc.data() as CardGoalProfileProps
+      data.createdAt = new Date(data.createdAt)
       goals.push(data)
+    })
+
+    goals.sort((a, b) => {
+      return Number(b.createdAt) - Number(a.createdAt)
     })
 
     return goals
