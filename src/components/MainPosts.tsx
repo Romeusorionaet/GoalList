@@ -5,7 +5,6 @@ import { CardGoalBody } from './CardGoal/CardGoalBody'
 import { CardGoalDataProps } from '@/config/getData'
 import { HeaderGoal } from './CardGoal/HeaderGoal'
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 
 export interface MainPostsProps {
   goals: CardGoalDataProps[]
@@ -59,26 +58,29 @@ export function MainPosts({ goals }: MainPostsProps) {
     (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
   )
 
+  const filteredGoals = goals.filter((card) => card.failedGoal)
+  const filteredGoalsCompleted = goals.filter((card) => card.completedGoal)
+
+  const lengthGoalsFaild = filteredGoals.length
+  const goalsCompleted = filteredGoalsCompleted.length
+
   return (
     <div className="flex flex-wrap items-center justify-center gap-4 ">
       {sortedUserLastCards.map((lastCard) => {
         const userId = lastCard.userId
 
-        const incompleteCount = incompleteGoalsCount[userId!] || 0
+        const incompleteCount = incompleteGoalsCount[userId] || 0
         const conditionalStyle = incompleteCount === 0 ? 'hidden' : ''
 
         return (
           <div className={`${conditionalStyle} space-y-1`} key={userId}>
             <div className="flex justify-between">
               <p>
-                Missões: <strong>{incompleteCount}</strong>
+                Todas as missões: <strong>{goals.length}</strong>
               </p>
-              <Link
-                className="rounded-md bg-zinc-500 px-2 py-1 text-sm text-white hover:bg-zinc-600"
-                href={`/friendProfile/${userId}`}
-              >
-                <span>Espiar Viajante</span>
-              </Link>
+              <p>
+                A concluir: <strong>{incompleteCount}</strong>
+              </p>
             </div>
             <CardGoalRoot>
               <HeaderGoal
@@ -87,6 +89,15 @@ export function MainPosts({ goals }: MainPostsProps) {
               />
               <CardGoalBody dateTime={lastCard.dateTime} goal={lastCard.goal} />
             </CardGoalRoot>
+
+            <div className="flex justify-between">
+              <p>
+                fracassadas: <strong>{lengthGoalsFaild}</strong>
+              </p>
+              <p>
+                Concluídas: <strong>{goalsCompleted}</strong>
+              </p>
+            </div>
 
             <div className="mt-8 rounded-lg border border-zinc-200 sm:hidden" />
           </div>

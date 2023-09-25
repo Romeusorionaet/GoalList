@@ -1,57 +1,20 @@
 'use client'
 
-import {
-  updateDoc,
-  collection,
-  getDocs,
-  query,
-  where,
-  doc,
-} from 'firebase/firestore'
+import { GoalContext, GoalProviderContext } from '@/contexts/ProviderGoalList'
 import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
 import { HeaderProfile } from './components/HeaderProfile'
 import { GraphicGoals } from './components/GraphicGoals'
 import { BodyProfile } from './components/BodyProfile'
-import { DateTimeGoalProps } from '@/config/getData'
+import { updateDoc, doc } from 'firebase/firestore'
 import { db } from '@/services/firebaseConfig'
-import { useEffect } from 'react'
-import useSWR from 'swr'
-
-interface CardGoalProfileProps {
-  createdAt: Date
-  dateTime: DateTimeGoalProps
-  completedGoal: boolean
-  failedGoal: boolean
-  userId: string
-  cardId: string
-  goal: string
-}
+import { useContext, useEffect } from 'react'
 
 export default function Profile() {
-  const { userId, displayName, photoURL } = useOnAuthenticated()
-
-  const { data: cardGoal, error } = useSWR(`profile-${userId}`, async () => {
-    const querySnapshot = await getDocs(
-      query(collection(db, 'cardGoal'), where('userId', '==', userId)),
-    )
-
-    const goals: CardGoalProfileProps[] = []
-
-    querySnapshot.forEach((doc) => {
-      const data = doc.data() as CardGoalProfileProps
-      data.createdAt = new Date(data.createdAt)
-      goals.push(data)
-    })
-
-    goals.sort((a, b) => {
-      return Number(b.createdAt) - Number(a.createdAt)
-    })
-
-    return goals
-  })
+  const { displayName, photoURL } = useOnAuthenticated()
+  const { cardGoal, error } = useContext(GoalContext)
 
   if (error) {
-    console.log('error no cache', error)
+    console.log('Problema no cache', error)
   }
 
   const setValueTrueForFailedGoal = (goalListId: string) => {
@@ -96,14 +59,16 @@ export default function Profile() {
   }, [cardGoal])
 
   return (
-    <div className="flex flex-col items-center justify-center gap-2">
-      <div className="mt-20 w-full space-y-4 bg-white">
-        <HeaderProfile photoURL={photoURL} displayName={displayName} />
+    <GoalProviderContext>
+      <div className="flex flex-col items-center justify-center gap-2">
+        <div className="mt-20 w-full space-y-4 bg-white">
+          <HeaderProfile photoURL={photoURL} displayName={displayName} />
 
-        {cardGoal && <GraphicGoals cardGoal={cardGoal} />}
+          {<GraphicGoals />}
+        </div>
+
+        <div>{<BodyProfile />}</div>
       </div>
-
-      <div>{cardGoal && <BodyProfile cardGoal={cardGoal} />}</div>
-    </div>
+    </GoalProviderContext>
   )
 }
