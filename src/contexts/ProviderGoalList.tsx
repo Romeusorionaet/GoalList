@@ -1,5 +1,12 @@
 import React, { ReactNode, createContext, useEffect, useState } from 'react'
-import { collection, getDocs, query, where } from 'firebase/firestore'
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  updateDoc,
+  doc,
+} from 'firebase/firestore'
 import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
 import { DateTimeGoalProps } from '@/config/getData'
 import { db } from '@/services/firebaseConfig'
@@ -106,6 +113,50 @@ export function GoalProviderContext({ children }: GoalContextProps) {
       }
     }
   }, [cardGoal, selectedViewMode])
+
+  const setValueTrueForFailedGoal = (goalListId: string) => {
+    const cardRef = doc(db, 'cardGoal', goalListId)
+
+    updateDoc(cardRef, {
+      failedGoal: true,
+    })
+  }
+
+  useEffect(() => {
+    const verifyGolasInspiredTime = () => {
+      const currentDate = new Date()
+
+      if (cardGoal) {
+        const filteredCards = cardGoal.filter(
+          (card) => !card.completedGoal && !card.failedGoal,
+        )
+
+        filteredCards.forEach((goalList) => {
+          const formattedFinalDate = goalList.dateTime.formattedFinalDate
+          const formattedHour = goalList.dateTime.formattedHour
+
+          const [day, monthStr, yearStr] = formattedFinalDate.split('/')
+          const [hour, minute] = formattedHour.split(':')
+
+          const year = parseInt(yearStr, 10)
+          const month = parseInt(monthStr, 10) - 1
+
+          const finalDate = new Date(
+            year,
+            month,
+            parseInt(day, 10),
+            parseInt(hour, 10),
+            parseInt(minute, 10),
+          )
+
+          if (finalDate < currentDate) {
+            setValueTrueForFailedGoal(goalList.cardId)
+          }
+        })
+      }
+    }
+    verifyGolasInspiredTime()
+  }, [cardGoal])
 
   return (
     <GoalContext.Provider

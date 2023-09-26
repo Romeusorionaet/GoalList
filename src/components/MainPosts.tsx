@@ -15,10 +15,6 @@ export function MainPosts({ goals }: MainPostsProps) {
     [userId: string]: CardGoalDataProps
   }>({})
 
-  const [incompleteGoalsCount, setIncompleteGoalsCount] = useState<{
-    [userId: string]: number
-  }>({})
-
   useEffect(() => {
     const getSortedUserLastCards = () => {
       const lastCards: { [userId: string]: CardGoalDataProps } = {}
@@ -36,33 +32,28 @@ export function MainPosts({ goals }: MainPostsProps) {
       })
 
       setUserLastCard(lastCards)
-
-      const incompleteCounts: { [userId: string]: number } = {}
-      goals.forEach((card) => {
-        if (card.userId) {
-          if (!incompleteCounts[card.userId]) {
-            incompleteCounts[card.userId] = 0
-          }
-          if (!card.completedGoal && !card.failedGoal) {
-            incompleteCounts[card.userId]++
-          }
-        }
-      })
-
-      setIncompleteGoalsCount(incompleteCounts)
     }
     getSortedUserLastCards()
   }, [goals])
 
+  const incompleteGoalsCount: { [userId: string]: number } = {}
+  const countGoalsFailed = goals.filter((card) => card.failedGoal).length
+  const countGoalsCompleted = goals.filter((card) => card.completedGoal).length
+
+  goals.forEach((card) => {
+    if (card.userId) {
+      if (!incompleteGoalsCount[card.userId]) {
+        incompleteGoalsCount[card.userId] = 0
+      }
+      if (!card.completedGoal && !card.failedGoal) {
+        incompleteGoalsCount[card.userId]++
+      }
+    }
+  })
+
   const sortedUserLastCards = Object.values(userLastCard).sort(
     (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
   )
-
-  const filteredGoals = goals.filter((card) => card.failedGoal)
-  const filteredGoalsCompleted = goals.filter((card) => card.completedGoal)
-
-  const lengthGoalsFaild = filteredGoals.length
-  const goalsCompleted = filteredGoalsCompleted.length
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-4 ">
@@ -92,10 +83,10 @@ export function MainPosts({ goals }: MainPostsProps) {
 
             <div className="flex justify-between">
               <p>
-                fracassadas: <strong>{lengthGoalsFaild}</strong>
+                fracassadas: <strong>{countGoalsFailed}</strong>
               </p>
               <p>
-                Concluídas: <strong>{goalsCompleted}</strong>
+                Concluídas: <strong>{countGoalsCompleted}</strong>
               </p>
             </div>
 

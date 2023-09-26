@@ -2,11 +2,11 @@ import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
 import { CardGoalRoot } from '@/components/CardGoal/CardGoalRoot'
 import { CardGoalBody } from '@/components/CardGoal/CardGoalBody'
 import { GoalContext } from '@/contexts/ProviderGoalList'
+import { Check, CheckCircle, X } from 'phosphor-react'
 import * as Checkbox from '@radix-ui/react-checkbox'
 import { DateTimeGoalProps } from '@/config/getData'
 import { updateDoc, doc } from 'firebase/firestore'
 import { db } from '@/services/firebaseConfig'
-import { Check } from 'phosphor-react'
 import { useContext } from 'react'
 import { mutate } from 'swr'
 
@@ -51,9 +51,7 @@ export function BodyProfile() {
                 <CardGoalBody dateTime={card.dateTime} goal={card.goal} />
               </CardGoalRoot>
 
-              {card.completedGoal ? (
-                <></>
-              ) : (
+              {!card.completedGoal && !card.failedGoal && (
                 <Checkbox.Root
                   onClick={() => handleUpdateCardGoal(card.cardId)}
                   className="shadow-blackA7 hover:bg-violet3 absolute right-5 top-14 flex h-5 w-5 appearance-none items-center justify-center rounded-md bg-white"
@@ -62,6 +60,22 @@ export function BodyProfile() {
                     <Check />
                   </Checkbox.Indicator>
                 </Checkbox.Root>
+              )}
+
+              {card.failedGoal && (
+                <X
+                  size={28}
+                  color={'red'}
+                  className="absolute right-5 top-12"
+                />
+              )}
+
+              {card.completedGoal && (
+                <CheckCircle
+                  size={32}
+                  color="white"
+                  className="absolute right-5 top-11"
+                />
               )}
             </div>
           )
