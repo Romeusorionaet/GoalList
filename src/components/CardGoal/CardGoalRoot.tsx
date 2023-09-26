@@ -1,7 +1,7 @@
 export function CardGoalRoot({ ...props }) {
   return (
     <div
-      className="p-y-1 flex w-[20rem] flex-col items-center justify-center rounded-lg bg-blue-200"
+      className="flex w-72 flex-col items-center justify-center rounded-lg bg-gradient-to-t from-zinc-300 to-blue-300 p-4 shadow-md"
       {...props}
     />
   )

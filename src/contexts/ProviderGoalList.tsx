@@ -22,18 +22,18 @@ interface CardGoalProfileProps {
   goal: string
 }
 
-interface StateGoalsProps {
-  notCompleted: number
-  completed: number
-  failed: number
-  all: number
+interface StateGoalsCountProps {
+  notCompletedGoals: number
+  completedGoals: number
+  failedGoals: number
+  allGoals: number
 }
 
 interface GoalContextType {
   selectedViewMode: string
   getSelectedViewMode: (viewModeList: string) => void
   orderListFiltered: CardGoalProfileProps[]
-  stateCountGoals: StateGoalsProps
+  stateCountGoals: StateGoalsCountProps
   cardGoal?: CardGoalProfileProps[]
   error: string
 }
@@ -45,11 +45,11 @@ interface GoalContextProps {
 export const GoalContext = createContext({} as GoalContextType)
 
 export function GoalProviderContext({ children }: GoalContextProps) {
-  const [stateCountGoals, setStateCountGoals] = useState<StateGoalsProps>({
-    notCompleted: 0,
-    completed: 0,
-    failed: 0,
-    all: 0,
+  const [stateCountGoals, setStateCountGoals] = useState<StateGoalsCountProps>({
+    notCompletedGoals: 0,
+    completedGoals: 0,
+    failedGoals: 0,
+    allGoals: 0,
   })
 
   const { userId } = useOnAuthenticated()
@@ -77,12 +77,12 @@ export function GoalProviderContext({ children }: GoalContextProps) {
     })
 
     const goalCounts = {
-      notCompleted: goals.filter(
+      notCompletedGoals: goals.filter(
         (card) => !card.completedGoal && !card.failedGoal,
       ).length,
-      completed: goals.filter((card) => card.completedGoal).length,
-      failed: goals.filter((card) => card.failedGoal).length,
-      all: goals.length,
+      completedGoals: goals.filter((card) => card.completedGoal).length,
+      failedGoals: goals.filter((card) => card.failedGoal).length,
+      allGoals: goals.length,
     }
 
     setStateCountGoals(goalCounts)
@@ -102,7 +102,7 @@ export function GoalProviderContext({ children }: GoalContextProps) {
         notCompleted: (card) => !card.completedGoal && !card.failedGoal,
         completed: (card) => card.completedGoal,
         failed: (card) => card.failedGoal,
-        all: () => true,
+        allGoals: () => true,
       }
 
       const filterFunction = modeFilterMap[selectedViewMode]
@@ -123,39 +123,36 @@ export function GoalProviderContext({ children }: GoalContextProps) {
   }
 
   useEffect(() => {
-    const verifyGolasInspiredTime = () => {
-      const currentDate = new Date()
+    const currentDate = new Date()
 
-      if (cardGoal) {
-        const filteredCards = cardGoal.filter(
-          (card) => !card.completedGoal && !card.failedGoal,
+    if (cardGoal) {
+      const filteredCards = cardGoal.filter(
+        (card) => !card.completedGoal && !card.failedGoal,
+      )
+
+      filteredCards.forEach((goalList) => {
+        const formattedFinalDate = goalList.dateTime.formattedFinalDate
+        const formattedHour = goalList.dateTime.formattedHour
+
+        const [day, monthStr, yearStr] = formattedFinalDate.split('/')
+        const [hour, minute] = formattedHour.split(':')
+
+        const year = parseInt(yearStr, 10)
+        const month = parseInt(monthStr, 10) - 1
+
+        const finalDate = new Date(
+          year,
+          month,
+          parseInt(day, 10),
+          parseInt(hour, 10),
+          parseInt(minute, 10),
         )
 
-        filteredCards.forEach((goalList) => {
-          const formattedFinalDate = goalList.dateTime.formattedFinalDate
-          const formattedHour = goalList.dateTime.formattedHour
-
-          const [day, monthStr, yearStr] = formattedFinalDate.split('/')
-          const [hour, minute] = formattedHour.split(':')
-
-          const year = parseInt(yearStr, 10)
-          const month = parseInt(monthStr, 10) - 1
-
-          const finalDate = new Date(
-            year,
-            month,
-            parseInt(day, 10),
-            parseInt(hour, 10),
-            parseInt(minute, 10),
-          )
-
-          if (finalDate < currentDate) {
-            setValueTrueForFailedGoal(goalList.cardId)
-          }
-        })
-      }
+        if (finalDate < currentDate) {
+          setValueTrueForFailedGoal(goalList.cardId)
+        }
+      })
     }
-    verifyGolasInspiredTime()
   }, [cardGoal])
 
   return (

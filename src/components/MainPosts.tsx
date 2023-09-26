@@ -1,5 +1,11 @@
 'use client'
 
+import {
+  ClipboardText,
+  HourglassLow,
+  HourglassMedium,
+  ListChecks,
+} from 'phosphor-react'
 import { CardGoalRoot } from './CardGoal/CardGoalRoot'
 import { CardGoalBody } from './CardGoal/CardGoalBody'
 import { CardGoalDataProps } from '@/config/getData'
@@ -11,89 +17,104 @@ export interface MainPostsProps {
 }
 
 export function MainPosts({ goals }: MainPostsProps) {
-  const [userLastCard, setUserLastCard] = useState<{
+  const [userLastCards, setUserLastCards] = useState<{
     [userId: string]: CardGoalDataProps
   }>({})
 
   useEffect(() => {
     const getSortedUserLastCards = () => {
-      const lastCards: { [userId: string]: CardGoalDataProps } = {}
-
-      goals.forEach((card) => {
-        if (card.userId) {
+      const lastCards: { [userId: string]: CardGoalDataProps } = goals.reduce(
+        (acc, card) => {
           if (
-            !lastCards[card.userId] ||
-            new Date(card.createdAt) >
-              new Date(lastCards[card.userId].createdAt)
+            !acc[card.userId] ||
+            new Date(card.createdAt) > new Date(acc[card.userId].createdAt)
           ) {
-            lastCards[card.userId] = card
+            acc[card.userId] = card
           }
-        }
-      })
+          return acc
+        },
+        {} as { [userId: string]: CardGoalDataProps },
+      )
 
-      setUserLastCard(lastCards)
+      setUserLastCards(lastCards)
     }
+
     getSortedUserLastCards()
   }, [goals])
 
-  const incompleteGoalsCount: { [userId: string]: number } = {}
-  const countGoalsFailed = goals.filter((card) => card.failedGoal).length
-  const countGoalsCompleted = goals.filter((card) => card.completedGoal).length
-
-  goals.forEach((card) => {
-    if (card.userId) {
-      if (!incompleteGoalsCount[card.userId]) {
-        incompleteGoalsCount[card.userId] = 0
-      }
-      if (!card.completedGoal && !card.failedGoal) {
-        incompleteGoalsCount[card.userId]++
-      }
-    }
-  })
-
-  const sortedUserLastCards = Object.values(userLastCard).sort(
-    (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+  const sortedUserLastCards = Object.values(userLastCards).sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   )
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-4 ">
-      {sortedUserLastCards.map((lastCard) => {
-        const userId = lastCard.userId
+      {sortedUserLastCards.length > 0 &&
+        sortedUserLastCards.map((lastCard) => {
+          const userId = lastCard.userId
 
-        const incompleteCount = incompleteGoalsCount[userId] || 0
-        const conditionalStyle = incompleteCount === 0 ? 'hidden' : ''
+          const incompleteCountGoals = goals.filter(
+            (card) =>
+              card.userId === userId && !card.completedGoal && !card.failedGoal,
+          ).length
 
-        return (
-          <div className={`${conditionalStyle} space-y-1`} key={userId}>
-            <div className="flex justify-between">
-              <p>
-                Todas as missões: <strong>{goals.length}</strong>
-              </p>
-              <p>
-                A concluir: <strong>{incompleteCount}</strong>
-              </p>
+          const countFailedGoals = goals.filter(
+            (card) => card.userId === userId && card.failedGoal,
+          ).length
+
+          const countCompletedGoals = goals.filter(
+            (card) => card.userId === userId && card.completedGoal,
+          ).length
+
+          const countAllGoals = goals.filter(
+            (card) => card.userId === userId,
+          ).length
+
+          return (
+            <div className="space-y-1" key={userId}>
+              <div className="flex justify-between">
+                <div className="flex items-center gap-1">
+                  <ClipboardText size={28} weight="light" />
+                  <p>
+                    <strong>{countAllGoals}</strong>
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-1">
+                  <HourglassMedium size={28} weight="fill" />
+                  <p>
+                    <strong>{incompleteCountGoals}</strong>
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-1">
+                  <HourglassLow size={28} weight="fill" />
+                  <p>
+                    <strong>{countFailedGoals}</strong>
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-1">
+                  <ListChecks size={28} weight="light" />
+                  <p>
+                    <strong>{countCompletedGoals}</strong>
+                  </p>
+                </div>
+              </div>
+              <CardGoalRoot>
+                <HeaderGoal
+                  displayName={lastCard.displayName}
+                  photoURL={lastCard.photoURL}
+                />
+                <CardGoalBody
+                  dateTime={lastCard.dateTime}
+                  goal={lastCard.goal}
+                />
+              </CardGoalRoot>
+
+              <div className="mt-8 rounded-lg border border-zinc-200 sm:hidden" />
             </div>
-            <CardGoalRoot>
-              <HeaderGoal
-                displayName={lastCard.displayName}
-                photoURL={lastCard.photoURL}
-              />
-              <CardGoalBody dateTime={lastCard.dateTime} goal={lastCard.goal} />
-            </CardGoalRoot>
-
-            <div className="flex justify-between">
-              <p>
-                fracassadas: <strong>{countGoalsFailed}</strong>
-              </p>
-              <p>
-                Concluídas: <strong>{countGoalsCompleted}</strong>
-              </p>
-            </div>
-
-            <div className="mt-8 rounded-lg border border-zinc-200 sm:hidden" />
-          </div>
-        )
-      })}
+          )
+        })}
     </div>
   )
 }

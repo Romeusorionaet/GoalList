@@ -25,7 +25,7 @@ export function HeaderProfile({ photoURL, displayName }: HeaderProfileProps) {
           />
         </div>
       )}
-      <h1>Viajante: {displayName === 'null' ? 'Nick name' : displayName}</h1>
+      <h1>Viajante {displayName === 'null' ? 'Nick name' : displayName}</h1>
     </div>
   )
 }

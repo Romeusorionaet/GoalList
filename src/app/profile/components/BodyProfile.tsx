@@ -54,7 +54,7 @@ export function BodyProfile() {
               {!card.completedGoal && !card.failedGoal && (
                 <Checkbox.Root
                   onClick={() => handleUpdateCardGoal(card.cardId)}
-                  className="shadow-blackA7 hover:bg-violet3 absolute right-5 top-14 flex h-5 w-5 appearance-none items-center justify-center rounded-md bg-white"
+                  className="shadow-blackA7 hover:bg-violet3 absolute left-[47.5%] right-[52.5%] top-10 flex h-5 w-5 appearance-none items-center justify-center rounded-md bg-white"
                 >
                   <Checkbox.Indicator>
                     <Check />
