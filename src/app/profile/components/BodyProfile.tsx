@@ -2,10 +2,10 @@ import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
 import { CardGoalRoot } from '@/components/CardGoal/CardGoalRoot'
 import { CardGoalBody } from '@/components/CardGoal/CardGoalBody'
 import { GoalContext } from '@/contexts/ProviderGoalList'
+import { doc, runTransaction } from 'firebase/firestore'
 import { Check, CheckCircle, X } from 'phosphor-react'
 import * as Checkbox from '@radix-ui/react-checkbox'
 import { DateTimeGoalProps } from '@/config/getData'
-import { updateDoc, doc } from 'firebase/firestore'
 import { db } from '@/services/firebaseConfig'
 import { useContext } from 'react'
 import { mutate } from 'swr'
@@ -27,12 +27,28 @@ export function BodyProfile() {
   const { orderListFiltered } = useContext(GoalContext)
   const { userId } = useOnAuthenticated()
 
-  const setValueTrueForCompletedGoal = (cardId: string) => {
+  const setValueTrueForCompletedGoal = async (cardId: string) => {
     const cardRef = doc(db, 'cardGoal', cardId)
 
-    updateDoc(cardRef, {
-      completedGoal: true,
-    })
+    try {
+      await runTransaction(db, async (transaction) => {
+        const cardDoc = await transaction.get(cardRef)
+
+        if (!cardDoc.exists()) {
+          throw new Error('Card does not exist')
+        }
+
+        const cardData = cardDoc.data()
+
+        if (!cardData || cardData.failedGoal) {
+          return
+        }
+
+        transaction.update(cardRef, { completedGoal: true })
+      })
+    } catch (error) {
+      console.log('Erro ao concluir o objetivo:', error)
+    }
   }
 
   function handleUpdateCardGoal(cardId: string) {
@@ -42,7 +58,7 @@ export function BodyProfile() {
   }
 
   return (
-    <div className="flex flex-wrap">
+    <div className="flex flex-wrap items-center justify-center">
       {orderListFiltered &&
         orderListFiltered.map((card) => {
           return (
@@ -66,15 +82,15 @@ export function BodyProfile() {
                 <X
                   size={28}
                   color={'red'}
-                  className="absolute right-5 top-12"
+                  className="absolute left-[47.5%] right-[52.5%] top-9"
                 />
               )}
 
               {card.completedGoal && (
                 <CheckCircle
-                  size={32}
+                  size={28}
                   color="white"
-                  className="absolute right-5 top-11"
+                  className="absolute left-[47.5%] right-[52.5%] top-9"
                 />
               )}
             </div>

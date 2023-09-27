@@ -96,16 +96,16 @@ export function GoalProviderContext({ children }: GoalContextProps) {
 
   useEffect(() => {
     if (cardGoal) {
-      const modeFilterMap: {
+      const filterFunctions: {
         [key: string]: (card: CardGoalProfileProps) => boolean
       } = {
-        notCompleted: (card) => !card.completedGoal && !card.failedGoal,
-        completed: (card) => card.completedGoal,
-        failed: (card) => card.failedGoal,
+        notCompletedGoals: (card) => !card.completedGoal && !card.failedGoal,
+        completedGoals: (card) => card.completedGoal,
+        failedGoals: (card) => card.failedGoal,
         allGoals: () => true,
       }
 
-      const filterFunction = modeFilterMap[selectedViewMode]
+      const filterFunction = filterFunctions[selectedViewMode]
 
       if (filterFunction) {
         const filteredGoals = cardGoal.filter(filterFunction)

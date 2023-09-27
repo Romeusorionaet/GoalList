@@ -7,11 +7,9 @@ const button = tv({
   variants: {
     variant: {
       primary:
-        'border-none bg-zinc-500 outline-none hover:bg-zinc-700 focus:outline-rose-500',
-      // ghost:
-      //   'rounded-md px-2 hover:bg-zinc-50 shadow-none text-zinc-500 dark:text-zinc-400 dark:hover:bg-zinc-800',
+        'border-none flex items-center justify-center bg-slate-500 outline-none hover:bg-slate-800 focus:outline-zinc-500',
       outline:
-        'border border-rose-300 rounded-lg p-2 text-rose-400 hover:border-rose-500 hover:text-rose-500 duration-700',
+        'border border-slate-400 rounded-lg p-2 hover:border-rose-500 hover:text-rose-500 duration-700',
     },
   },
 

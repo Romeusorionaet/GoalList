@@ -1,6 +1,6 @@
 import { useWidthScreen } from '@/hooks/useWidthScreen'
-import Link from 'next/link'
 import { List, X } from 'phosphor-react'
+import Link from 'next/link'
 
 export function NavPageAuthenticated() {
   const { checkMenuOpen, setCheckMenuOpen, widthScreen, handleChangeValue } =
@@ -28,20 +28,25 @@ export function NavPageAuthenticated() {
           } `}
       >
         <ul
-          className={` ${
+          className={`${
             widthScreen && widthScreen <= 800 && checkMenuOpen === true
-              ? 'absolute left-0 top-16 z-20 flex w-full flex-col items-end gap-8 rounded-md bg-slate-100 p-8 font-bold'
+              ? 'absolute left-0 top-16 z-20 flex w-full flex-col items-end gap-8 rounded-md bg-white p-8 font-bold'
               : 'flex w-[40rem] gap-16 text-3xl font-semibold'
           } `}
         >
           <li>
-            <Link onClick={setValueFalseForStateCheckMenuOpen} href="/">
+            <Link
+              className="hover:font-bold"
+              onClick={setValueFalseForStateCheckMenuOpen}
+              href="/"
+            >
               Início
             </Link>
           </li>
 
           <li>
             <Link
+              className="hover:font-bold"
               onClick={setValueFalseForStateCheckMenuOpen}
               href="/personalData"
             >
@@ -50,6 +55,7 @@ export function NavPageAuthenticated() {
           </li>
           <li>
             <Link
+              className="hover:font-bold"
               onClick={setValueFalseForStateCheckMenuOpen}
               href="/createCardGoal"
             >
@@ -57,7 +63,11 @@ export function NavPageAuthenticated() {
             </Link>
           </li>
           <li>
-            <Link onClick={setValueFalseForStateCheckMenuOpen} href="/profile">
+            <Link
+              className="hover:font-bold"
+              onClick={setValueFalseForStateCheckMenuOpen}
+              href="/profile"
+            >
               Perfil
             </Link>
           </li>

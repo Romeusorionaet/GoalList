@@ -8,14 +8,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        white: '#ffffff',
+        white: '#f0f0f0',
 
         gray500: '#202024',
-      },
-
-      screens: {
-        tablet: '800px',
-        MineMobile: '300px',
       },
     },
   },

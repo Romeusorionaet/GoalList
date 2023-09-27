@@ -14,7 +14,7 @@ export function Header() {
   }
 
   return (
-    <header className="fixed z-10 w-full bg-zinc-100 p-4">
+    <header className="fixed z-10 w-full bg-white p-4">
       <div className="flex w-full items-center  ">
         {!isAuthenticated && (
           <button onClick={handleBack}>

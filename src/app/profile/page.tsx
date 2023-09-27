@@ -18,7 +18,7 @@ export default function Profile() {
   return (
     <GoalProviderContext>
       <div className="flex flex-col items-center justify-center gap-2">
-        <div className="mt-20 w-full space-y-4 bg-white">
+        <div className="mt-28 flex w-full max-w-[1280px] items-center justify-evenly space-y-4 rounded-md bg-white max-md:flex-col">
           <HeaderProfile photoURL={photoURL} displayName={displayName} />
 
           {<GraphicGoals />}
