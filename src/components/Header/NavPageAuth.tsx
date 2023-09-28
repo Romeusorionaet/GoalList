@@ -1,6 +1,6 @@
-import { Button } from '../Button'
-import { useContext } from 'react'
 import { AuthContext } from '@/contexts/AuthContext'
+import { Button } from '@/components/Form/Button'
+import { useContext } from 'react'
 import Link from 'next/link'
 
 interface Props {

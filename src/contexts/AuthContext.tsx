@@ -51,6 +51,8 @@ export function AuthContextProvider({ children }: AuthContextProps) {
         alert('Email ou Senha incorreto.')
       } else if ((error as AuthError)?.code === 'auth/user-not-found') {
         alert('Email ou Senha incorreto.')
+      } else if ((error as AuthError)?.code === 'auth/invalid-email') {
+        alert('Email ou Senha inválido.')
       }
     }
   }

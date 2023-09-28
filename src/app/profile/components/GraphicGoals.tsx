@@ -1,5 +1,5 @@
-import { Button } from '@/components/Button'
 import { GoalContext } from '@/contexts/ProviderGoalList'
+import { Button } from '@/components/Form/Button'
 import {
   ClipboardText,
   HourglassLow,

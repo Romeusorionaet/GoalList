@@ -23,13 +23,13 @@ export default function EmptyHomePage() {
 
       <div className="keen-slider w-full" ref={ref} style={{ height: 200 }}>
         <div className="keen-slider__slide flex items-center justify-center">
-          <p>Seja bem vindo viajante ao Todo Or Death</p>
+          <p>Seja bem vindo viajante ao GoalList</p>
         </div>
 
         <div className="keen-slider__slide flex items-center justify-center">
           <p>
-            O Todo Or Death é uma forma de você compartilhar pontos de sua
-            jornada. Vou explicar melhor...
+            O GoalList é uma forma de você compartilhar pontos de sua jornada.
+            Vou explicar melhor...
           </p>
         </div>
 

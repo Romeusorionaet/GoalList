@@ -9,7 +9,7 @@ const button = tv({
       primary:
         'border-none flex items-center justify-center bg-slate-500 outline-none hover:bg-slate-800 focus:outline-zinc-500',
       outline:
-        'border border-slate-400 rounded-lg p-2 hover:border-rose-500 hover:text-rose-500 duration-700',
+        'border text-zinc-900 border-slate-400 rounded-lg p-2 duration-700',
     },
   },
 
