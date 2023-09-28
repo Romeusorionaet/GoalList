@@ -1,5 +1,3 @@
-import { useCookies } from '@/hooks/useCookies'
-import { auth } from '@/services/firebaseConfig'
 import {
   sendPasswordResetEmail,
   updatePassword,
@@ -9,8 +7,11 @@ import {
   updateEmail,
 } from 'firebase/auth'
 import { useUpdateProfile } from 'react-firebase-hooks/auth'
-import { useRouter } from 'next/navigation'
+import { useNotification } from '@/hooks/useNotification'
+import { auth } from '@/services/firebaseConfig'
 import { ReactNode, createContext } from 'react'
+import { useCookies } from '@/hooks/useCookies'
+import { useRouter } from 'next/navigation'
 
 interface EmailAndPasswordProps {
   oldEmail: string
@@ -51,8 +52,9 @@ interface UpdateProfileProps {
 export const UpdateProfileContext = createContext({} as UpdateProfileType)
 
 export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
-  const { removeCookie } = useCookies()
+  const { notifyError, notifySuccess } = useNotification()
   const [updateProfile] = useUpdateProfile(auth)
+  const { removeCookie } = useCookies()
 
   const user = auth.currentUser
   const router = useRouter()
@@ -74,7 +76,8 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
         await reauthenticateWithCredential(user, credentials)
 
         await updateEmail(user, newEmail)
-        alert('Perfil atualizado.')
+
+        notifySuccess('Perfil atualizado.')
       }
     } catch (error) {
       console.log(error)
@@ -95,7 +98,7 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
         if (oldPassword) {
           await UpdateUserEmail(newEmail, oldPassword)
         } else {
-          alert('Para alterar o email é preciso fornecer a senha atual.')
+          notifyError('Para alterar o email é preciso fornecer a senha atual.')
         }
       }
 
@@ -103,13 +106,13 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
         updateProfile({
           displayName,
         })
-        alert('Perfil atualizado.')
+        notifySuccess('Perfil atualizado.')
       }
       if (dataImage.image) {
         updateProfile({
           photoURL: dataImage.image,
         })
-        alert('Perfil atualizado.')
+        notifySuccess('Perfil atualizado.')
       }
     } catch (error) {
       console.log(error)
@@ -128,7 +131,7 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
         await reauthenticateWithCredential(user, credential)
         await updatePassword(user, newPassword)
 
-        alert('Senha alterado')
+        notifySuccess('Senha alterado')
         router.push('/signIn')
         removeCookie()
       } else {
@@ -136,7 +139,7 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
       }
     } catch (error) {
       if ((error as AuthError)?.code === 'auth/wrong-password') {
-        alert('Senha antiga não confere.')
+        notifyError('Senha antiga não confere.')
       } else {
         console.error(error)
       }

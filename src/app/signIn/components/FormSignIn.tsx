@@ -1,16 +1,22 @@
 import { InputControl, InputRoot } from '@/components/Form/Input'
-import { LoginFormData, loginFormSchema } from '../page'
 import { FormError } from '@/components/Form/FormError'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AuthContext } from '@/contexts/AuthContext'
 import { Button } from '@/components/Form/Button'
 import { useForm } from 'react-hook-form'
+import { LoginFormData } from '../page'
 import { useContext } from 'react'
+import { z } from 'zod'
 
 interface FormSignInProps {
   handleButtonState: () => void
   isForgotPassword: boolean
 }
+
+export const loginFormSchema = z.object({
+  email: z.string().min(1, { message: 'Email é obrigatório' }),
+  password: z.string().min(6, { message: 'No mínimo 6 digitos' }),
+})
 
 export function FormSignIn({
   handleButtonState,

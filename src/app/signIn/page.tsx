@@ -3,15 +3,10 @@
 import { UpdateProfileContext } from '@/contexts/UpdateProfileContext'
 import { ControlAccountForm } from './components/ControlAccountForm'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FormSignIn } from './components/FormSignIn'
+import { FormSignIn, loginFormSchema } from './components/FormSignIn'
 import { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-
-export const loginFormSchema = z.object({
-  email: z.string().min(1, { message: 'Email é obrigatório' }),
-  password: z.string().min(1, { message: 'Senha é obrigatório' }),
-})
 
 export type LoginFormData = z.infer<typeof loginFormSchema>
 

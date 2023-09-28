@@ -1,17 +1,19 @@
 'use client'
 
 import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
+import { useNotification } from '@/hooks/useNotification'
 import 'react-datepicker/dist/react-datepicker.css'
+import { Button } from '@/components/Form/Button'
 import { setDoc, doc } from 'firebase/firestore'
 import { SyntheticEvent, useState } from 'react'
 import { db } from '@/services/firebaseConfig'
-import { Button } from '@/components/Button'
 import DatePicker from 'react-datepicker'
 import { format } from 'date-fns'
 import uuid from 'react-uuid'
 
 export default function CreateCardGoal() {
   const { photoURL, displayName, userId } = useOnAuthenticated()
+  const { notifyError, notifySuccess } = useNotification()
   const [goal, setGoal] = useState('')
 
   const [startDate] = useState<Date>(new Date())
@@ -36,7 +38,7 @@ export default function CreateCardGoal() {
 
   const verifyIFUserCompletedProfile = () => {
     if (displayName === null || photoURL === null) {
-      alert(
+      notifyError(
         'Complete o seu perfil para podermos personalizar melhor a sua experiência.',
       )
       return true

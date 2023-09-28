@@ -5,7 +5,7 @@ export default async function Home() {
   const goals = await getData()
 
   if (!goals) {
-    console.log('sem goals')
+    console.log('Nem um viajante a vista.')
     return
   }
 

@@ -6,10 +6,16 @@ import PrivateRoute from '@/components/RoutesPage/PrivateRoute'
 import PublicRoute from '@/components/RoutesPage/PublicRoute'
 import { AuthContextProvider } from '@/contexts/AuthContext'
 import { Header } from '@/components/Header/Header'
+import { ToastContainer } from 'react-toastify'
 import { usePathname } from 'next/navigation'
-
 import { Roboto } from 'next/font/google'
+import type { Metadata } from 'next'
 import '../styles/globals.css'
+
+export const metadata: Metadata = {
+  title: 'loleorgeorg',
+  description: 'erhg ergwerg erg erg',
+}
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -30,6 +36,7 @@ export default function RootLayout({
     <html lang="pt-BR" className={roboto.className}>
       <body className="bg-slate-50">
         <div className="mx-auto my-auto max-w-[150rem] rounded-xl">
+          <ToastContainer />
           {isPublicPage && (
             <AuthContextProvider>
               <UpdateProfileContextProvider>

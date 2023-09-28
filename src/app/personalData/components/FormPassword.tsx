@@ -1,24 +1,41 @@
-import { useState, FormEvent, useContext } from 'react'
-
 import { UpdateProfileContext } from '@/contexts/UpdateProfileContext'
 import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
-import { InputControl, InputRoot } from '@/components/Input'
-import { Button } from '@/components/Button'
+import { InputControl, InputRoot } from '@/components/Form/Input'
+import { FormError } from '@/components/Form/FormError'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Button } from '@/components/Form/Button'
+import { useForm } from 'react-hook-form'
+import { useContext } from 'react'
+import { z } from 'zod'
+
+const FormPasswordSchema = z.object({
+  oldPassword: z.string().min(6, { message: 'No mínimo 6 digitos' }),
+  newPassword: z.string().min(6, { message: 'No mínimo 6 digitos' }),
+})
+
+type FormPasswordData = z.infer<typeof FormPasswordSchema>
 
 export function FormPassword() {
-  const [newPassword, setNewPassword] = useState('')
-  const [oldPassword, setOldPassword] = useState('')
-  const { oldEmail } = useOnAuthenticated()
-
   const { ChangePassword } = useContext(UpdateProfileContext)
+  const { oldEmail } = useOnAuthenticated()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormPasswordData>({
+    resolver: zodResolver(FormPasswordSchema),
+  })
 
-  function handleChangePassword(event: FormEvent) {
-    event.preventDefault()
+  function handleChangePassword(data: FormPasswordData) {
+    const { oldPassword, newPassword } = data
     ChangePassword({ oldEmail, newPassword, oldPassword })
   }
 
   return (
-    <form className="space-y-8 pt-8" onSubmit={handleChangePassword}>
+    <form
+      className="space-y-8 pt-8"
+      onSubmit={handleSubmit(handleChangePassword)}
+    >
       <fieldset className="mb-4 flex flex-col gap-1">
         <label className="mb-2" htmlFor="oldPassword">
           Senha Antiga
@@ -28,9 +45,11 @@ export function FormPassword() {
             type="password"
             id="oldPassword"
             placeholder="******"
-            onChange={(e) => setOldPassword(e.target.value)}
+            {...register('oldPassword')}
           />
         </InputRoot>
+
+        <FormError errors={errors.oldPassword?.message} />
       </fieldset>
 
       <fieldset className="mb-8 flex flex-col gap-1">
@@ -42,13 +61,21 @@ export function FormPassword() {
             type="password"
             id="newPassword"
             placeholder="******"
-            onChange={(e) => setNewPassword(e.target.value)}
+            {...register('newPassword')}
           />
         </InputRoot>
+
+        <FormError errors={errors.newPassword?.message} />
       </fieldset>
 
       <div className="text-end">
-        <Button type="submit">Atualizar senha</Button>
+        <Button
+          type="submit"
+          className="w-full data-[disabled=true]:cursor-not-allowed"
+          aria-disabled={isSubmitting}
+        >
+          Atualizar senha
+        </Button>
       </div>
     </form>
   )

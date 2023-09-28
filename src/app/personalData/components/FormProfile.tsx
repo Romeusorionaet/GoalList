@@ -2,9 +2,9 @@ import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { UpdateProfileContext } from '@/contexts/UpdateProfileContext'
 import { FormEvent, useContext, useEffect, useState } from 'react'
 import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
-import { InputControl, InputRoot } from '@/components/Input'
+import { InputControl, InputRoot } from '@/components/Form/Input'
 import { storage } from '@/services/firebaseConfig'
-import { Button } from '@/components/Button'
+import { Button } from '@/components/Form/Button'
 import { User } from 'phosphor-react'
 
 export function FormProfile() {
@@ -146,8 +146,10 @@ export function FormProfile() {
         </fieldset>
       </div>
 
-      <div className="mt-8 text-end">
-        <Button type="submit">Atulizar perfil</Button>
+      <div className="mx-1 my-6 text-end">
+        <Button type="submit" className="w-full">
+          Atulizar perfil
+        </Button>
       </div>
     </form>
   )
