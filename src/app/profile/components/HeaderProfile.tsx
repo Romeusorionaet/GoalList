@@ -7,7 +7,7 @@ interface HeaderProfileProps {
 
 export function HeaderProfile({ photoURL, displayName }: HeaderProfileProps) {
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="mt-2 flex flex-col items-center gap-2">
       {photoURL === null ? (
         <div
           className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full border border-zinc-400`}

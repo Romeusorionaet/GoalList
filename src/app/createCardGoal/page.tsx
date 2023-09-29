@@ -5,14 +5,14 @@ import { useNotification } from '@/hooks/useNotification'
 import 'react-datepicker/dist/react-datepicker.css'
 import { Button } from '@/components/Form/Button'
 import { setDoc, doc } from 'firebase/firestore'
-import { SyntheticEvent, useState } from 'react'
 import { db } from '@/services/firebaseConfig'
+import { FormEvent, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import { format } from 'date-fns'
 import uuid from 'react-uuid'
 
 export default function CreateCardGoal() {
-  const { photoURL, displayName, userId } = useOnAuthenticated()
+  const { userDate } = useOnAuthenticated()
   const { notifyError, notifySuccess } = useNotification()
   const [goal, setGoal] = useState('')
 
@@ -28,16 +28,16 @@ export default function CreateCardGoal() {
     createdAt: new Date().toJSON(),
     completedGoal: false,
     failedGoal: false,
-    displayName,
+    displayName: userDate?.displayName,
     dateTime: { formattedStartDate, formattedFinalDate, formattedHour },
-    photoURL,
-    userId,
+    photoURL: userDate?.photoURL,
+    userId: userDate?.uid,
     cardId: uuid(),
     goal,
   }
 
   const verifyIFUserCompletedProfile = () => {
-    if (displayName === null || photoURL === null) {
+    if (userDate?.displayName === null || userDate?.photoURL === null) {
       notifyError(
         'Complete o seu perfil para podermos personalizar melhor a sua experiência.',
       )
@@ -62,11 +62,11 @@ export default function CreateCardGoal() {
       return false
     }
 
-    alert('O objetivo deve ter pelo menos 1 hora de duração.')
+    notifyError('O objetivo deve ter pelo menos 1 hora de duração')
     return true
   }
 
-  async function HandleCreateCardForm(event: SyntheticEvent) {
+  async function HandleCreateCardForm(event: FormEvent) {
     event.preventDefault()
 
     if (verifyIFUserCompletedProfile()) {
@@ -74,7 +74,7 @@ export default function CreateCardGoal() {
     }
 
     if (!formattedHour) {
-      alert('Selecione o horário.')
+      notifyError('Selecione o horário')
       return
     }
 
@@ -84,14 +84,16 @@ export default function CreateCardGoal() {
 
     try {
       await setDoc(doc(db, 'cardGoal', docObjectItems.cardId), docObjectItems)
-      alert('Objetivo adicionado com sucesso.')
+      notifySuccess('Objetivo adicionado com sucesso.')
 
       setGoal('')
       setFormattedHour('')
 
       setFinalDate(new Date())
     } catch (error) {
-      console.log(error)
+      notifyError(
+        'Algo deu errado, estamos trabalhando para corrigir este erro',
+      )
     }
   }
 

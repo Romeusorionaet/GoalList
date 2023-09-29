@@ -1,22 +1,18 @@
-import { onAuthStateChanged } from '@firebase/auth'
+import { onAuthStateChanged, User } from '@firebase/auth'
 import { auth } from '@/services/firebaseConfig'
 import { useEffect, useState } from 'react'
+import { useNotification } from './useNotification'
 
 export function useOnAuthenticated() {
-  const [displayName, setDisplayName] = useState<string | null>('')
-  const [photoURL, setPhotoURL] = useState<string | null>('')
-  const [userId, setUserId] = useState<string | null>('')
-  const [oldEmail, setOldEmail] = useState('')
+  const { notifyError } = useNotification()
+  const [userDate, setUserDate] = useState<User>()
 
   useEffect(() => {
     const onAuth = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setDisplayName(user.displayName)
-        setPhotoURL(user.photoURL)
-        setOldEmail(String(user.email))
-        setUserId(user.uid)
+        setUserDate(user)
       } else {
-        console.log('User is signed out')
+        notifyError('Faça login novamente')
       }
     })
 
@@ -25,5 +21,5 @@ export function useOnAuthenticated() {
     }
   }, [])
 
-  return { userId, displayName, photoURL, oldEmail }
+  return { userDate }
 }

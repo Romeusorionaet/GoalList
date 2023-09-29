@@ -25,7 +25,7 @@ export interface BodyProfileProps {
 
 export function BodyProfile() {
   const { orderListFiltered } = useContext(GoalContext)
-  const { userId } = useOnAuthenticated()
+  const { userDate } = useOnAuthenticated()
 
   const setValueTrueForCompletedGoal = async (cardId: string) => {
     const cardRef = doc(db, 'cardGoal', cardId)
@@ -54,7 +54,7 @@ export function BodyProfile() {
   function handleUpdateCardGoal(cardId: string) {
     setValueTrueForCompletedGoal(cardId)
 
-    mutate(`profile-${userId}`)
+    mutate(`profile-${userDate?.uid}`)
   }
 
   return (

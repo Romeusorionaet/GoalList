@@ -3,13 +3,14 @@ import { UpdateProfileContext } from '@/contexts/UpdateProfileContext'
 import { FormEvent, useContext, useEffect, useState } from 'react'
 import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
 import { InputControl, InputRoot } from '@/components/Form/Input'
+import { useNotification } from '@/hooks/useNotification'
 import { storage } from '@/services/firebaseConfig'
 import { Button } from '@/components/Form/Button'
 import { User } from 'phosphor-react'
 
 export function FormProfile() {
   const [dataImage, setDataImage] = useState({ image: '' })
-  const { photoURL, oldEmail, displayName: nickName } = useOnAuthenticated()
+  const { userDate } = useOnAuthenticated()
   const [file, setFile] = useState<File>()
 
   const [oldPassword, setOldPassword] = useState('')
@@ -17,6 +18,7 @@ export function FormProfile() {
   const [newEmail, setNewEmail] = useState('')
 
   const { UpdateProfileForm } = useContext(UpdateProfileContext)
+  const { notifyError, notifySuccess, notifyUploading } = useNotification()
 
   useEffect(() => {
     const uploadFile = () => {
@@ -28,24 +30,25 @@ export function FormProfile() {
         (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          console.log('Upload is ' + progress + '% done')
+          notifyUploading(`Upload está ${progress} % feito`, progress)
           switch (snapshot.state) {
             case 'paused':
-              console.log('Upload is paused')
+              notifyError('Upload foi pausado')
               break
             case 'running':
-              console.log('Upload is running')
+              notifyUploading('Upload está em andamento', progress)
               break
             default:
               break
           }
         },
         (error) => {
-          console.log(error)
+          notifyError(String(error))
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             setDataImage((prev) => ({ ...prev, image: downloadURL }))
+            notifySuccess('Upload realizado')
           })
         },
       )
@@ -57,7 +60,7 @@ export function FormProfile() {
     event.preventDefault()
     UpdateProfileForm({
       newEmail,
-      oldEmail,
+      oldEmail: userDate?.email,
       oldPassword,
       displayName: displayNewName,
       dataImage,
@@ -78,7 +81,7 @@ export function FormProfile() {
                   src={URL.createObjectURL(file)}
                   alt="User Profile"
                 />
-              ) : photoURL === null ? (
+              ) : userDate?.photoURL === null ? (
                 <div
                   className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full border border-zinc-400 bg-white`}
                 >
@@ -87,7 +90,7 @@ export function FormProfile() {
               ) : (
                 <img
                   className="absolute inset-0 h-full w-full rounded-full object-cover"
-                  src={photoURL}
+                  src={userDate?.photoURL}
                   alt="User Profile"
                 />
               )}
@@ -110,7 +113,9 @@ export function FormProfile() {
             <InputControl
               id="nick"
               onChange={(e) => setDisplayNewName(e.target.value)}
-              defaultValue={nickName === null ? '' : nickName}
+              defaultValue={
+                userDate?.displayName === null ? '' : userDate?.displayName
+              }
               placeholder="nick nome"
             />
           </InputRoot>
@@ -126,7 +131,7 @@ export function FormProfile() {
               id="email"
               onChange={(e) => setNewEmail(e.target.value)}
               placeholder="seuemail@gmail.com"
-              defaultValue={oldEmail}
+              defaultValue={userDate?.email ?? ''}
             />
           </InputRoot>
         </fieldset>

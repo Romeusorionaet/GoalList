@@ -6,6 +6,7 @@ import {
   AuthError,
   updateEmail,
 } from 'firebase/auth'
+import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
 import { useUpdateProfile } from 'react-firebase-hooks/auth'
 import { useNotification } from '@/hooks/useNotification'
 import { auth } from '@/services/firebaseConfig'
@@ -14,14 +15,14 @@ import { useCookies } from '@/hooks/useCookies'
 import { useRouter } from 'next/navigation'
 
 interface EmailAndPasswordProps {
-  oldEmail: string
+  oldEmail?: string | null
   newPassword: string
   oldPassword: string
 }
 
 interface UpdateProfileFormProps {
   newEmail: string
-  oldEmail: string
+  oldEmail?: string | null
   oldPassword: string
   displayName: string
   dataImage: { image: string }
@@ -54,9 +55,9 @@ export const UpdateProfileContext = createContext({} as UpdateProfileType)
 export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
   const { notifyError, notifySuccess } = useNotification()
   const [updateProfile] = useUpdateProfile(auth)
+  const { userDate } = useOnAuthenticated()
   const { removeCookie } = useCookies()
 
-  const user = auth.currentUser
   const router = useRouter()
 
   async function PasswordReset(oldEmail: string) {
@@ -68,19 +69,19 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
   async function UpdateUserEmail(newEmail: string, oldPassword: string) {
     // refactor
     try {
-      if (user) {
+      if (userDate) {
         const credentials = EmailAuthProvider.credential(
-          String(user.email),
+          String(userDate.email),
           oldPassword,
         )
-        await reauthenticateWithCredential(user, credentials)
+        await reauthenticateWithCredential(userDate, credentials)
 
-        await updateEmail(user, newEmail)
-
-        notifySuccess('Perfil atualizado.')
+        await updateEmail(userDate, newEmail)
       }
     } catch (error) {
-      console.log(error)
+      notifyError(
+        'Não foi possível atualizar o perfil. Tente novamente mais tarde.',
+      )
     }
   }
 
@@ -99,6 +100,7 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
           await UpdateUserEmail(newEmail, oldPassword)
         } else {
           notifyError('Para alterar o email é preciso fornecer a senha atual.')
+          return
         }
       }
 
@@ -106,16 +108,17 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
         updateProfile({
           displayName,
         })
-        notifySuccess('Perfil atualizado.')
       }
+
       if (dataImage.image) {
         updateProfile({
           photoURL: dataImage.image,
         })
-        notifySuccess('Perfil atualizado.')
       }
+
+      notifySuccess('Perfil atualizado.')
     } catch (error) {
-      console.log(error)
+      notifyError(String(error))
     }
   }
 
@@ -125,21 +128,18 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
     oldPassword,
   }: EmailAndPasswordProps) {
     try {
-      if (user) {
+      if (userDate && oldEmail) {
         const credential = EmailAuthProvider.credential(oldEmail, oldPassword)
-
-        await reauthenticateWithCredential(user, credential)
-        await updatePassword(user, newPassword)
+        await reauthenticateWithCredential(userDate, credential)
+        await updatePassword(userDate, newPassword)
 
         notifySuccess('Senha alterado')
         router.push('/signIn')
         removeCookie()
-      } else {
-        console.error('O usuário não está autenticado')
       }
     } catch (error) {
       if ((error as AuthError)?.code === 'auth/wrong-password') {
-        notifyError('Senha antiga não confere.')
+        notifyError('Senha antiga está incorreta')
       } else {
         console.error(error)
       }

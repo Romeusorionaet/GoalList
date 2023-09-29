@@ -10,8 +10,17 @@ export function useNotification() {
     toast.success(message)
   }
 
+  const notifyUploading = (message: string, progress: number) => {
+    const toastId = toast.loading(message)
+
+    setTimeout(() => {
+      toast.dismiss(toastId)
+    }, progress)
+  }
+
   return {
     notifyError,
     notifySuccess,
+    notifyUploading,
   }
 }

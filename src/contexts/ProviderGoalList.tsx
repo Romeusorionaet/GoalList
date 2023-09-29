@@ -52,43 +52,46 @@ export function GoalProviderContext({ children }: GoalContextProps) {
     allGoals: 0,
   })
 
-  const { userId } = useOnAuthenticated()
+  const { userDate } = useOnAuthenticated()
 
   const [selectedViewMode, setSelectedViewMode] = useState('notCompleted')
   const [orderListFiltered, setOrderListFiltered] = useState<
     CardGoalProfileProps[]
   >([])
 
-  const { data: cardGoal, error } = useSWR(`profile-${userId}`, async () => {
-    const querySnapshot = await getDocs(
-      query(collection(db, 'cardGoal'), where('userId', '==', userId)),
-    )
+  const { data: cardGoal, error } = useSWR(
+    `profile-${userDate?.uid}`,
+    async () => {
+      const querySnapshot = await getDocs(
+        query(collection(db, 'cardGoal'), where('userId', '==', userDate?.uid)),
+      )
 
-    const goals: CardGoalProfileProps[] = []
+      const goals: CardGoalProfileProps[] = []
 
-    querySnapshot.forEach((doc) => {
-      const data = doc.data() as CardGoalProfileProps
-      data.createdAt = new Date(data.createdAt)
-      goals.push(data)
-    })
+      querySnapshot.forEach((doc) => {
+        const data = doc.data() as CardGoalProfileProps
+        data.createdAt = new Date(data.createdAt)
+        goals.push(data)
+      })
 
-    goals.sort((a, b) => {
-      return Number(b.createdAt) - Number(a.createdAt)
-    })
+      goals.sort((a, b) => {
+        return Number(b.createdAt) - Number(a.createdAt)
+      })
 
-    const goalCounts = {
-      notCompletedGoals: goals.filter(
-        (card) => !card.completedGoal && !card.failedGoal,
-      ).length,
-      completedGoals: goals.filter((card) => card.completedGoal).length,
-      failedGoals: goals.filter((card) => card.failedGoal).length,
-      allGoals: goals.length,
-    }
+      const goalCounts = {
+        notCompletedGoals: goals.filter(
+          (card) => !card.completedGoal && !card.failedGoal,
+        ).length,
+        completedGoals: goals.filter((card) => card.completedGoal).length,
+        failedGoals: goals.filter((card) => card.failedGoal).length,
+        allGoals: goals.length,
+      }
 
-    setStateCountGoals(goalCounts)
+      setStateCountGoals(goalCounts)
 
-    return goals
-  })
+      return goals
+    },
+  )
 
   const getSelectedViewMode = (viewModeList: string) => {
     setSelectedViewMode(viewModeList)
