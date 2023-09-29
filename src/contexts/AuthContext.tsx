@@ -64,10 +64,10 @@ export function AuthContextProvider({ children }: AuthContextProps) {
 
     try {
       const userData = await signInWithPopup(auth, provider)
-      console.log(userData)
       const idToken = await userData.user.getIdToken()
 
       setSecureCookie(idToken)
+      router.push('/')
     } catch (error) {
       if ((error as AuthError)?.code === 'auth/popup-closed-by-user') {
         notifyError('Janela de login fechada pelo usuário.')

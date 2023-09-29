@@ -1,22 +1,41 @@
+import { UpdateProfileContext } from '@/contexts/UpdateProfileContext'
+import { InputControl, InputRoot } from '@/components/Form/Input'
 import { AuthContext } from '@/contexts/AuthContext'
 import { Button } from '@/components/Form/Button'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 
 interface Props {
-  handResetPassword: () => void
   handleButtonState: () => void
   isForgotPassword: boolean
 }
 
 export function ControlAccountForm({
-  handResetPassword,
   handleButtonState,
   isForgotPassword,
 }: Props) {
+  const { PasswordReset } = useContext(UpdateProfileContext)
   const { HandleGoogleSignIn } = useContext(AuthContext)
+  const [email, setEmail] = useState('')
+
+  const handResetPassword = () => {
+    PasswordReset(email)
+  }
 
   return (
     <div className="flex flex-col">
+      <fieldset
+        className={`flex flex-col gap-2 ${isForgotPassword ? '' : 'hidden'}`}
+      >
+        <label htmlFor="emailResetPassword">Email</label>
+        <InputRoot>
+          <InputControl
+            id="emailResetPassword"
+            placeholder="pedro@gmail.com"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </InputRoot>
+      </fieldset>
+
       <Button
         variant="outline"
         className={`hover:border-cyan-500 hover:text-cyan-500 ${

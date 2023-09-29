@@ -1,10 +1,10 @@
 import {
-  sendPasswordResetEmail,
-  updatePassword,
-  EmailAuthProvider,
   reauthenticateWithCredential,
-  AuthError,
+  sendPasswordResetEmail,
+  EmailAuthProvider,
+  updatePassword,
   updateEmail,
+  AuthError,
 } from 'firebase/auth'
 import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
 import { useUpdateProfile } from 'react-firebase-hooks/auth'
@@ -61,13 +61,18 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
   const router = useRouter()
 
   async function PasswordReset(oldEmail: string) {
-    sendPasswordResetEmail(auth, oldEmail!, {
-      url: 'http://localhost:3000/signIn',
-    })
+    try {
+      sendPasswordResetEmail(auth, oldEmail!, {
+        url: 'http://localhost:3000/signIn',
+      })
+    } catch (error) {
+      if ((error as AuthError)?.code === 'auth/missing-email') {
+        notifyError('Email incorreto')
+      }
+    }
   }
 
   async function UpdateUserEmail(newEmail: string, oldPassword: string) {
-    // refactor
     try {
       if (userDate) {
         const credentials = EmailAuthProvider.credential(
@@ -92,8 +97,6 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
     displayName,
     dataImage,
   }: UpdateProfileFormProps) {
-    // refactor
-
     try {
       if (newEmail && newEmail !== oldEmail) {
         if (oldPassword) {

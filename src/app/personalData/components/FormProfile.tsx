@@ -6,7 +6,7 @@ import { InputControl, InputRoot } from '@/components/Form/Input'
 import { useNotification } from '@/hooks/useNotification'
 import { storage } from '@/services/firebaseConfig'
 import { Button } from '@/components/Form/Button'
-import { User } from 'phosphor-react'
+import { IconContext, PhoneIncoming, User } from 'phosphor-react'
 
 export function FormProfile() {
   const [dataImage, setDataImage] = useState({ image: '' })
@@ -116,7 +116,7 @@ export function FormProfile() {
               defaultValue={
                 userDate?.displayName === null ? '' : userDate?.displayName
               }
-              placeholder="nick nome"
+              placeholder="nickname"
             />
           </InputRoot>
         </fieldset>
@@ -125,6 +125,7 @@ export function FormProfile() {
           <label className="mb-2" htmlFor="email">
             Email
           </label>
+
           <InputRoot>
             <InputControl
               type="email"
@@ -138,7 +139,7 @@ export function FormProfile() {
 
         <fieldset className="flex flex-col gap-1">
           <label className="mb-2" htmlFor="password">
-            Senha
+            Senha para alteração do email
           </label>
           <InputRoot>
             <InputControl
@@ -151,10 +152,15 @@ export function FormProfile() {
         </fieldset>
       </div>
 
-      <div className="mx-1 my-6 text-end">
+      <div className="mx-1 my-6 space-y-8">
         <Button type="submit" className="w-full">
           Atulizar perfil
         </Button>
+
+        <p className="text-sm">
+          Para poder atualizar o Email é preciso ter se registrado com email e
+          senha
+        </p>
       </div>
     </form>
   )

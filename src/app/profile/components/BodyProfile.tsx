@@ -47,7 +47,7 @@ export function BodyProfile() {
         transaction.update(cardRef, { completedGoal: true })
       })
     } catch (error) {
-      console.log('Erro ao concluir o objetivo:', error)
+      console.error('Erro ao concluir o objetivo:', error)
     }
   }
 

@@ -34,40 +34,43 @@ export function FormSignIn({
 
   function handleSignInForm(data: LoginFormData) {
     const { email, password } = data
+
     SignIn({ email, password })
   }
 
   return (
     <div>
       <form className="space-y-8" onSubmit={handleSubmit(handleSignInForm)}>
-        <fieldset className="flex flex-col gap-2">
-          <label htmlFor="email">Email</label>
-          <InputRoot>
-            <InputControl
-              id="email"
-              placeholder="pedro@gmail.com"
-              {...register('email')}
-            />
-          </InputRoot>
+        {!isForgotPassword && (
+          <>
+            <fieldset className="flex flex-col gap-2">
+              <label htmlFor="email">Email</label>
+              <InputRoot>
+                <InputControl
+                  id="email"
+                  placeholder="pedro@gmail.com"
+                  {...register('email')}
+                />
+              </InputRoot>
 
-          <FormError errors={errors.email?.message} />
-        </fieldset>
+              <FormError errors={errors.email?.message} />
+            </fieldset>
 
-        <fieldset
-          className={`flex flex-col gap-2 ${isForgotPassword ? 'hidden' : ''}`}
-        >
-          <label htmlFor="password">Senha</label>
-          <InputRoot>
-            <InputControl
-              type="password"
-              id="password"
-              placeholder="******"
-              {...register('password')}
-            />
-          </InputRoot>
+            <fieldset className="flex flex-col gap-2 ">
+              <label htmlFor="password">Senha</label>
+              <InputRoot>
+                <InputControl
+                  type="password"
+                  id="password"
+                  placeholder="******"
+                  {...register('password')}
+                />
+              </InputRoot>
 
-          <FormError errors={errors.password?.message} />
-        </fieldset>
+              <FormError errors={errors.password?.message} />
+            </fieldset>
+          </>
+        )}
 
         {isForgotPassword ? (
           <div className="text-center">

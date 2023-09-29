@@ -1,8 +1,8 @@
 import { User } from 'phosphor-react'
 
 interface HeaderProfileProps {
-  photoURL: string | null
   displayName: string | null
+  photoURL: string | null
 }
 
 export function HeaderProfile({ photoURL, displayName }: HeaderProfileProps) {
