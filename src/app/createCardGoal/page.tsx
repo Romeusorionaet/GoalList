@@ -99,7 +99,7 @@ export default function CreateCardGoal() {
 
   return (
     <form
-      className="fixed left-[50%] top-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] space-y-8 rounded-xl bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none"
+      className="mx-auto mt-28 w-[90vw] space-y-8 rounded-xl bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none"
       onSubmit={HandleCreateCardForm}
     >
       <fieldset className="flex flex-col items-center gap-4">
@@ -134,7 +134,7 @@ export default function CreateCardGoal() {
         </label>
 
         <DatePicker
-          className="w-24 text-end"
+          className="w-24 rounded-md p-1 text-end"
           id="finalDate"
           selected={finalDate}
           onChange={(date) => setFinalDate(date!)}
@@ -147,6 +147,7 @@ export default function CreateCardGoal() {
         </label>
 
         <input
+          className="rounded-md p-1"
           type="time"
           value={formattedHour}
           onChange={(e) => setFormattedHour(e.target.value)}

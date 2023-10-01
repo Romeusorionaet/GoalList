@@ -22,8 +22,11 @@ export default function PersonalData() {
   }
 
   return (
-    <div className="fixed left-[50%] top-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] space-y-8 rounded-xl bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-      <button className="absolute right-6 top-6" onClick={toggleFormVisibility}>
+    <div className="mx-auto mt-28 flex w-[90vw] max-w-[450px] space-y-8 rounded-xl bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+      <button
+        className="absolute right-8 top-32"
+        onClick={toggleFormVisibility}
+      >
         <Key className={`h-6 w-6 ${rotationClass}`} />
       </button>
 
