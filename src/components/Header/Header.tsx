@@ -1,3 +1,5 @@
+'use client'
+
 import { NavPageAuthenticated } from './NavPageAuthenticated'
 import { APP_ROUTES } from '@/constants/app-routes'
 import { useCookies } from '@/hooks/useCookies'

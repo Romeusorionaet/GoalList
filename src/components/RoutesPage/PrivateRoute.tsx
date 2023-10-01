@@ -1,6 +1,10 @@
+'use client'
+
+import { checkIsPublicRoute } from '@/config/check-is-public-route'
+import { usePathname, useRouter } from 'next/navigation'
 import { APP_ROUTES } from '@/constants/app-routes'
 import { useCookies } from '@/hooks/useCookies'
-import { useRouter } from 'next/navigation'
+import PublicRoute from './PublicRoute'
 import { useEffect } from 'react'
 
 export default function PrivateRoute({
@@ -10,6 +14,8 @@ export default function PrivateRoute({
 }) {
   const { push } = useRouter()
   const { isAuthenticated } = useCookies()
+  const pathname = usePathname()
+  const isPublicPage = checkIsPublicRoute(pathname)
 
   useEffect(() => {
     if (isAuthenticated === false) {
@@ -20,7 +26,8 @@ export default function PrivateRoute({
   return (
     <>
       {!isAuthenticated && null}
-      {isAuthenticated && children}
+      {isPublicPage && <PublicRoute>{children}</PublicRoute>}
+      {isAuthenticated && !isPublicPage && children}
     </>
   )
 }

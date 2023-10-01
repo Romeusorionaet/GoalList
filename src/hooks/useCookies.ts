@@ -1,17 +1,21 @@
+'use client'
+
 import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import { useEffect, useState } from 'react'
+import { useOnAuthenticated } from './useOnAuthStateChanged'
 
 export function useCookies() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
+  const { userDate } = useOnAuthenticated()
 
   useEffect(() => {
     const cookies = parseCookies()
-    const token = !!cookies['@authTokenTwoHeart-1.0']
+    const token = !!cookies['@authTokenGoalList-1.0']
     setIsAuthenticated(token)
-  }, [])
+  }, [isAuthenticated, userDate])
 
   function setSecureCookie(idToken: string) {
-    setCookie(null, '@authTokenTwoHeart-1.0', idToken, {
+    setCookie(null, '@authTokenGoalList-1.0', idToken, {
       maxAge: 60 * 6 * 24,
       path: '/',
       secure: process.env.NODE_ENV === 'production',
@@ -19,7 +23,7 @@ export function useCookies() {
   }
 
   function removeCookie() {
-    return destroyCookie(null, '@authTokenTwoHeart-1.0')
+    return destroyCookie(null, '@authTokenGoalList-1.0')
   }
 
   return { setSecureCookie, removeCookie, isAuthenticated }

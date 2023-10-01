@@ -4,7 +4,6 @@ export const APP_ROUTES = {
       profile: '/profile',
       createCardGoal: '/createCardGoal',
       home: '/',
-      friendProfile: '/friendProfile',
       personalData: '/personalData',
     },
   },

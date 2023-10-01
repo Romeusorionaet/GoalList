@@ -1,3 +1,5 @@
+'use client'
+
 import {
   getAuth,
   signOut,
@@ -96,7 +98,6 @@ export function AuthContextProvider({ children }: AuthContextProps) {
     try {
       await signOut(auth)
 
-      notifySuccess('Logout bem-sucedido')
       location.reload()
     } catch (error) {
       console.error(error)
