@@ -47,7 +47,7 @@ export function MainPosts({ goals }: MainPostsProps) {
   )
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-4 ">
+    <div className="flex flex-wrap items-center justify-center gap-10">
       {sortedUserLastCards.length > 0 &&
         sortedUserLastCards.map((lastCard) => {
           const userId = lastCard.userId
@@ -110,8 +110,6 @@ export function MainPosts({ goals }: MainPostsProps) {
                   goal={lastCard.goal}
                 />
               </CardGoalRoot>
-
-              <div className="mt-8 rounded-lg border border-zinc-200 sm:hidden" />
             </div>
           )
         })}

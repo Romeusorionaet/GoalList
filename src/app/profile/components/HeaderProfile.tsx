@@ -1,8 +1,9 @@
 import { User } from 'phosphor-react'
+import Image from 'next/image'
 
 interface HeaderProfileProps {
-  displayName: string | null
-  photoURL: string | null
+  displayName?: string | null
+  photoURL?: string | null
 }
 
 export function HeaderProfile({ photoURL, displayName }: HeaderProfileProps) {
@@ -18,11 +19,15 @@ export function HeaderProfile({ photoURL, displayName }: HeaderProfileProps) {
         <div
           className={`rounded-ful relative flex h-[10rem] w-[10rem] items-center justify-center`}
         >
-          <img
-            className="absolute inset-0 h-full w-full rounded-full object-cover"
-            src={photoURL}
-            alt="User Profile"
-          />
+          {photoURL && (
+            <Image
+              className="absolute inset-0 h-full w-full rounded-full object-cover"
+              src={photoURL}
+              alt="User Avatar Profile"
+              width={500}
+              height={500}
+            />
+          )}
         </div>
       )}
 

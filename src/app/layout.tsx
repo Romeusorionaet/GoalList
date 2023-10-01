@@ -9,13 +9,7 @@ import { Header } from '@/components/Header/Header'
 import { ToastContainer } from 'react-toastify'
 import { usePathname } from 'next/navigation'
 import { Roboto } from 'next/font/google'
-import type { Metadata } from 'next'
 import '../styles/globals.css'
-
-export const metadata: Metadata = {
-  title: 'loleorgeorg',
-  description: 'erhg ergwerg erg erg',
-}
 
 const roboto = Roboto({
   subsets: ['latin'],

@@ -6,7 +6,8 @@ import { InputControl, InputRoot } from '@/components/Form/Input'
 import { useNotification } from '@/hooks/useNotification'
 import { storage } from '@/services/firebaseConfig'
 import { Button } from '@/components/Form/Button'
-import { IconContext, PhoneIncoming, User } from 'phosphor-react'
+import { User } from 'phosphor-react'
+import Image from 'next/image'
 
 export function FormProfile() {
   const [dataImage, setDataImage] = useState({ image: '' })
@@ -72,29 +73,35 @@ export function FormProfile() {
       <div className="space-y-4">
         <fieldset className="flex items-center justify-center gap-4">
           <label>
-            <div
-              className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full bg-white`}
-            >
-              {file ? (
-                <img
-                  className="absolute inset-0 h-full w-full rounded-full object-cover"
-                  src={URL.createObjectURL(file)}
-                  alt="User Profile"
-                />
-              ) : userDate?.photoURL === null ? (
-                <div
-                  className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full border border-zinc-400 bg-white`}
-                >
-                  <User className="h-20 w-20" />
-                </div>
-              ) : (
-                <img
-                  className="absolute inset-0 h-full w-full rounded-full object-cover"
-                  src={userDate?.photoURL}
-                  alt="User Profile"
-                />
-              )}
-            </div>
+            {userDate?.photoURL && (
+              <div
+                className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full bg-white`}
+              >
+                {file ? (
+                  <Image
+                    className="absolute inset-0 h-full w-full rounded-full object-cover"
+                    src={URL.createObjectURL(file)}
+                    alt="User Profile"
+                    width={500}
+                    height={500}
+                  />
+                ) : userDate?.photoURL === null ? (
+                  <div
+                    className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full border border-zinc-400 bg-white`}
+                  >
+                    <User className="h-20 w-20" />
+                  </div>
+                ) : (
+                  <Image
+                    className="absolute inset-0 h-full w-full rounded-full object-cover"
+                    src={userDate?.photoURL}
+                    alt="User Profile"
+                    width={500}
+                    height={500}
+                  />
+                )}
+              </div>
+            )}
             <input
               className="sr-only"
               type="file"

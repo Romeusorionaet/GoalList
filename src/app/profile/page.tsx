@@ -20,8 +20,8 @@ export default function Profile() {
       <div className="flex flex-col items-center justify-center gap-2">
         <div className="mt-28 flex w-full max-w-[1280px] items-center justify-evenly space-y-4 rounded-md bg-white max-md:flex-col">
           <HeaderProfile
-            photoURL={userDate?.photoURL ?? ''}
-            displayName={userDate?.displayName ?? ''}
+            photoURL={userDate?.photoURL}
+            displayName={userDate?.displayName}
           />
 
           {<GraphicGoals />}

@@ -10,8 +10,10 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex flex-col space-y-20 ">
-      <h1 className="text-xl">Linha do tempo da jornada de todo viajante</h1>
+    <div className="flex flex-col space-y-20 pt-24">
+      <h1 className="text-center text-xl">
+        Linha do tempo da jornada de todo viajante
+      </h1>
       <MainPosts goals={goals} />
     </div>
   )
