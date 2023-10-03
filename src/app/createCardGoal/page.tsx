@@ -99,7 +99,7 @@ export default function CreateCardGoal() {
 
   return (
     <form
-      className="mx-auto mt-28 w-[90vw] space-y-8 rounded-xl bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none"
+      className="mx-auto mt-28 w-[90vw] space-y-8 rounded-xl bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none dark:bg-slate-800 dark:text-white"
       onSubmit={HandleCreateCardForm}
     >
       <fieldset className="flex flex-col items-center gap-4">
@@ -109,7 +109,7 @@ export default function CreateCardGoal() {
         <textarea
           value={goal}
           onChange={(e) => setGoal(e.target.value)}
-          className="h-40 w-full resize-none bg-zinc-100 p-2"
+          className="h-40 w-full resize-none bg-zinc-100 p-2 dark:bg-slate-400 dark:text-zinc-800 dark:placeholder-zinc-800"
           placeholder="Seu objetivo"
         />
       </fieldset>
@@ -120,7 +120,7 @@ export default function CreateCardGoal() {
         </label>
 
         <DatePicker
-          className="w-24 text-end"
+          className="w-24 rounded-md bg-zinc-200 p-1 text-end hover:cursor-not-allowed dark:bg-slate-700 dark:text-white"
           onChange={() => null}
           id="startDate"
           disabled
@@ -134,7 +134,7 @@ export default function CreateCardGoal() {
         </label>
 
         <DatePicker
-          className="w-24 rounded-md p-1 text-end"
+          className="w-24 rounded-md p-1 text-end dark:bg-slate-400 dark:text-white"
           id="finalDate"
           selected={finalDate}
           onChange={(date) => setFinalDate(date!)}
@@ -147,7 +147,7 @@ export default function CreateCardGoal() {
         </label>
 
         <input
-          className="rounded-md p-1"
+          className="rounded-md p-2 dark:bg-slate-400 dark:text-white"
           type="time"
           value={formattedHour}
           onChange={(e) => setFormattedHour(e.target.value)}

@@ -13,7 +13,7 @@ export function NavPageAuthenticated() {
   return (
     <div>
       <div className={widthScreen && widthScreen >= 800 ? 'hidden' : ''}>
-        <button onClick={handleChangeValue}>
+        <button onClick={handleChangeValue} className="dark:text-white">
           {checkMenuOpen ? (
             <X size={34} weight="bold" />
           ) : (
@@ -30,11 +30,11 @@ export function NavPageAuthenticated() {
         <ul
           className={`${
             widthScreen && widthScreen <= 800 && checkMenuOpen === true
-              ? 'absolute left-0 top-16 z-20 flex w-full flex-col items-end gap-8 rounded-md bg-white p-8 font-bold'
+              ? 'absolute left-0 top-16 z-20 flex w-full flex-col items-end gap-8 rounded-md bg-white p-8 font-bold dark:bg-slate-800'
               : 'flex w-[40rem] gap-16 text-3xl font-semibold'
           } `}
         >
-          <li>
+          <li className="dark:text-white">
             <Link
               className="hover:font-bold"
               onClick={setValueFalseForStateCheckMenuOpen}
@@ -44,16 +44,17 @@ export function NavPageAuthenticated() {
             </Link>
           </li>
 
-          <li>
+          <li className="dark:text-white">
             <Link
               className="hover:font-bold"
               onClick={setValueFalseForStateCheckMenuOpen}
-              href="/personalData"
+              href="/profile"
             >
-              Dados pessoais
+              Perfil
             </Link>
           </li>
-          <li>
+
+          <li className="dark:text-white">
             <Link
               className="hover:font-bold"
               onClick={setValueFalseForStateCheckMenuOpen}
@@ -62,13 +63,14 @@ export function NavPageAuthenticated() {
               Adicionar objetivo
             </Link>
           </li>
-          <li>
+
+          <li className="dark:text-white">
             <Link
               className="hover:font-bold"
               onClick={setValueFalseForStateCheckMenuOpen}
-              href="/profile"
+              href="/personalData"
             >
-              Perfil
+              Dados pessoais
             </Link>
           </li>
         </ul>

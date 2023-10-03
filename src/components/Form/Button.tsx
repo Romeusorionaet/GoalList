@@ -7,7 +7,7 @@ const button = tv({
   variants: {
     variant: {
       primary:
-        'border-none flex items-center justify-center bg-slate-500 outline-none hover:bg-slate-800 focus:outline-zinc-500',
+        'border-none flex items-center justify-center bg-slate-500 outline-none hover:bg-slate-800 dark:hover:bg-slate-400 focus:outline-zinc-500',
       outline:
         'border text-zinc-900 border-slate-400 rounded-lg p-2 duration-700',
     },

@@ -14,7 +14,7 @@ export function HeaderGoal({ displayName, photoURL }: HeaderGoalProps) {
           className={`relative -mb-9 flex h-10 w-10 items-center justify-center rounded-full`}
         >
           <Image
-            className="absolute inset-0 h-full w-full rounded-full object-cover"
+            className="absolute inset-0 z-10 h-full w-full rounded-full object-cover"
             src={photoURL}
             alt="User Profile"
             width={500}

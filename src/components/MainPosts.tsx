@@ -71,7 +71,7 @@ export function MainPosts({ goals }: MainPostsProps) {
 
           return (
             <div className="space-y-1" key={userId}>
-              <div className="flex justify-between">
+              <div className="flex justify-between dark:text-white">
                 <div className="flex items-center gap-1">
                   <ClipboardText size={28} weight="light" />
                   <p>

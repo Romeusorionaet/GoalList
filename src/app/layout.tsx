@@ -1,6 +1,6 @@
 import { UpdateProfileContextProvider } from '@/contexts/UpdateProfileContext'
-import PrivateRoute from '@/components/RoutesPage/PrivateRoute'
 import { AuthContextProvider } from '@/contexts/AuthContext'
+import { ThemeProviders } from '@/components/ThemeProvider'
 import { Header } from '@/components/Header/Header'
 import { ToastContainer } from 'react-toastify'
 import { Roboto } from 'next/font/google'
@@ -25,18 +25,20 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="pt-BR" className={roboto.className}>
-      <body className="bg-slate-50">
-        <div className="mx-auto my-auto max-w-[150rem] rounded-xl">
-          <ToastContainer />
+    <html lang="pt-BR" className={`${roboto.className} antialiased`}>
+      <body>
+        <ThemeProviders>
+          <div className="mx-auto my-auto max-w-[150rem] rounded-xl bg-slate-50 dark:bg-slate-950">
+            <ToastContainer />
 
-          <AuthContextProvider>
-            <UpdateProfileContextProvider>
-              <Header />
-              <PrivateRoute>{children}</PrivateRoute>
-            </UpdateProfileContextProvider>
-          </AuthContextProvider>
-        </div>
+            <AuthContextProvider>
+              <UpdateProfileContextProvider>
+                <Header />
+                {children}
+              </UpdateProfileContextProvider>
+            </AuthContextProvider>
+          </div>
+        </ThemeProviders>
       </body>
     </html>
   )

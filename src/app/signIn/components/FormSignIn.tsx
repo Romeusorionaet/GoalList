@@ -75,7 +75,7 @@ export function FormSignIn({
         {isForgotPassword ? (
           <div className="text-center">
             <button
-              className="p-2 outline-none focus:rounded-lg focus:p-2 focus:outline-zinc-500"
+              className="p-2 outline-none focus:rounded-lg focus:p-2 focus:outline-zinc-500 dark:text-white"
               onClick={handleButtonState}
             >
               Voltar a tela de login

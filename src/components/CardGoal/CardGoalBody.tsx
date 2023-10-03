@@ -26,7 +26,7 @@ export function CardGoalBody({ goal, dateTime }: CardGoalBodyProps) {
         <p>{goal}</p>
       </div>
 
-      <div className="absolute bottom-0 h-16 w-full rounded-lg bg-gradient-to-t from-blue-300 to-transparent" />
+      <div className="absolute bottom-0 h-16 w-full rounded-lg bg-gradient-to-t from-blue-300 to-transparent dark:from-blue-950" />
     </div>
   )
 }

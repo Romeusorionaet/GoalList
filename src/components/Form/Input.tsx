@@ -13,7 +13,7 @@ export const InputControl = forwardRef<HTMLInputElement, InputControlProps>(
     return (
       <input
         ref={ref}
-        className="flex w-full rounded-lg border border-zinc-200 px-4 py-2 outline-none focus:border-transparent focus:outline-zinc-500"
+        className="flex w-full rounded-lg border border-zinc-200 px-4 py-2 outline-none focus:border-transparent focus:outline-zinc-500 dark:bg-white dark:text-zinc-900"
         {...props}
       />
     )

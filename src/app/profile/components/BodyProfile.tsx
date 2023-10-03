@@ -58,7 +58,7 @@ export function BodyProfile() {
   }
 
   return (
-    <div className="flex flex-wrap items-center justify-center">
+    <div className="mt-4 flex flex-wrap items-center justify-center">
       {orderListFiltered &&
         orderListFiltered.map((card) => {
           return (

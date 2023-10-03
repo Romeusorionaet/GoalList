@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { useOnAuthenticated } from './useOnAuthStateChanged'
 
 export function useCookies() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const { userDate } = useOnAuthenticated()
 
   useEffect(() => {

@@ -3,8 +3,8 @@
 import { NavPageAuthenticated } from './NavPageAuthenticated'
 import { APP_ROUTES } from '@/constants/app-routes'
 import { useCookies } from '@/hooks/useCookies'
+import { HouseSimple } from 'phosphor-react'
 import { NavPageAuth } from './NavPageAuth'
-import { FramerLogo } from 'phosphor-react'
 import { useRouter } from 'next/navigation'
 
 export function Header() {
@@ -16,14 +16,20 @@ export function Header() {
   }
 
   return (
-    <header className="fixed top-0 z-10 w-full bg-white p-4">
-      <div className="flex w-full items-center  ">
+    <header className="fixed top-0 z-20 w-full bg-white p-4 dark:bg-slate-800">
+      <div className="mx-auto flex w-full max-w-[1280px] items-center  ">
         {!isAuthenticated && (
           <button onClick={handleBack}>
-            <FramerLogo width={32} height={32} />
+            <HouseSimple
+              size={36}
+              className="dark:text-white"
+              weight="duotone"
+            />
           </button>
         )}
+
         {isAuthenticated && <NavPageAuthenticated />}
+
         <NavPageAuth isAuthenticated={isAuthenticated} />
       </div>
     </header>

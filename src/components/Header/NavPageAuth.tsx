@@ -1,5 +1,6 @@
 import { AuthContext } from '@/contexts/AuthContext'
 import { Button } from '@/components/Form/Button'
+import { ThemeSwitcher } from '../ThemeSwitcher'
 import { useContext } from 'react'
 import Link from 'next/link'
 
@@ -15,11 +16,15 @@ export function NavPageAuth({ isAuthenticated }: Props) {
   }
 
   return (
-    <nav className="flex w-full justify-end gap-4 md:gap-4">
+    <nav className="flex w-full justify-end gap-4">
+      <ThemeSwitcher />
+
       {isAuthenticated ? (
-        <Button className="w-16" onClick={handleLogOut}>
-          Sair
-        </Button>
+        <div className="flex gap-8">
+          <Button className="w-16" onClick={handleLogOut}>
+            Sair
+          </Button>
+        </div>
       ) : (
         <>
           <Button>
