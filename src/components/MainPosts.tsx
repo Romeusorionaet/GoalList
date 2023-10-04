@@ -47,7 +47,7 @@ export function MainPosts({ goals }: MainPostsProps) {
   )
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-10">
+    <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-center gap-10">
       {sortedUserLastCards.length > 0 &&
         sortedUserLastCards.map((lastCard) => {
           const userId = lastCard.userId
@@ -72,8 +72,10 @@ export function MainPosts({ goals }: MainPostsProps) {
           return (
             <div className="space-y-1" key={userId}>
               <div className="flex justify-between dark:text-white">
+                {/* componentizar essa div que se repete */}
                 <div className="flex items-center gap-1">
                   <ClipboardText size={28} weight="light" />
+                  {/* adicioonar title para accesblt em todos */}
                   <p>
                     <strong>{countAllGoals}</strong>
                   </p>

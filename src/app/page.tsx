@@ -10,7 +10,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex flex-col space-y-20 py-24">
+    <div className="flex flex-col space-y-20">
       <h1 className="mt-10 text-center text-xl dark:text-white">
         Linha do tempo da jornada de todo viajante
       </h1>

@@ -26,20 +26,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" className={`${roboto.className} antialiased`}>
-      <body>
-        <ThemeProviders>
-          <div className="mx-auto my-auto max-w-[150rem] rounded-xl bg-slate-50 dark:bg-slate-950">
-            <ToastContainer />
+      <ThemeProviders>
+        <body className="mx-auto mb-8 h-screen max-w-[150rem] rounded-xl bg-slate-50 pt-32 dark:bg-slate-950">
+          <ToastContainer />
 
-            <AuthContextProvider>
-              <UpdateProfileContextProvider>
-                <Header />
-                {children}
-              </UpdateProfileContextProvider>
-            </AuthContextProvider>
-          </div>
-        </ThemeProviders>
-      </body>
+          <AuthContextProvider>
+            <UpdateProfileContextProvider>
+              <Header />
+              {children}
+            </UpdateProfileContextProvider>
+          </AuthContextProvider>
+        </body>
+      </ThemeProviders>
     </html>
   )
 }

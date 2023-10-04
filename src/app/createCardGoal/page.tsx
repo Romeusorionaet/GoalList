@@ -78,6 +78,11 @@ export default function CreateCardGoal() {
       return
     }
 
+    if (!goal) {
+      notifyError('Campo vazio')
+      return
+    }
+
     if (verifyDateAndHour()) {
       return
     }
@@ -98,65 +103,61 @@ export default function CreateCardGoal() {
   }
 
   return (
-    <form
-      className="mx-auto mt-28 w-[90vw] space-y-8 rounded-xl bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none dark:bg-slate-800 dark:text-white"
-      onSubmit={HandleCreateCardForm}
-    >
-      <fieldset className="flex flex-col items-center gap-4">
-        <label className="w-[90px]" htmlFor="goal">
-          Objetivo
-        </label>
-        <textarea
-          value={goal}
-          onChange={(e) => setGoal(e.target.value)}
-          className="h-40 w-full resize-none bg-zinc-100 p-2 dark:bg-slate-400 dark:text-zinc-800 dark:placeholder-zinc-800"
-          placeholder="Seu objetivo"
-        />
-      </fieldset>
+    <div className="mx-4">
+      <form
+        className="mx-auto max-w-[720px] space-y-8 rounded-xl bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] dark:bg-slate-800 dark:text-white"
+        onSubmit={HandleCreateCardForm}
+      >
+        <fieldset className="flex flex-col items-center gap-4">
+          <label htmlFor="goal">Objetivo</label>
+          <textarea
+            value={goal}
+            onChange={(e) => setGoal(e.target.value)}
+            className="h-40 w-full resize-none bg-zinc-100 p-2 dark:bg-slate-400 dark:text-zinc-800 dark:placeholder-zinc-800"
+            placeholder="Seu objetivo"
+          />
+        </fieldset>
 
-      <fieldset className="flex justify-between">
-        <label className=" whitespace-nowrap" htmlFor="startDate">
-          Data de inicio
-        </label>
+        <fieldset className="flex max-w-[14rem] items-center justify-between gap-4">
+          <label htmlFor="startDate">Data de inicio</label>
 
-        <DatePicker
-          className="w-24 rounded-md bg-zinc-200 p-1 text-end hover:cursor-not-allowed dark:bg-slate-700 dark:text-white"
-          onChange={() => null}
-          id="startDate"
-          disabled
-          selected={startDate}
-        />
-      </fieldset>
+          <DatePicker
+            className="w-24 rounded-md bg-zinc-200 p-1 text-end hover:cursor-not-allowed dark:bg-slate-700 dark:text-white"
+            onChange={() => null}
+            id="startDate"
+            disabled
+            selected={startDate}
+          />
+        </fieldset>
 
-      <fieldset className="flex justify-between">
-        <label className=" whitespace-nowrap" htmlFor="finalDate">
-          Data final
-        </label>
+        <fieldset className="flex max-w-[14rem] items-center justify-between gap-4">
+          <label htmlFor="finalDate">Data final</label>
 
-        <DatePicker
-          className="w-24 rounded-md p-1 text-end dark:bg-slate-400 dark:text-white"
-          id="finalDate"
-          selected={finalDate}
-          onChange={(date) => setFinalDate(date!)}
-        />
-      </fieldset>
+          <DatePicker
+            className="w-24 rounded-md p-1 text-end dark:bg-slate-400 dark:text-white"
+            id="finalDate"
+            selected={finalDate}
+            onChange={(date) => setFinalDate(date!)}
+          />
+        </fieldset>
 
-      <fieldset className="flex justify-between">
-        <label className=" whitespace-nowrap" htmlFor="finalDate">
-          Hora
-        </label>
+        <fieldset className="flex max-w-[14rem] items-center justify-between gap-4">
+          <label htmlFor="finalDate">Hora</label>
 
-        <input
-          className="rounded-md p-2 dark:bg-slate-400 dark:text-white"
-          type="time"
-          value={formattedHour}
-          onChange={(e) => setFormattedHour(e.target.value)}
-        />
-      </fieldset>
+          <input
+            className="rounded-md p-2 dark:bg-slate-400 dark:text-white"
+            type="time"
+            value={formattedHour}
+            onChange={(e) => setFormattedHour(e.target.value)}
+          />
+        </fieldset>
 
-      <Button className="w-full" type="submit">
-        Adicionar objetivo
-      </Button>
-    </form>
+        <div className="flex justify-end">
+          <Button className="max-sm:w-full" type="submit">
+            Adicionar objetivo
+          </Button>
+        </div>
+      </form>
+    </div>
   )
 }

@@ -16,7 +16,7 @@ export default function Login() {
   }
 
   return (
-    <div className="mx-auto mb-4 mt-28 w-[90vw] max-w-[450px] rounded-xl bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none dark:bg-slate-800 dark:text-white">
+    <div className="mx-auto mb-4 w-[90vw] max-w-[450px] rounded-xl bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none dark:bg-slate-800 dark:text-white">
       {isForgotPassword ? (
         <h1 className="mb-8">Redefinir senha</h1>
       ) : (

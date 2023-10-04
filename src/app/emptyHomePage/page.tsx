@@ -1,60 +1,27 @@
-'use client'
-
-import { useKeenSlider } from 'keen-slider/react'
-import 'keen-slider/keen-slider.min.css'
-import { ArrowDown } from 'phosphor-react'
-
 export default function EmptyHomePage() {
-  const [ref] = useKeenSlider<HTMLDivElement>({
-    loop: false,
-    slides: {
-      origin: 'auto',
-      perView: 1,
-      spacing: 0,
-    },
-    vertical: true,
-  })
-
   return (
-    <div className="fixed left-[50%] top-[50%] flex max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] flex-col justify-center rounded-xl bg-zinc-200 p-4 py-8 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none dark:bg-slate-800 dark:text-white">
-      <div className="absolute bottom-4 right-4 animate-bounce">
-        <ArrowDown />
-      </div>
+    <main className="mx-auto flex w-[90vw] max-w-[450px] flex-col justify-center space-y-4 rounded-xl bg-zinc-200 p-4 py-8 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] dark:bg-slate-800 dark:text-white">
+      <h1>Bem-vindo ao GoalList: Compartilhe Suas Jornadas viajante</h1>
 
-      <div className="keen-slider w-full" ref={ref} style={{ height: 200 }}>
-        <div className="keen-slider__slide flex items-center justify-center">
-          <p>Seja bem vindo viajante ao GoalList</p>
-        </div>
+      <p>
+        O GoalList é mais do que uma simples lista de tarefas - é o seu espaço
+        para gerenciar e compartilhar parte de sua jornada.
+      </p>
 
-        <div className="keen-slider__slide flex items-center justify-center">
-          <p>
-            O GoalList é uma forma de você compartilhar pontos de sua jornada.
-            Vou explicar melhor...
-          </p>
-        </div>
+      <p>
+        Aqui, não se trata apenas de anotar seus objetivos e esquecê-los. Você
+        terá a oportunidade de compartilhar suas últimas conquistas com outros
+        aventureiros, mas não se preocupe, seu perfil permanecerá privado.
+      </p>
 
-        <div className="keen-slider__slide flex items-center justify-center">
-          <p>
-            Aqui não é um simples TodoList onde você faz anotação de sua missão
-            e esquece que ele existe não se importando se a missão foi cumprida
-            ou não. As coisas funcionam diferente por aqui...
-          </p>
-        </div>
+      <p>
+        Não é necessário divulgar detalhes pessoais sobre suas missões. Basta
+        registrar suas metas e descrevê-las com palavras sábias e concisas. Ao
+        fazer isso, você se compromete a cumprir suas metas, aumentando suas
+        chances de sucesso.
+      </p>
 
-        <div className="keen-slider__slide flex items-center justify-center">
-          <p>
-            Você não será obrigado a contar detalhes delicados e pessoais de sua
-            missão, apenas registre aqui e descreva com poucas e sábias palavras
-            que essa missão existe e que uma vez registrado aqui, você terá
-            total comprometimento em cumprilas, assim você terá um
-            comprometimento maior com seu objetivo...
-          </p>
-        </div>
-
-        <div className="keen-slider__slide flex items-center justify-center gap-4">
-          <p>Aceita o desafio? Crie sua conta.</p>
-        </div>
-      </div>
-    </div>
+      <p>Está pronto para o desafio? Registre-se agora e comece sua jornada!</p>
+    </main>
   )
 }

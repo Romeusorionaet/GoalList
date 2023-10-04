@@ -17,7 +17,7 @@ export function Header() {
 
   return (
     <header className="fixed top-0 z-20 w-full bg-white p-4 dark:bg-slate-800">
-      <div className="mx-auto flex w-full max-w-[1280px] items-center  ">
+      <div className="mx-auto flex w-full max-w-[1280px] items-center">
         {!isAuthenticated && (
           <button onClick={handleBack}>
             <HouseSimple
