@@ -3,14 +3,14 @@ import { useState } from 'react'
 import Link from 'next/link'
 
 export function NavPageAuthenticated() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(true)
 
   const handleValueMenu = () => {
     isMenuOpen ? setIsMenuOpen(false) : setIsMenuOpen(true)
   }
 
   function setValueFalseForStateCheckMenuOpen() {
-    setIsMenuOpen(false)
+    setIsMenuOpen(true)
   }
 
   return (

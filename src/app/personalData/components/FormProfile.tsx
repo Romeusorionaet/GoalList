@@ -11,7 +11,7 @@ import Image from 'next/image'
 
 export function FormProfile() {
   const [dataImage, setDataImage] = useState({ image: '' })
-  const { userDate } = useOnAuthenticated()
+  const { userData } = useOnAuthenticated()
   const [file, setFile] = useState<File>()
 
   const [oldPassword, setOldPassword] = useState('')
@@ -55,13 +55,13 @@ export function FormProfile() {
       )
     }
     file && uploadFile()
-  }, [file])
+  }, [file, notifyError, notifySuccess, notifyUploading])
 
   function handleUpdateProfileForm(event: FormEvent) {
     event.preventDefault()
     UpdateProfileForm({
       newEmail,
-      oldEmail: userDate?.email,
+      oldEmail: userData?.email,
       oldPassword,
       displayName: displayNewName,
       dataImage,
@@ -73,7 +73,7 @@ export function FormProfile() {
       <div className="space-y-4">
         <fieldset className="flex items-center justify-center gap-4">
           <label>
-            {userDate?.photoURL && (
+            {userData?.photoURL && (
               <div
                 className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full bg-white`}
               >
@@ -85,7 +85,7 @@ export function FormProfile() {
                     width={500}
                     height={500}
                   />
-                ) : userDate?.photoURL === null ? (
+                ) : userData?.photoURL === null ? (
                   <div
                     className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full border border-zinc-400 bg-white`}
                   >
@@ -94,7 +94,7 @@ export function FormProfile() {
                 ) : (
                   <Image
                     className="absolute inset-0 h-full w-full rounded-full object-cover"
-                    src={userDate?.photoURL}
+                    src={userData?.photoURL}
                     alt="User Profile"
                     width={500}
                     height={500}
@@ -121,7 +121,7 @@ export function FormProfile() {
               id="nick"
               onChange={(e) => setDisplayNewName(e.target.value)}
               defaultValue={
-                userDate?.displayName === null ? '' : userDate?.displayName
+                userData?.displayName === null ? '' : userData?.displayName
               }
               placeholder="nickname"
             />
@@ -139,7 +139,7 @@ export function FormProfile() {
               id="email"
               onChange={(e) => setNewEmail(e.target.value)}
               placeholder="seuemail@gmail.com"
-              defaultValue={userDate?.email ?? ''}
+              defaultValue={userData?.email ?? ''}
             />
           </InputRoot>
         </fieldset>

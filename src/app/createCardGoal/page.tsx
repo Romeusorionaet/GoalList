@@ -12,7 +12,7 @@ import { format } from 'date-fns'
 import uuid from 'react-uuid'
 
 export default function CreateCardGoal() {
-  const { userDate } = useOnAuthenticated()
+  const { userData } = useOnAuthenticated()
   const { notifyError, notifySuccess } = useNotification()
   const [goal, setGoal] = useState('')
 
@@ -28,16 +28,16 @@ export default function CreateCardGoal() {
     createdAt: new Date().toJSON(),
     completedGoal: false,
     failedGoal: false,
-    displayName: userDate?.displayName,
+    displayName: userData?.displayName,
     dateTime: { formattedStartDate, formattedFinalDate, formattedHour },
-    photoURL: userDate?.photoURL,
-    userId: userDate?.uid,
+    photoURL: userData?.photoURL,
+    userId: userData?.uid,
     cardId: uuid(),
     goal,
   }
 
   const verifyIFUserCompletedProfile = () => {
-    if (userDate?.displayName === null || userDate?.photoURL === null) {
+    if (userData?.displayName === null || userData?.photoURL === null) {
       notifyError(
         'Complete o seu perfil para podermos personalizar melhor a sua experiência.',
       )
@@ -123,7 +123,7 @@ export default function CreateCardGoal() {
 
           <DatePicker
             className="w-24 rounded-md bg-zinc-200 p-1 text-end hover:cursor-not-allowed dark:bg-slate-700 dark:text-white"
-            onChange={() => null}
+            onChange={() => false}
             id="startDate"
             disabled
             selected={startDate}

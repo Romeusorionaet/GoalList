@@ -6,13 +6,13 @@ import { useOnAuthenticated } from './useOnAuthStateChanged'
 
 export function useCookies() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const { userDate } = useOnAuthenticated()
+  const { userData } = useOnAuthenticated()
 
   useEffect(() => {
     const cookies = parseCookies()
     const token = !!cookies['@authTokenGoalList-1.0']
     setIsAuthenticated(token)
-  }, [isAuthenticated, userDate])
+  }, [isAuthenticated, userData])
 
   function setSecureCookie(idToken: string) {
     setCookie(null, '@authTokenGoalList-1.0', idToken, {
@@ -23,7 +23,9 @@ export function useCookies() {
   }
 
   function removeCookie() {
-    return destroyCookie(null, '@authTokenGoalList-1.0')
+    return destroyCookie(null, '@authTokenGoalList-1.0', {
+      path: '/',
+    })
   }
 
   return { setSecureCookie, removeCookie, isAuthenticated }

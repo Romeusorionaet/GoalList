@@ -52,7 +52,7 @@ export function GoalProviderContext({ children }: GoalContextProps) {
     allGoals: 0,
   })
 
-  const { userDate } = useOnAuthenticated()
+  const { userData } = useOnAuthenticated()
 
   const [selectedViewMode, setSelectedViewMode] = useState('notCompleted')
   const [orderListFiltered, setOrderListFiltered] = useState<
@@ -60,10 +60,10 @@ export function GoalProviderContext({ children }: GoalContextProps) {
   >([])
 
   const { data: cardGoal, error } = useSWR(
-    `profile-${userDate?.uid}`,
+    `profile-${userData?.uid}`,
     async () => {
       const querySnapshot = await getDocs(
-        query(collection(db, 'cardGoal'), where('userId', '==', userDate?.uid)),
+        query(collection(db, 'cardGoal'), where('userId', '==', userData?.uid)),
       )
 
       const goals: CardGoalProfileProps[] = []

@@ -3,12 +3,12 @@ import { auth } from '@/services/firebaseConfig'
 import { useEffect, useState } from 'react'
 
 export function useOnAuthenticated() {
-  const [userDate, setUserDate] = useState<User>()
+  const [userData, setUserData] = useState<User>()
 
   useEffect(() => {
     const onAuth = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUserDate(user)
+        setUserData(user)
       }
     })
 
@@ -17,5 +17,5 @@ export function useOnAuthenticated() {
     }
   }, [])
 
-  return { userDate }
+  return { userData }
 }

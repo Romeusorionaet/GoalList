@@ -57,7 +57,7 @@ export const UpdateProfileContext = createContext({} as UpdateProfileType)
 export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
   const { notifyError, notifySuccess } = useNotification()
   const [updateProfile] = useUpdateProfile(auth)
-  const { userDate } = useOnAuthenticated()
+  const { userData } = useOnAuthenticated()
   const { removeCookie } = useCookies()
 
   const router = useRouter()
@@ -76,14 +76,14 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
 
   async function UpdateUserEmail(newEmail: string, oldPassword: string) {
     try {
-      if (userDate) {
+      if (userData) {
         const credentials = EmailAuthProvider.credential(
-          String(userDate.email),
+          String(userData.email),
           oldPassword,
         )
-        await reauthenticateWithCredential(userDate, credentials)
+        await reauthenticateWithCredential(userData, credentials)
 
-        await updateEmail(userDate, newEmail)
+        await updateEmail(userData, newEmail)
       }
     } catch (error) {
       notifyError(
@@ -133,10 +133,10 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
     oldPassword,
   }: EmailAndPasswordProps) {
     try {
-      if (userDate && oldEmail) {
+      if (userData && oldEmail) {
         const credential = EmailAuthProvider.credential(oldEmail, oldPassword)
-        await reauthenticateWithCredential(userDate, credential)
-        await updatePassword(userDate, newPassword)
+        await reauthenticateWithCredential(userData, credential)
+        await updatePassword(userData, newPassword)
 
         notifySuccess('Senha alterado')
         router.push('/signIn')

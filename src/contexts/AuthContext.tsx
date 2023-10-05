@@ -43,13 +43,10 @@ export function AuthContextProvider({ children }: AuthContextProps) {
   async function SignIn({ email, password }: AuthFormProps) {
     try {
       const userData = await signInWithEmailAndPassword(auth, email, password)
+      const idToken = await userData.user.getIdToken()
 
-      if (userData) {
-        const idToken = await userData.user.getIdToken()
-
-        setSecureCookie(idToken)
-        router.push('/')
-      }
+      setSecureCookie(idToken)
+      router.push('/')
     } catch (error) {
       if ((error as AuthError)?.code === 'auth/wrong-password') {
         notifyError('Email ou Senha incorreto.')

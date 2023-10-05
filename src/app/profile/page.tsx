@@ -8,7 +8,7 @@ import { BodyProfile } from './components/BodyProfile'
 import { useContext } from 'react'
 
 export default function Profile() {
-  const { userDate } = useOnAuthenticated()
+  const { userData } = useOnAuthenticated()
   const { error } = useContext(GoalContext)
 
   if (error) {
@@ -20,8 +20,8 @@ export default function Profile() {
       <div className="flex flex-col items-center justify-center gap-2">
         <div className="flex w-full max-w-[1280px] items-center justify-evenly space-y-4 rounded-md bg-white dark:bg-slate-800 dark:text-white max-md:flex-col">
           <HeaderProfile
-            photoURL={userDate?.photoURL}
-            displayName={userDate?.displayName}
+            photoURL={userData?.photoURL}
+            displayName={userData?.displayName}
           />
 
           <GraphicGoals />

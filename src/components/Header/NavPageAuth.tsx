@@ -17,7 +17,9 @@ export function NavPageAuth({ isAuthenticated }: Props) {
 
   return (
     <nav className="flex w-full justify-end gap-4">
-      <ThemeSwitcher />
+      <div className="md:mr-8">
+        <ThemeSwitcher />
+      </div>
 
       {isAuthenticated ? (
         <div className="flex gap-8">
@@ -27,18 +29,18 @@ export function NavPageAuth({ isAuthenticated }: Props) {
         </div>
       ) : (
         <>
-          <Button>
+          <Button className="max-md:w-14">
             <Link
-              className="outline-none focus-within:outline-none"
+              className="outline-none focus-within:outline-none max-md:text-sm"
               href="/signIn"
             >
               Entrar
             </Link>
           </Button>
 
-          <Button>
+          <Button className="max-md:w-18">
             <Link
-              className="outline-none focus-within:outline-none"
+              className="outline-none focus-within:outline-none max-md:text-sm"
               href="/signUp"
             >
               Cadastrar

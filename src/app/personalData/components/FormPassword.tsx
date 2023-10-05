@@ -17,7 +17,7 @@ type FormPasswordData = z.infer<typeof FormPasswordSchema>
 
 export function FormPassword() {
   const { ChangePassword } = useContext(UpdateProfileContext)
-  const { userDate } = useOnAuthenticated()
+  const { userData } = useOnAuthenticated()
   const {
     register,
     handleSubmit,
@@ -28,7 +28,7 @@ export function FormPassword() {
 
   function handleChangePassword(data: FormPasswordData) {
     const { oldPassword, newPassword } = data
-    ChangePassword({ oldEmail: userDate?.email, newPassword, oldPassword })
+    ChangePassword({ oldEmail: userData?.email, newPassword, oldPassword })
   }
 
   return (
