@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { AuthContext } from '@/contexts/AuthContext'
 import { Button } from '@/components/Form/Button'
 import { useForm } from 'react-hook-form'
+import { motion } from 'framer-motion'
 import { useContext } from 'react'
 import { z } from 'zod'
 
@@ -43,7 +44,14 @@ export default function Register() {
   }
 
   return (
-    <div className="mx-auto w-[90vw] max-w-[450px] rounded-xl bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none dark:bg-slate-800 dark:text-white">
+    <motion.div
+      className="mx-auto w-[90vw] max-w-[450px] rounded-xl bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none dark:bg-slate-800 dark:text-white"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 1,
+      }}
+    >
       <h1 className="mb-8">Cadastrar conta</h1>
 
       <form className="space-y-10" onSubmit={handleSubmit(handleRegisterForm)}>
@@ -81,6 +89,6 @@ export default function Register() {
           Cadastar
         </Button>
       </form>
-    </div>
+    </motion.div>
   )
 }

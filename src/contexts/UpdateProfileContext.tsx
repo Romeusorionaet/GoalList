@@ -84,10 +84,11 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
         await reauthenticateWithCredential(userData, credentials)
 
         await updateEmail(userData, newEmail)
+        notifySuccess('Perfil atualizado.')
       }
     } catch (error) {
       notifyError(
-        'Não foi possível atualizar o perfil. Tente novamente mais tarde.',
+        'Para poder atualizar o Email é preciso ter se registrado com email e senha.',
       )
     }
   }
@@ -113,15 +114,15 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
         updateProfile({
           displayName,
         })
+        notifySuccess('Perfil atualizado.')
       }
 
       if (dataImage.image) {
         updateProfile({
           photoURL: dataImage.image,
         })
+        notifySuccess('Perfil atualizado.')
       }
-
-      notifySuccess('Perfil atualizado.')
     } catch (error) {
       notifyError(String(error))
     }

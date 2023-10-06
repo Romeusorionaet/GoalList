@@ -11,6 +11,7 @@ import { CardGoalBody } from './CardGoal/CardGoalBody'
 import { CardGoalDataProps } from '@/config/getData'
 import { HeaderGoal } from './CardGoal/HeaderGoal'
 import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 
 export interface MainPostsProps {
   goals: CardGoalDataProps[]
@@ -47,7 +48,14 @@ export function MainPosts({ goals }: MainPostsProps) {
   )
 
   return (
-    <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-center gap-10">
+    <motion.div
+      className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-center gap-10"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 1,
+      }}
+    >
       {sortedUserLastCards.length > 0 &&
         sortedUserLastCards.map((lastCard) => {
           const userId = lastCard.userId
@@ -115,6 +123,6 @@ export function MainPosts({ goals }: MainPostsProps) {
             </div>
           )
         })}
-    </div>
+    </motion.div>
   )
 }

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body, input, button, li {
-  @apply text-zinc-900 text-base tracking-wide leading-relaxed font-normal
+  @apply text-zinc-900 dark:text-white text-base tracking-wide leading-relaxed font-normal
 }
 
 h1, h2, h3, h4, h5, h6 {

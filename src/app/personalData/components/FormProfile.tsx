@@ -55,7 +55,7 @@ export function FormProfile() {
       )
     }
     file && uploadFile()
-  }, [file, notifyError, notifySuccess, notifyUploading])
+  }, [file])
 
   function handleUpdateProfileForm(event: FormEvent) {
     event.preventDefault()

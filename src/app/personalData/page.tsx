@@ -22,7 +22,14 @@ export default function PersonalData() {
   }
 
   return (
-    <div className="relative mx-auto flex w-[90vw] max-w-[450px] space-y-8 rounded-xl bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none dark:bg-slate-800 dark:text-white">
+    <motion.div
+      className="relative mx-auto flex w-[90vw] max-w-[450px] space-y-8 rounded-xl bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none dark:bg-slate-800 dark:text-white"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 1,
+      }}
+    >
       <button className="absolute right-8 top-8" onClick={toggleFormVisibility}>
         <Key className={`h-6 w-6 ${rotationClass} dark:text-white`} />
       </button>
@@ -35,6 +42,6 @@ export default function PersonalData() {
       >
         {isPasswordFormHidden ? <FormProfile /> : <FormPassword />}
       </motion.div>
-    </div>
+    </motion.div>
   )
 }

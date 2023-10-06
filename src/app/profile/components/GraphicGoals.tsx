@@ -17,7 +17,7 @@ export function GraphicGoals() {
   }
 
   return (
-    <div className="flex flex-col justify-between gap-4 rounded-lg bg-zinc-200 p-4 text-zinc-600 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none dark:bg-blue-950 dark:text-white">
+    <div className="flex flex-col justify-between gap-4 rounded-lg bg-zinc-200 p-4 text-zinc-600 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none dark:bg-slate-950 dark:text-white">
       <label className="flex cursor-pointer items-center justify-between gap-4">
         <p>Todas as Missões</p>
         <Button

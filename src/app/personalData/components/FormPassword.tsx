@@ -5,6 +5,7 @@ import { FormError } from '@/components/Form/FormError'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/Form/Button'
 import { useForm } from 'react-hook-form'
+import { motion } from 'framer-motion'
 import { useContext } from 'react'
 import { z } from 'zod'
 
