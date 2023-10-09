@@ -54,9 +54,7 @@ export function FormSignIn({
               </InputRoot>
 
               <FormError errors={errors.email?.message} />
-            </fieldset>
 
-            <fieldset className="flex flex-col gap-2 ">
               <label htmlFor="password">Senha</label>
               <InputRoot>
                 <InputControl

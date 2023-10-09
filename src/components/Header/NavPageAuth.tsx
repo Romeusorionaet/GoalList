@@ -1,8 +1,8 @@
 import { AuthContext } from '@/contexts/AuthContext'
 import { Button } from '@/components/Form/Button'
 import { ThemeSwitcher } from '../ThemeSwitcher'
+import { useRouter } from 'next/navigation'
 import { useContext } from 'react'
-import Link from 'next/link'
 
 interface Props {
   isAuthenticated: boolean | null
@@ -11,9 +11,7 @@ interface Props {
 export function NavPageAuth({ isAuthenticated }: Props) {
   const { LogOutUser } = useContext(AuthContext)
 
-  function handleLogOut() {
-    LogOutUser()
-  }
+  const router = useRouter()
 
   return (
     <nav className="flex w-full justify-end gap-4">
@@ -23,28 +21,24 @@ export function NavPageAuth({ isAuthenticated }: Props) {
 
       {isAuthenticated ? (
         <div className="flex gap-8">
-          <Button className="w-16" onClick={handleLogOut}>
+          <Button className="w-16" onClick={() => LogOutUser()}>
             Sair
           </Button>
         </div>
       ) : (
         <>
-          <Button className="max-md:w-14">
-            <Link
-              className="outline-none focus-within:outline-none max-md:text-sm"
-              href="/signIn"
-            >
-              Entrar
-            </Link>
+          <Button
+            className="max-md:w-14"
+            onClick={() => router.push('/signIn')}
+          >
+            Entrar
           </Button>
 
-          <Button className="max-md:w-18">
-            <Link
-              className="outline-none focus-within:outline-none max-md:text-sm"
-              href="/signUp"
-            >
-              Cadastrar
-            </Link>
+          <Button
+            className="max-md:w-18"
+            onClick={() => router.push('/signUp')}
+          >
+            Cadastrar
           </Button>
         </>
       )}

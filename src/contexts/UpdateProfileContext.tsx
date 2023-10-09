@@ -64,11 +64,16 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
 
   async function PasswordReset(oldEmail: string) {
     try {
-      sendPasswordResetEmail(auth, oldEmail!, {
-        url: 'http://localhost:3000/signIn',
-      })
+      if (oldEmail) {
+        await sendPasswordResetEmail(auth, oldEmail, {
+          url: 'https://goal-list-tau.vercel.app/signIn',
+        })
+        notifySuccess('Email enviado, vefique para poder redefinir a senha.')
+      } else {
+        notifyError('Ensira seu email cadastrado')
+      }
     } catch (error) {
-      if ((error as AuthError)?.code === 'auth/missing-email') {
+      if ((error as AuthError)?.code === 'auth/user-not-found') {
         notifyError('Email incorreto')
       }
     }
@@ -87,9 +92,13 @@ export function UpdateProfileContextProvider({ children }: UpdateProfileProps) {
         notifySuccess('Perfil atualizado.')
       }
     } catch (error) {
-      notifyError(
-        'Para poder atualizar o Email é preciso ter se registrado com email e senha.',
-      )
+      if ((error as AuthError)?.code === 'auth/email-already-in-use') {
+        notifyError('Este email não está disponível.')
+      } else {
+        notifyError(
+          'Primeiro registro com conta Google não é possível fazer alterações no Email/Senha.',
+        )
+      }
     }
   }
 

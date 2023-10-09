@@ -1,6 +1,7 @@
 'use client'
 
 import { InputControl, InputRoot } from '@/components/Form/Input'
+import { useNotification } from '@/hooks/useNotification'
 import { FormError } from '@/components/Form/FormError'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AuthContext } from '@/contexts/AuthContext'
@@ -22,12 +23,14 @@ const registerFormSchema = z.object({
       { message: 'Email Inválido' },
     ),
   password: z.string().min(6, { message: 'No mínimo 6 digitos' }),
+  passwordRepeat: z.string().min(6, { message: 'No mínimo 6 digitos' }),
 })
 
 type RegisterFormData = z.infer<typeof registerFormSchema>
 
 export default function Register() {
   const { SignUp } = useContext(AuthContext)
+  const { notifyError } = useNotification()
 
   const {
     register,
@@ -38,7 +41,11 @@ export default function Register() {
   })
 
   function handleRegisterForm(data: RegisterFormData) {
-    const { email, password } = data
+    const { email, password, passwordRepeat } = data
+
+    if (password !== passwordRepeat) {
+      return notifyError('As senhas não combinam.')
+    }
 
     SignUp({ email, password })
   }
@@ -52,10 +59,10 @@ export default function Register() {
         duration: 1,
       }}
     >
-      <h1 className="mb-8">Cadastrar conta</h1>
-
       <form className="space-y-10" onSubmit={handleSubmit(handleRegisterForm)}>
         <fieldset className="flex flex-col gap-2">
+          <legend className="mb-8 text-xl">Cadastrar conta</legend>
+
           <label htmlFor="email">Email</label>
           <InputRoot>
             <InputControl
@@ -66,9 +73,7 @@ export default function Register() {
           </InputRoot>
 
           <FormError errors={errors.email?.message} />
-        </fieldset>
 
-        <fieldset className="flex flex-col gap-2">
           <label htmlFor="password">Senha</label>
           <InputRoot>
             <InputControl
@@ -80,7 +85,20 @@ export default function Register() {
           </InputRoot>
 
           <FormError errors={errors.password?.message} />
+
+          <label htmlFor="passwordRepeat">Repetir Senha</label>
+          <InputRoot>
+            <InputControl
+              type="password"
+              id="passwordRepeat"
+              placeholder="min 6 caracteres"
+              {...register('passwordRepeat')}
+            />
+          </InputRoot>
+
+          <FormError errors={errors.passwordRepeat?.message} />
         </fieldset>
+
         <Button
           type="submit"
           className="w-full data-[disabled=true]:cursor-not-allowed"

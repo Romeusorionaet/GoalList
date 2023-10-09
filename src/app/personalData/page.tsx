@@ -35,6 +35,7 @@ export default function PersonalData() {
       </button>
 
       <motion.div
+        className="mx-auto w-full"
         initial={{ opacity: 1, scale: 1, height: 'auto' }}
         animate={controls}
         transition={{ duration: 0.6 }}

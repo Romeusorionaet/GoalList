@@ -45,6 +45,7 @@ export function BodyProfile() {
         }
 
         transaction.update(cardRef, { completedGoal: true })
+        // updateDocObjectCountItems('updateCompletedGoal')
       })
     } catch (error) {
       console.error('Erro ao concluir o objetivo:', error)

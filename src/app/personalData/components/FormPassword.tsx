@@ -37,11 +37,9 @@ export function FormPassword() {
       className="space-y-8 pt-8"
       onSubmit={handleSubmit(handleChangePassword)}
     >
-      <p className="text-sm">
-        Alteração de senha é apenas para quem fez login com email e senha
-      </p>
+      <fieldset className="flex flex-col gap-1 space-y-4">
+        <legend>Alteração de senha</legend>
 
-      <fieldset className="mb-4 flex flex-col gap-1">
         <label className="mb-2" htmlFor="oldPassword">
           Senha Antiga
         </label>
@@ -55,9 +53,7 @@ export function FormPassword() {
         </InputRoot>
 
         <FormError errors={errors.oldPassword?.message} />
-      </fieldset>
 
-      <fieldset className="mb-8 flex flex-col gap-1">
         <label className="mb-2" htmlFor="NewPassword">
           Senha nova
         </label>

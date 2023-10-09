@@ -67,41 +67,40 @@ export function FormProfile() {
       dataImage,
     })
   }
-
   return (
     <form onSubmit={handleUpdateProfileForm}>
       <div className="space-y-4">
         <fieldset className="flex items-center justify-center gap-4">
           <label>
-            {userData?.photoURL && (
-              <div
-                className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full bg-white`}
-              >
-                {file ? (
+            <div
+              className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full bg-white`}
+            >
+              {file ? (
+                <Image
+                  className="absolute inset-0 h-full w-full rounded-full object-cover"
+                  src={URL.createObjectURL(file)}
+                  alt="User Profile"
+                  width={500}
+                  height={500}
+                />
+              ) : userData?.photoURL === null ? (
+                <div
+                  className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full border border-zinc-400 bg-white dark:bg-slate-800`}
+                >
+                  <User className="h-20 w-20" />
+                </div>
+              ) : (
+                userData?.photoURL && (
                   <Image
                     className="absolute inset-0 h-full w-full rounded-full object-cover"
-                    src={URL.createObjectURL(file)}
+                    src={userData.photoURL}
                     alt="User Profile"
                     width={500}
                     height={500}
                   />
-                ) : userData?.photoURL === null ? (
-                  <div
-                    className={`relative flex h-[10rem] w-[10rem] items-center justify-center rounded-full border border-zinc-400 bg-white`}
-                  >
-                    <User className="h-20 w-20" />
-                  </div>
-                ) : (
-                  <Image
-                    className="absolute inset-0 h-full w-full rounded-full object-cover"
-                    src={userData?.photoURL}
-                    alt="User Profile"
-                    width={500}
-                    height={500}
-                  />
-                )}
-              </div>
-            )}
+                )
+              )}
+            </div>
             <input
               className="sr-only"
               type="file"
@@ -165,8 +164,8 @@ export function FormProfile() {
         </Button>
 
         <p className="text-sm">
-          Para poder atualizar o Email é preciso ter se registrado com email e
-          senha
+          Se seu primeiro registro foi com conta <strong>Google</strong>, não
+          será possível atualizar Email/Senha.
         </p>
       </div>
     </form>

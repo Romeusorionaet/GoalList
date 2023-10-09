@@ -2,19 +2,22 @@
 
 import { useOnAuthenticated } from '@/hooks/useOnAuthStateChanged'
 import { useNotification } from '@/hooks/useNotification'
+import { FormEvent, useContext, useState } from 'react'
 import 'react-datepicker/dist/react-datepicker.css'
 import { Button } from '@/components/Form/Button'
 import { setDoc, doc } from 'firebase/firestore'
 import { db } from '@/services/firebaseConfig'
-import { FormEvent, useState } from 'react'
+
 import DatePicker from 'react-datepicker'
 import { motion } from 'framer-motion'
 import { format } from 'date-fns'
 import uuid from 'react-uuid'
+// import { GoalContext } from '@/contexts/ProviderGoalList'
 
 export default function CreateCardGoal() {
-  const { userData } = useOnAuthenticated()
+  // const { updateDocObjectCountItems } = useContext(GoalContext)
   const { notifyError, notifySuccess } = useNotification()
+  const { userData } = useOnAuthenticated()
   const [goal, setGoal] = useState('')
 
   const [startDate] = useState<Date>(new Date())
@@ -29,8 +32,8 @@ export default function CreateCardGoal() {
     createdAt: new Date().toJSON(),
     completedGoal: false,
     failedGoal: false,
-    displayName: userData?.displayName,
     dateTime: { formattedStartDate, formattedFinalDate, formattedHour },
+    displayName: userData?.displayName,
     photoURL: userData?.photoURL,
     userId: userData?.uid,
     cardId: uuid(),
@@ -67,6 +70,24 @@ export default function CreateCardGoal() {
     return true
   }
 
+  const docObjectCountItems = {
+    cardId: uuid(),
+    user: String(userData?.email),
+    countIncompleteGoals: 0,
+    countCompletedGoals: 0,
+    countFailedGoals: 0,
+    countAllGoals: 0,
+  }
+
+  // const handleCreateCollection = async () => {
+  //   // pensar no modo com que essa função seja chamada pelo user apenas uma vez
+  //   await setDoc(
+  //     doc(db, 'userCountItems', docObjectCountItems.user),
+  //     docObjectCountItems,
+  //   )
+  //   notifySuccess('Coleção criado com sucesso')
+  // }
+
   async function HandleCreateCardForm(event: FormEvent) {
     event.preventDefault()
 
@@ -90,6 +111,8 @@ export default function CreateCardGoal() {
 
     try {
       await setDoc(doc(db, 'cardGoal', docObjectItems.cardId), docObjectItems)
+      // updateDocObjectCountItems('addCountAllGoalsAndIncompleteGoals')
+
       notifySuccess('Objetivo adicionado com sucesso.')
 
       setGoal('')
@@ -165,6 +188,12 @@ export default function CreateCardGoal() {
             Adicionar objetivo
           </Button>
         </div>
+
+        {/* <div>
+          <Button type="button" onClick={handleCreateCollection}>
+            Criar coleção no db
+          </Button>
+        </div> */}
       </form>
     </motion.div>
   )

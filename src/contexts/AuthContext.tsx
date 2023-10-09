@@ -10,10 +10,12 @@ import {
   signInWithPopup,
 } from 'firebase/auth'
 import { useNotification } from '@/hooks/useNotification'
-import { auth } from '@/services/firebaseConfig'
+import { auth, db } from '@/services/firebaseConfig'
 import { ReactNode, createContext } from 'react'
+import { setDoc, doc } from 'firebase/firestore'
 import { useCookies } from '@/hooks/useCookies'
 import { useRouter } from 'next/navigation'
+import uuid from 'react-uuid'
 
 interface AuthFormProps {
   email: string

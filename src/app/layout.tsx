@@ -1,4 +1,5 @@
 import { UpdateProfileContextProvider } from '@/contexts/UpdateProfileContext'
+import { GoalProviderContext } from '@/contexts/ProviderGoalList'
 import { AuthContextProvider } from '@/contexts/AuthContext'
 import { ThemeProviders } from '@/components/ThemeProvider'
 import { Header } from '@/components/Header/Header'
@@ -33,8 +34,10 @@ export default function RootLayout({
 
             <AuthContextProvider>
               <UpdateProfileContextProvider>
-                <Header />
-                {children}
+                <GoalProviderContext>
+                  <Header />
+                  {children}
+                </GoalProviderContext>
               </UpdateProfileContextProvider>
             </AuthContextProvider>
           </div>
