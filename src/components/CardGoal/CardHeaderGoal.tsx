@@ -5,7 +5,7 @@ interface HeaderGoalProps {
   photoURL: string
 }
 
-export function HeaderGoal({ displayName, photoURL }: HeaderGoalProps) {
+export function CardHeaderGoal({ displayName, photoURL }: HeaderGoalProps) {
   return (
     <>
       <h2 className="mb-2 font-bold">{displayName}</h2>

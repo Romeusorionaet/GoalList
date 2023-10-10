@@ -1,18 +1,15 @@
 'use client'
 
+import { CardProductivityData } from '../CardGoal/CardProductivityData'
 import { useKeenSliderMode } from '@/hooks/useKeenSliderMode'
+import { CardHeaderGoal } from '../CardGoal/CardHeaderGoal'
 import { CardGoalRoot } from '../CardGoal/CardGoalRoot'
 import { CardGoalBody } from '../CardGoal/CardGoalBody'
-import { ProductivityData } from '../ProductivityData'
 import { CardGoalDataProps } from '@/config/getData'
-import { HeaderGoal } from '../CardGoal/HeaderGoal'
 import { useEffect, useState } from 'react'
+import { MainPostsProps } from '@/app/page'
 import 'keen-slider/keen-slider.min.css'
 import { motion } from 'framer-motion'
-
-export interface MainPostsProps {
-  goals: CardGoalDataProps[]
-}
 
 export function UsersPosts({ goals }: MainPostsProps) {
   const [userLastCards, setUserLastCards] = useState<{
@@ -100,7 +97,7 @@ export function UsersPosts({ goals }: MainPostsProps) {
               return (
                 <div className="keen-slider__slide" key={userId}>
                   <CardGoalRoot>
-                    <HeaderGoal
+                    <CardHeaderGoal
                       displayName={lastCard.displayName}
                       photoURL={lastCard.photoURL}
                     />
@@ -108,7 +105,8 @@ export function UsersPosts({ goals }: MainPostsProps) {
                       dateTime={lastCard.dateTime}
                       goal={lastCard.goal}
                     />
-                    <ProductivityData
+
+                    <CardProductivityData
                       objectProductivityData={objectProductivityData}
                     />
                   </CardGoalRoot>

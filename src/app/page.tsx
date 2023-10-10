@@ -1,6 +1,11 @@
+import { UsersProcrastinators } from '@/components/MainPost/UsersProcrastinators'
 import { UsersProductivity } from '@/components/MainPost/UsersProductivity'
 import { UsersPosts } from '@/components/MainPost/UsersPosts'
-import { getData } from '@/config/getData'
+import { CardGoalDataProps, getData } from '@/config/getData'
+
+export interface MainPostsProps {
+  goals: CardGoalDataProps[]
+}
 
 export default async function Home() {
   const goals = await getData()
@@ -22,6 +27,10 @@ export default async function Home() {
 
         <section className="space-y-4">
           <UsersProductivity goals={goals} />
+        </section>
+
+        <section className="space-y-4">
+          <UsersProcrastinators goals={goals} />
         </section>
       </main>
     </div>

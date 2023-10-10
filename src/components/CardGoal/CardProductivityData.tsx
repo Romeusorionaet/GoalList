@@ -14,7 +14,7 @@ interface Props {
   }
 }
 
-export function ProductivityData({ objectProductivityData }: Props) {
+export function CardProductivityData({ objectProductivityData }: Props) {
   return (
     <div className="mb-2 mt-12 flex w-full justify-between px-2 dark:text-zinc-300">
       <div

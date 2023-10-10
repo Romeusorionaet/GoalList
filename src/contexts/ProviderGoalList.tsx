@@ -32,17 +32,9 @@ interface StateGoalsCountProps {
   allGoals: number
 }
 
-// interface userCountItemsProps {
-//   countIncompleteGoals: number
-//   countCompletedGoals: number
-//   countFailedGoals: number
-//   countAllGoals: number
-// }
-
 interface GoalContextType {
   selectedViewMode: string
   getSelectedViewMode: (viewModeList: string) => void
-  // updateDocObjectCountItems: (indice: string) => void
   orderListFiltered: CardGoalProfileProps[]
   stateCountGoals: StateGoalsCountProps
   cardGoal?: CardGoalProfileProps[]
@@ -108,49 +100,6 @@ export function GoalProviderContext({ children }: GoalContextProps) {
     setSelectedViewMode(viewModeList)
   }
 
-  // const updateDocObjectCountItems = async (indice: string) => {
-  //   const cardRef = doc(db, 'userCountItems', String(userData?.email))
-
-  //   try {
-  //     await runTransaction(db, async (transaction) => {
-  //       const cardDoc = await transaction.get(cardRef)
-
-  //       if (!cardDoc.exists()) {
-  //         throw new Error('Card does not exist')
-  //       }
-
-  //       const cardData = cardDoc.data() as userCountItemsProps
-
-  //       if (!cardData) {
-  //         return
-  //       }
-
-  //       if (indice === 'addCountAllGoalsAndIncompleteGoals') {
-  //         transaction.update(cardRef, {
-  //           countAllGoals: cardData.countAllGoals + 1,
-  //           countIncompleteGoals: cardData.countIncompleteGoals + 1,
-  //         })
-  //       }
-
-  //       if (indice === 'updateCompletedGoal') {
-  //         transaction.update(cardRef, {
-  //           countCompletedGoals: cardData.countCompletedGoals + 1,
-  //           countIncompleteGoals: cardData.countIncompleteGoals - 1,
-  //         })
-  //       }
-
-  //       if (indice === 'failedGoal') {
-  //         transaction.update(cardRef, {
-  //           countIncompleteGoals: cardData.countIncompleteGoals - 1,
-  //           countFailedGoals: cardData.countFailedGoals + 1,
-  //         })
-  //       }
-  //     })
-  //   } catch (error) {
-  //     console.error('Erro ao concluir o objetivo:', error)
-  //   }
-  // }
-
   useEffect(() => {
     if (cardGoal) {
       const filterFunctions: {
@@ -207,7 +156,6 @@ export function GoalProviderContext({ children }: GoalContextProps) {
 
         if (finalDate < currentDate) {
           setValueTrueForFailedGoal(goalList.cardId)
-          // updateDocObjectCountItems('failedGoal')
         }
       })
     }
@@ -216,7 +164,6 @@ export function GoalProviderContext({ children }: GoalContextProps) {
   return (
     <GoalContext.Provider
       value={{
-        // updateDocObjectCountItems,
         getSelectedViewMode,
         orderListFiltered,
         selectedViewMode,

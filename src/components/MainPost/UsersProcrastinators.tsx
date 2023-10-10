@@ -4,11 +4,12 @@ import { CardProductivityData } from '../CardGoal/CardProductivityData'
 import { CardHeaderGoal } from '../CardGoal/CardHeaderGoal'
 import { CardGoalRoot } from '../CardGoal/CardGoalRoot'
 import { CardGoalDataProps } from '@/config/getData'
-import { MainPostsProps } from '@/app/page'
 import { useEffect, useState } from 'react'
+import { MainPostsProps } from '@/app/page'
+import 'keen-slider/keen-slider.min.css'
 import { motion } from 'framer-motion'
 
-export function UsersProductivity({ goals }: MainPostsProps) {
+export function UsersProcrastinators({ goals }: MainPostsProps) {
   const [userLastCards, setUserLastCards] = useState<CardGoalDataProps[]>([])
 
   useEffect(() => {
@@ -16,7 +17,7 @@ export function UsersProductivity({ goals }: MainPostsProps) {
       const userCardCounts: { [userId: string]: number } = {}
 
       goals.forEach((card) => {
-        if (card.completedGoal) {
+        if (card.failedGoal) {
           if (!userCardCounts[card.userId]) {
             userCardCounts[card.userId] = 1
           } else {
@@ -33,7 +34,7 @@ export function UsersProductivity({ goals }: MainPostsProps) {
 
       goals.forEach((card) => {
         if (
-          card.completedGoal &&
+          card.failedGoal &&
           sortedUsers.includes(card.userId) &&
           !lastCards[card.userId]
         ) {
@@ -63,10 +64,10 @@ export function UsersProductivity({ goals }: MainPostsProps) {
         }}
       >
         <div className="mb-8">
-          <h2 className="mb-2">Viajantes mais produtivos</h2>
+          <h2 className="mb-2">Viajantes mais procrastinadores</h2>
           <p className="dark:text-zinc-300">
-            Os 6 viajantes mais produtivo é levado em consideração a quantidade
-            de objetivos concluídos
+            Os 6 viajantes mais procrastinadores é levado em consideração a
+            quantidade de objetivos não concluído
           </p>
         </div>
 

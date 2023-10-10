@@ -1,9 +1,9 @@
 import { GoalContext } from '@/contexts/ProviderGoalList'
 import { Button } from '@/components/Form/Button'
 import {
+  HourglassMedium,
   ClipboardText,
   HourglassLow,
-  HourglassMedium,
   ListChecks,
 } from 'phosphor-react'
 import { useContext } from 'react'
