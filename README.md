@@ -16,15 +16,7 @@
 
 <br>
 
-## Preview
-
-<div align='center'>
-
-![preview](./src/assets/preview/previewDesktopIgniteShop.png)
-
-</div>
-
-<h2> 🛠 Tecnologias Utilizadas </h2>
+<h2> 🛠 Principais Tecnologias Utilizadas </h2>
 
 >Este projeto foi desenvolvido com as seguintes tecnologias:
 
@@ -43,7 +35,7 @@
 
 <h2 align='center'> Meus contatos </h2>
 
->Se tiver alguma dúvida, sugestão ou feedback, sinta-se à vontade para entrar em contato:
+>Este projeto nasceu da minha vontade de aplicar algumas coisas que aprendi. Se você encontrar qualquer bug ou tiver sugestões para torná-lo ainda melhor, fique à vontade para entrar em contato comigo. Sua opinião é muito importante!
 
 * [LinkedIn](https://www.linkedin.com/in/romeu-soares-87749a231/)
 
